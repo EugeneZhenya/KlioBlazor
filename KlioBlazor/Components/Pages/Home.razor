@@ -1,6 +1,6 @@
 ﻿@page "/"
 
-<PageTitle>Home</PageTitle>
+<PageTitle>Український медійний архів 'KLIO'</PageTitle>
 
 <p>Hello, @StringUtilities.CustomToUpper(name)</p>
 
@@ -8,14 +8,37 @@
 
 <div>
     <h3>Movie</h3>
-    <p>Title: <b>@spiderman.Title</b></p>
-    <p>Release Date: <b>@spiderman.ReleaseDate.ToString("dd MMM yyyy")</b></p>
+    @foreach (var movie in movies)
+    {
+        <p>Title: <b>@movie.Title</b></p>
+        <p>Release Date: <b>@movie.ReleaseDate.ToString("dd MMM yyyy")</b></p>
+    }
+
+    @for (int i = 0; i < movies.Count; i++)
+    {
+        <div style="background-color: @(i % 2 == 0 ? "blue" : "red")">
+            <p>@(i+1) Title: <b>@movies[i].Title</b></p>
+            <p>Release Date: <b>@movies[i].ReleaseDate.ToString("dd MMM yyyy")</b></p>
+        </div>
+    }
 </div>
 
 <ConsoleButton />
 
 @code {
     string name = "Eugene";
+
+    List<Movie> movies;
+
+    protected override void OnInitialized()
+    {
+        movies = new List<Movie>()
+        {
+            new Movie() {Title = "Spider-Man: Far From Home", ReleaseDate = new DateTime(2023, 12, 11)},
+            new Movie() {Title = "Moana", ReleaseDate = new DateTime(2023, 12, 23)},
+            new Movie() {Title = "Inception", ReleaseDate = new DateTime(2013, 7, 16)}
+        };
+    }
 
     Movie spiderman = new Movie()
     {
