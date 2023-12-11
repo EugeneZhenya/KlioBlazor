@@ -2,14 +2,24 @@
 
 <PageTitle>Home</PageTitle>
 
-<p>Hello, @CustomToUpper(name)</p>
+<p>Hello, @StringUtilities.CustomToUpper(name)</p>
 
 <p>Let's add 2 + 2 = @(2+2)</p>
+
+<div>
+    <h3>Movie</h3>
+    <p>Title: <b>@spiderman.Title</b></p>
+    <p>Release Date: <b>@spiderman.ReleaseDate.ToString("dd MMM yyyy")</b></p>
+</div>
 
 <ConsoleButton />
 
 @code {
     string name = "Eugene";
 
-    string CustomToUpper(string value) => value.ToUpper();
+    Movie spiderman = new Movie()
+    {
+        Title = "Spider-Man: Far From Home",
+        ReleaseDate = new DateTime(2023, 12, 11)
+    };
 }
