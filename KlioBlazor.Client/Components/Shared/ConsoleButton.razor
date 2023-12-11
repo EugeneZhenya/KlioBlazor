@@ -1,0 +1,10 @@
+﻿@rendermode InteractiveWebAssembly
+
+<button @onclick="@WriteInLog">Click me</button>
+
+@code {
+    void WriteInLog()
+    {
+        Console.WriteLine("I've been clicked! (from method)");
+    }
+}
