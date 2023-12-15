@@ -1,4 +1,5 @@
-﻿@attribute [StreamRendering]
+﻿@rendermode @(new InteractiveServerRenderMode(prerender: false))
+@attribute [StreamRendering]
 
 @if (Movies == null)
 {
@@ -16,12 +17,15 @@ else if (Movies.Count == 0)
 }
 else
 {
+    <label><input type="checkbox" @onchange="@(() => displayButtons = !displayButtons)" />Display Buttons</label>
+
     @foreach (var movie in Movies)
     {
-        <IndividualMovie Movie="movie" />
+        <IndividualMovie Movie="movie" DisplayButtons="displayButtons" />
     }
 }
 
 @code {
     [Parameter] public List<Movie> Movies { get; set; }
+    bool displayButtons = false;
 }
