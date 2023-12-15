@@ -1,4 +1,5 @@
 ﻿@page "/"
+@attribute [StreamRendering]
 
 <PageTitle>Український медійний архів 'KLIO'</PageTitle>
 
@@ -50,13 +51,19 @@
             <h3>Movie</h3>
             @if (movies == null)
             {
-                <text>Loading...</text>
+                <div id="preloader">
+                    <div id="loading-center">
+                        <div id="loading-center-absolute">
+                            <img src="img/preloader.svg" alt="">
+                        </div>
+                    </div>
+                </div>
             }
             else
             {
                 @foreach (var movie in movies)
                 {
-                    <p>Title: <b>@movie.Title</b></p>
+                    <p>Title: @((MarkupString)movie.Title)</p>
                     <p>Release Date: <b>@movie.ReleaseDate.ToString("dd MMM yyyy")</b></p>
                 }
 
@@ -85,8 +92,8 @@
         await Task.Delay(3000);
         movies = new List<Movie>()
         {
-            new Movie() {Title = "Spider-Man: Far From Home", ReleaseDate = new DateTime(2023, 12, 11)},
-            new Movie() {Title = "Moana", ReleaseDate = new DateTime(2023, 12, 23)},
+            new Movie() {Title = "<b>Spider-Man: Far From Home</b>", ReleaseDate = new DateTime(2023, 12, 11)},
+            new Movie() {Title = "<i>Moana</i>", ReleaseDate = new DateTime(2023, 12, 23)},
             new Movie() {Title = "Inception", ReleaseDate = new DateTime(2013, 7, 16)}
         };
     }
