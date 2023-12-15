@@ -1,0 +1,39 @@
+﻿@attribute [StreamRendering]
+
+@if (movies == null)
+{
+    <div id="preloader">
+        <div id="loading-center">
+            <div id="loading-center-absolute">
+                <img src="img/preloader.svg" alt="">
+            </div>
+        </div>
+    </div>
+}
+else if (movies.Count == 0)
+{
+    <text>There are no records to show</text>
+}
+else
+{
+    @foreach (var movie in movies)
+    {
+        <p>Title: @movie.Title</p>
+        <p>Release Date: <b>@movie.ReleaseDate.ToString("dd MMM yyyy")</b></p>
+    }
+}
+
+@code {
+    List<Movie> movies;
+
+    protected async override Task OnInitializedAsync()
+    {
+        await Task.Delay(3000);
+        movies = new List<Movie>()
+        {
+            new Movie() {Title = "Spider-Man: Far From Home", ReleaseDate = new DateTime(2023, 12, 11)},
+            new Movie() {Title = "Moana", ReleaseDate = new DateTime(2023, 12, 23)},
+            new Movie() {Title = "Inception", ReleaseDate = new DateTime(2013, 7, 16)}
+        };
+    }
+}

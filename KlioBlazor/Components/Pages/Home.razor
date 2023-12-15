@@ -1,5 +1,4 @@
 ﻿@page "/"
-@attribute [StreamRendering]
 
 <PageTitle>Український медійний архів 'KLIO'</PageTitle>
 
@@ -41,66 +40,15 @@
 
 <!-- up-coming-movie-area -->
 <section class="ucm-area ucm-bg" style="background-image: url('img/service-bg.jpg')">
-    <div class="ucm-bg-shape" style="background-image: url('img/ucm_bg_shape.png')"></div>
     <div class="container">
-        <p>Hello, @StringUtilities.CustomToUpper(name)</p>
-
-        <p>Let's add 2 + 2 = @(2 + 2)</p>
-
         <div>
             <h3>Movie</h3>
-            @if (movies == null)
-            {
-                <div id="preloader">
-                    <div id="loading-center">
-                        <div id="loading-center-absolute">
-                            <img src="img/preloader.svg" alt="">
-                        </div>
-                    </div>
-                </div>
-            }
-            else
-            {
-                @foreach (var movie in movies)
-                {
-                    <p>Title: @((MarkupString)movie.Title)</p>
-                    <p>Release Date: <b>@movie.ReleaseDate.ToString("dd MMM yyyy")</b></p>
-                }
-
-                @for (int i = 0; i < movies.Count; i++)
-                {
-                    <div style="background-color: @(i % 2 == 0 ? "blue" : "red")">
-                        <p>@(i + 1) Title: <b>@movies[i].Title</b></p>
-                        <p>Release Date: <b>@movies[i].ReleaseDate.ToString("dd MMM yyyy")</b></p>
-                    </div>
-                }
-            }
-
-            <ConsoleButton />
+            <MoviesList />
         </div>
     </div>
 </section>
 <!-- up-coming-movie-area-end -->
 
 @code {
-    string name = "Eugene";
-
-    List<Movie> movies;
-
-    protected async override Task OnInitializedAsync()
-    {
-        await Task.Delay(3000);
-        movies = new List<Movie>()
-        {
-            new Movie() {Title = "<b>Spider-Man: Far From Home</b>", ReleaseDate = new DateTime(2023, 12, 11)},
-            new Movie() {Title = "<i>Moana</i>", ReleaseDate = new DateTime(2023, 12, 23)},
-            new Movie() {Title = "Inception", ReleaseDate = new DateTime(2013, 7, 16)}
-        };
-    }
-
-    Movie spiderman = new Movie()
-    {
-        Title = "Spider-Man: Far From Home",
-        ReleaseDate = new DateTime(2023, 12, 11)
-    };
+    
 }
