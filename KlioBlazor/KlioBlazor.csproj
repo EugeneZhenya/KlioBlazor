@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\responsive.css" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\KlioBlazor.Client\KlioBlazor.Client.csproj" />
     <ProjectReference Include="..\KlioBlazor.Shared\KlioBlazor.Shared.csproj" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.0" />
@@ -15,6 +19,10 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\Content\Movies\1\" />
   </ItemGroup>
 
 </Project>

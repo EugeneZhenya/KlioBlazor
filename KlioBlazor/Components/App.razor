@@ -6,15 +6,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <base href="/" />
     <link rel="stylesheet" href="bootstrap/bootstrap.min.css" />
-    <link rel="stylesheet" href="app.css" />
+    <link rel="stylesheet" href="css/flaticon.css" />
+    <link rel="stylesheet" href="css/default.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
     <link rel="stylesheet" href="KlioBlazor.styles.css" />
     <link rel="icon" type="image/png" href="favicon.png" />
+
+    <!-- Font Awesome Solid + Brands -->
+    <link href="fontawesome/css/fontawesome.min.css" rel="stylesheet">
+    <link href="fontawesome/css/brands.min.css" rel="stylesheet">
+    <link href="fontawesome/css/solid.min.css" rel="stylesheet">
+
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
     <HeadOutlet />
 </head>
 
 <body>
+    <!-- Scroll-top -->
+    <button class="scroll-top scroll-to-target" data-target="html">
+        <i class="fa-solid fa-angle-up"></i>
+    </button>
+    <!-- Scroll-top-end-->
+
     <Routes />
+
     <script src="_framework/blazor.web.js"></script>
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <script src="js/main.js"></script>
 </body>
 
 </html>

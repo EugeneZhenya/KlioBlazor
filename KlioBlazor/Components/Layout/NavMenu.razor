@@ -2,71 +2,117 @@
 
 @inject NavigationManager NavigationManager
 
-<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">KlioBlazor</a>
+<div id="sticky-header" class="menu-area transparent-header">
+    <div class="container custom-container">
+        <div class="row">
+            <div class="col-12">
+                <div class="mobile-nav-toggler">
+                    <i class="fa-solid fa-bars"></i>
+                </div>
+                <div class="menu-wrap">
+                    <nav class="menu-nav show">
+                        <div class="logo">
+                            <a href="">
+                                <img src="img/logo.png" alt="Логотип" />
+                            </a>
+                        </div>
+                        <div class="navbar-wrap main-menu d-none d-lg-flex">
+                            <ul class="navigation">
+                                <li><a href="">Історія</a></li>
+                                <li><a href="">Література</a></li>
+                                <li><a href="">Музика</a></li>
+                                <li class="active menu-item-has-children">
+                                    <a href="">Фільми</a>
+                                    <ul class="submenu">
+                                        <li><a href="" class="active">Фільми</a></li>
+                                        <li><a href="">Серіали</a></li>
+                                    </ul>
+                                </li>
+                                <li class="menu-item-has-children">
+                                    <a href="">Мультфільми</a>
+                                    <ul class="submenu">
+                                        <li><a href="">Мультфільми</a></li>
+                                        <li><a href="">Мультсеріали</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="header-action d-none d-md-block">
+                            <ul>
+                                <li class="header-search">
+                                    <a href="" data-toggle="modal" data-target="#search-modal">
+                                        <i class="fa-solid fa-magnifying-glass"></i>
+                                    </a>
+                                </li>
+                                <li class="header-btn">
+                                    <a href="" class="btn btnlive"><span class="live-icon"></span>Наживо</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+
+                <!-- Mobile Menu  -->
+                <div class="mobile-menu">
+                    <div class="close-btn">
+                        <i class="fa-solid fa-xmark"></i>
+                    </div>
+
+                    <nav class="menu-box">
+                        <div class="nav-logo">
+                            <a href="">
+                                <img src="img/logo.png" alt="" title="">
+                            </a>
+                        </div>
+                        <div class="menu-outer">
+                            <!--Here Menu Will Come Automatically Via Javascript / Same Menu as in Header-->
+                        </div>
+                        <div class="social-links">
+                            <ul class="clearfix">
+                                <li>
+                                    <a href="">
+                                        <span class="fa-brands fa-twitter"></span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="">
+                                        <span class="fa-brands fa-square-facebook"></span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="">
+                                        <span class="fa-brands fa-instagram"></span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="">
+                                        <span class="fa-brands fa-youtube"></span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+                <div class="menu-backdrop"></div>
+                <!-- End Mobile Menu -->
+
+                <!-- Modal Search -->
+                <div class="modal fade" id="search-modal" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <form>
+                                <input type="text" placeholder="Шукати...">
+                                <button>
+                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal Search-end -->
+            </div>
+        </div>
     </div>
-</div>
-
-<input type="checkbox" title="Navigation menu" class="navbar-toggler" />
-
-<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
-    <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Counter
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="weather">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Weather
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="auth">
-                <span class="bi bi-lock-nav-menu" aria-hidden="true"></span> Auth Required
-            </NavLink>
-        </div>
-
-        <AuthorizeView>
-            <Authorized>
-                <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="Account/Manage">
-                        <span class="bi bi-person-fill-nav-menu" aria-hidden="true"></span> @context.User.Identity?.Name
-                    </NavLink>
-                </div>
-                <div class="nav-item px-3">
-                    <form action="Account/Logout" method="post">
-                        <AntiforgeryToken />
-                        <input type="hidden" name="ReturnUrl" value="@currentUrl" />
-                        <button type="submit" class="nav-link">
-                            <span class="bi bi-arrow-bar-left-nav-menu" aria-hidden="true"></span> Logout
-                        </button>
-                    </form>
-                </div>
-            </Authorized>
-            <NotAuthorized>
-                <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="Account/Register">
-                        <span class="bi bi-person-nav-menu" aria-hidden="true"></span> Register
-                    </NavLink>
-                </div>
-                <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="Account/Login">
-                        <span class="bi bi-person-badge-nav-menu" aria-hidden="true"></span> Login
-                    </NavLink>
-                </div>
-            </NotAuthorized>
-        </AuthorizeView>
-    </nav>
 </div>
 
 @code {
