@@ -1,0 +1,27 @@
+﻿@attribute [StreamRendering]
+
+@if (Movies == null)
+{
+    <div id="preloader">
+        <div id="loading-center">
+            <div id="loading-center-absolute">
+                <img src="img/preloader.svg" alt="">
+            </div>
+        </div>
+    </div>
+}
+else if (Movies.Count == 0)
+{
+    <text>There are no records to show</text>
+}
+else
+{
+    @foreach (var movie in Movies)
+    {
+        <IndividualMovie Movie="movie" />
+    }
+}
+
+@code {
+    [Parameter] public List<Movie> Movies { get; set; }
+}
