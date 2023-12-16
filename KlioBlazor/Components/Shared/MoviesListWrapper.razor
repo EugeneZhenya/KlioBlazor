@@ -1,0 +1,7 @@
+﻿@rendermode @(new InteractiveServerRenderMode(prerender: false))
+
+<MoviesList Movies="Movies" />
+
+@code {
+    [Parameter] public List<Movie> Movies { get; set; }
+}

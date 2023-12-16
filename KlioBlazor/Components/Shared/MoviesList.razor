@@ -3,17 +3,33 @@
 
 @if (Movies == null)
 {
-    <div id="preloader">
-        <div id="loading-center">
-            <div id="loading-center-absolute">
-                <img src="img/preloader.svg" alt="">
+    @if (NullTemplate != null)
+    {
+        @NullTemplate
+    }
+    else
+    {
+        // Default Content
+        <div id="preloader">
+            <div id="loading-center">
+                <div id="loading-center-absolute">
+                    <img src="img/preloader.svg" alt="">
+                </div>
             </div>
         </div>
-    </div>
+    }
 }
 else if (Movies.Count == 0)
 {
-    <text>There are no records to show</text>
+    @if (EmptyTemplate != null)
+    {
+        @EmptyTemplate
+    }
+    else
+    {
+        // Default Content
+        <text>Розділ не має записів.</text>
+    }
 }
 else
 {
@@ -27,6 +43,8 @@ else
 
 @code {
     [Parameter] public List<Movie> Movies { get; set; }
+    [Parameter] public RenderFragment NullTemplate { get; set; }
+    [Parameter] public RenderFragment EmptyTemplate { get; set; }
     bool displayButtons = true;
 
     private void DeleteMovie(Movie movie)
