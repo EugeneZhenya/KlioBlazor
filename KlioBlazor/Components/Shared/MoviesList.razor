@@ -17,7 +17,7 @@ else if (Movies.Count == 0)
 }
 else
 {
-    <label><input type="checkbox" @onchange="@(() => displayButtons = !displayButtons)" />Display Buttons</label>
+    <label><input type="checkbox" @bind="displayButtons" />Display Buttons</label>
 
     @foreach (var movie in Movies)
     {
@@ -27,5 +27,5 @@ else
 
 @code {
     [Parameter] public List<Movie> Movies { get; set; }
-    bool displayButtons = false;
+    bool displayButtons = true;
 }

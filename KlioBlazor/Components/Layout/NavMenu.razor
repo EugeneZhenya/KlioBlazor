@@ -1,5 +1,5 @@
-﻿@implements IDisposable
-
+﻿@rendermode @(new InteractiveServerRenderMode(prerender: false))
+@implements IDisposable
 @inject NavigationManager NavigationManager
 
 <div id="sticky-header" class="menu-area transparent-header">
@@ -44,7 +44,7 @@
                         <div class="header-action d-none d-md-block">
                             <ul>
                                 <li class="header-search">
-                                    <a href="" data-toggle="modal" data-target="#search-modal">
+                                    <a style="cursor: pointer" @onclick="() => SearchModal.Open()">
                                         <i class="fa-solid fa-magnifying-glass"></i>
                                     </a>
                                 </li>
@@ -124,20 +124,7 @@
                 <div class="menu-backdrop"></div>
                 <!-- End Mobile Menu -->
 
-                <!-- Modal Search -->
-                <div class="modal fade" id="search-modal" tabindex="-1" role="dialog" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <form>
-                                <input type="text" placeholder="Шукати...">
-                                <button>
-                                    <i class="fa-solid fa-magnifying-glass"></i>
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <!-- Modal Search-end -->
+                <SearchModal @ref=SearchModal />
             </div>
         </div>
     </div>
@@ -145,6 +132,7 @@
 
 @code {
     private string? currentUrl;
+    private SearchModal SearchModal { get; set; }
 
     protected override void OnInitialized()
     {

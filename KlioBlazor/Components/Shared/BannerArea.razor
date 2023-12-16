@@ -1,9 +1,4 @@
-﻿@page "/counter"
-@rendermode InteractiveAuto
-
-<PageTitle>Counter</PageTitle>
-
-<!-- banner-area -->
+﻿<!-- banner-area -->
 <section class="banner-area banner-bg" style="background-image: url('content/movies/1/background.jpg')">
     <div class="container custom-container">
         <div class="row">
@@ -39,27 +34,6 @@
 </section>
 <!-- banner-area-end -->
 
-<!-- up-coming-movie-area -->
-<section class="ucm-area ucm-bg" style="background-image: url('img/service-bg.jpg')">
-    <div class="container">
-        <div>
-            <h3>Counter</h3>
-
-            <p role="status">Current count: @currentCount</p>
-
-            <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
-
-            <input type="number" @bind="currentCount" />
-        </div>
-    </div>
-</section>
-<!-- up-coming-movie-area-end -->
-
 @code {
-    private int currentCount = 0;
 
-    private void IncrementCount()
-    {
-        currentCount++;
-    }
 }
