@@ -1,7 +1,9 @@
+using KlioBlazor;
 using KlioBlazor.Client.Pages;
 using KlioBlazor.Components;
 using KlioBlazor.Components.Account;
 using KlioBlazor.Data;
+using KlioBlazor.Helpers;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +19,10 @@ builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityUserAccessor>();
 builder.Services.AddScoped<IdentityRedirectManager>();
 builder.Services.AddScoped<AuthenticationStateProvider, PersistingRevalidatingAuthenticationStateProvider>();
+
+builder.Services.AddSingleton<SingletonService>();
+builder.Services.AddTransient<TransientService>();
+builder.Services.AddTransient<IRepository, RepositoryInMemory>();
 
 builder.Services.AddAuthentication(options =>
     {

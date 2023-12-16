@@ -1,5 +1,6 @@
 ﻿@page "/weather"
 @attribute [StreamRendering]
+@inject SingletonService singleton
 
 <PageTitle>Weather</PageTitle>
 
@@ -12,6 +13,8 @@
             <h3>Weather</h3>
 
             <p>This component demonstrates showing data.</p>
+
+            <p>Singleton count: @singleton.Value</p>
 
             @if (forecasts == null)
             {

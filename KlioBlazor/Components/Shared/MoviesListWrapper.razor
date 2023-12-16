@@ -1,5 +1,11 @@
 ﻿@rendermode @(new InteractiveServerRenderMode(prerender: false))
 @attribute [StreamRendering]
+@inject SingletonService singleton
+@inject TransientService transient
+
+
+<p>Singleton count: @singleton.Value</p>
+<p>Transient count: @transient.Value</p>
 
 <MoviesList Movies="Movies" />
 
@@ -11,5 +17,7 @@
     private void AddNewMoview()
     {
         Movies.Add(new Movie() { Title = "Movie Sample", ReleaseDate = DateTime.Today });
+        transient.Value = Movies.Count;
+        singleton.Value = Movies.Count;
     }
 }
