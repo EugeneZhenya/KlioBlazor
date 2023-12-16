@@ -1,4 +1,5 @@
-﻿@rendermode @(new InteractiveServerRenderMode(prerender: false))
+﻿@inject IJSRuntime js
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
 @attribute [StreamRendering]
 
 <label><input type="checkbox" @bind="displayButtons" />Display Buttons</label>
@@ -13,9 +14,15 @@
     [Parameter] public List<Movie> Movies { get; set; }
     bool displayButtons = true;
 
-    private void DeleteMovie(Movie movie)
+    private async Task DeleteMovie(Movie movie)
     {
-        Movies.Remove(movie);
+        await js.MyFunction("custom message");
+        var confirm = await js.Confirm($"Ви впевнені, що хочете видалити фільм \"{movie.Title}\"?");
+
+        if (confirm)
+        {
+            Movies.Remove(movie);
+        }
     }
 
     protected override void OnInitialized()
