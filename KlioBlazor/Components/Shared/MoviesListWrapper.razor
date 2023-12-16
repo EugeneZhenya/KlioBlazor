@@ -3,6 +3,13 @@
 
 <MoviesList Movies="Movies" />
 
+<button class="btn" @onclick="AddNewMoview">Add new moview</button>
+
 @code {
     [Parameter] public List<Movie> Movies { get; set; }
+
+    private void AddNewMoview()
+    {
+        Movies.Add(new Movie() { Title = "Movie Sample", ReleaseDate = DateTime.Today });
+    }
 }
