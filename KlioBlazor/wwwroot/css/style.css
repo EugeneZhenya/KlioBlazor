@@ -76,13 +76,13 @@ a,
     a:hover,
     .portfolio-cat a:hover,
     .footer -menu li a:hover {
-        color: #2B96CC;
+        color: #fd0e30;
         text-decoration: none;
     }
 
 a,
 button {
-    color: #1696e7;
+    color: #fd0e30;
     outline: medium none;
 }
 
@@ -212,7 +212,7 @@ label {
 }
 
     .theme-overlay::before {
-        background: #1696e7 none repeat scroll 0 0;
+        background: #fd0e30 none repeat scroll 0 0;
         content: "";
         height: 100%;
         left: 0;
@@ -3271,6 +3271,7 @@ label {
         display: flex;
         align-items: center;
         flex-wrap: wrap;
+        justify-content: center;
     }
 
         .footer-menu nav .navigation li {
