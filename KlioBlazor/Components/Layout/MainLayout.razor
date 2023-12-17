@@ -5,7 +5,9 @@
 </header>
 
 <main>
-    @Body
+    <CascadingValue Value="@appState">
+        @Body
+    </CascadingValue>
 </main>
 
 <footer>
@@ -16,3 +18,7 @@
         <a class="dismiss">🗙</a>
     </div>
 </footer>
+
+@code {
+    AppState appState = new AppState();
+}
