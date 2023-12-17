@@ -8,3 +8,7 @@ function dotnetStaticInvocation() {
             console.log("count from javascript " + result);
         });
 }
+
+function dotnetInstanceInvocation(dotnetHelper) {
+    dotnetHelper.invokeMethodAsync("AddNewMovie");
+}

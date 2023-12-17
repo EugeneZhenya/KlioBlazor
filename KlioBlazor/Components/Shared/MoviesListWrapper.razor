@@ -10,19 +10,27 @@
 
 <MoviesList Movies="Movies" />
 
-<button class="btn" @onclick="AddNewMoview">Add new moview</button>
+<button class="btn" @onclick="AddNewMovie">Add new movie</button>
+
+<button class="btn" @onclick="AddNewMovieJavaScript">Add JavaScript</button>
 
 @code {
     [Parameter] public List<Movie> Movies { get; set; }
     private static int moviesCounet = 0;
 
-    private async Task AddNewMoview()
+    [JSInvokable]
+    public async Task AddNewMovie()
     {
         Movies.Add(new Movie() { Title = "Movie Sample", ReleaseDate = DateTime.Today });
         transient.Value = Movies.Count;
         singleton.Value = Movies.Count;
         moviesCounet = Movies.Count;
         await js.InvokeVoidAsync("dotnetStaticInvocation");
+    }
+
+    private async Task AddNewMovieJavaScript()
+    {
+        await js.InvokeVoidAsync("dotnetInstanceInvocation", DotNetObjectReference.Create(this));
     }
 
     [JSInvokable]
