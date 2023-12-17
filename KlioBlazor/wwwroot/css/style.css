@@ -3489,7 +3489,8 @@ label {
 }
 
 #blazor-error-ui {
-    background: lightyellow;
+    background: brown;
+    color: #e3dfdf;
     bottom: 0;
     box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
     display: none;

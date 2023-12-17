@@ -2,6 +2,7 @@
 @attribute [StreamRendering]
 @inject SingletonService singleton
 @inject TransientService transient
+@inject IJSRuntime js
 
 
 <p>Singleton count: @singleton.Value</p>
@@ -13,11 +14,20 @@
 
 @code {
     [Parameter] public List<Movie> Movies { get; set; }
+    private static int moviesCounet = 0;
 
-    private void AddNewMoview()
+    private async Task AddNewMoview()
     {
         Movies.Add(new Movie() { Title = "Movie Sample", ReleaseDate = DateTime.Today });
         transient.Value = Movies.Count;
         singleton.Value = Movies.Count;
+        moviesCounet = Movies.Count;
+        await js.InvokeVoidAsync("dotnetStaticInvocation");
+    }
+
+    [JSInvokable]
+    public static Task<int> GetCurrentCount()
+    {
+        return Task.FromResult(moviesCounet);
     }
 }
