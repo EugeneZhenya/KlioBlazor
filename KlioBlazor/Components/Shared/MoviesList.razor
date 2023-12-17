@@ -1,5 +1,4 @@
 ﻿@inject IJSRuntime js
-@rendermode @(new InteractiveServerRenderMode(prerender: false))
 @attribute [StreamRendering]
 
 <label><input type="checkbox" @bind="displayButtons" />Display Buttons</label>
@@ -45,25 +44,5 @@
     {
         confirmation.Hide();
         movieToBeDeleted = null;
-    }
-
-    protected override void OnInitialized()
-    {
-        Console.WriteLine("OnInitialized. Movies.Count = " + Movies.Count.ToString());
-    }
-
-    protected override void OnParametersSet()
-    {
-        Console.WriteLine("OnParametersSet. Movies.Count = " + Movies.Count.ToString());
-    }
-
-    protected override void OnAfterRender(bool firstRender)
-    {
-        Console.WriteLine("OnAfterRender. FirstRender = " + firstRender.ToString());
-    }
-
-    protected override bool ShouldRender()
-    {
-        return true;
     }
 }
