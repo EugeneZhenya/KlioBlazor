@@ -308,7 +308,7 @@ label {
 }
 
 .breadcrumb > .active {
-    color: #888;
+    color: #888 !important;
 }
 
 .slick-slide:focus {
@@ -1058,11 +1058,12 @@ label {
     z-index: 1;
 }
 
-    .breadcrumb-bg::before {
-        content: "";
+    .breadcrumb-bg .layer {
+        /* content: "";
         position: absolute;
         left: 0;
         top: 0;
+        */
         width: 100%;
         height: 100%;
         background: #04081a;
@@ -1227,11 +1228,12 @@ label {
     z-index: 1;
 }
 
-    .ucm-bg::before {
-        /* content: ""; */
+    .ucm-bg .layer {
+        /* content: "";
         position: absolute;
         left: 0;
         top: 0;
+        */
         width: 100%;
         height: 100%;
         /* background: #100e17; */
@@ -3507,3 +3509,9 @@ label {
         right: 0.75rem;
         top: 0.5rem;
     }
+
+.liveProgress {
+    background-color: #fd0e30;
+    height: 5px;
+    transition: all .3s ease;
+}

@@ -1,0 +1,152 @@
+﻿@page "/live"
+@using System.Net
+@using System.IO.Compression
+@using System.Text
+@using System.Xml.Serialization
+@using System.Xml.Linq
+@attribute [StreamRendering]
+@inject IJSRuntime js
+
+<PageTitle>Наживо :: Медійний архів 'KLIO</PageTitle>
+
+<BreadcrumbArea>
+    <li class="breadcrumb-item"><a href="">Домівка</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Наживо</li>
+</BreadcrumbArea>
+
+<!-- live-area -->
+<section class="episode-area episode-bg" style="background-image: url('img/episode_bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="movie-episode-wrap">
+                    <div class="episode-top-wrap">
+                        <div class="section-title">
+                            <span class="sub-title">Потокова трансляція</span>
+                            <h2 class="title">Програма передач</h2>
+                        </div>
+                        <!--
+                        <div class="total-views-count">
+                            <p>19 <i class="fa-regular fa-eye"></i></p>
+                        </div>
+                        -->
+                    </div>
+                    <div class="episode-watch-wrap">
+                        <Accordion ShowCardBody="true">
+                            <CardHeaderTitle>
+                                <span class="season">Велич особистості: Тарас Шевченко</span>
+                                <span class="video-count">В етері зараз</span>
+                            </CardHeaderTitle>
+                            <CardBody>
+                                <ul>
+                                    @if (selProgrammes.Count > 0)
+                                    {
+                                        <ul>
+                                            @for (int i = 0; i < 4; i++)
+                                            {
+                                                <li>
+                                                    <a style="cursor: pointer;">
+                                                        @selProgrammes[i].StartDatetIme.ToString("H:mm")
+                                                        <i class="fa-solid fa-play"></i>
+                                                        @selProgrammes[i].TitleBrief
+                                                    </a>
+                                                    <span class="duration">
+                                                        <i class="fa-regular fa-clock"></i> @GetDuration(selProgrammes[i].StartDatetIme, selProgrammes[i].StopDatetIme) хв
+                                                    </span>
+                                                    <div style="width: 0%; background-color: #fd0e30; height: 5px;"></div>
+                                                </li>
+                                            }
+                                        </ul>
+                                    }
+                                </ul>
+                            </CardBody>
+                        </Accordion>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="episode-img">
+                    <div id="player"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="movie-history-wrap">
+                    <h3 class="title">Велич особистості: <span>Тарас Шевченко</span></h3>
+                    <p>
+                        Lorem ipsum dolor sit amet, consecetur adipiscing elseddo eiusmod tempor.There are many variations of passages of lorem
+                        Ipsum available, but the majority have suffered alteration in some injected humour.There are many variations of passages
+                        of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised
+                        words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure
+                        there isn't anything errassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to
+                        repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of
+                        over 200 Latin words, combined with a handful
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- live-area-end -->
+
+@code {
+    [CascadingParameter] public AppState AppState { get; set; }
+    TV allProgrames;
+    List<Programme> selProgrammes = new List<Programme>();
+
+    int curPercent = 50;
+
+    protected override async Task OnInitializedAsync()
+    {
+        WebClient Client = new WebClient();
+        using (MemoryStream stream = new MemoryStream(Client.DownloadData(AppState.KlioStreamEPG)))
+        {
+            stream.Seek(0, SeekOrigin.Begin);
+
+            using (var gzStream = new GZipStream(stream, CompressionMode.Decompress))
+            {
+                using (var outputStream = new MemoryStream())
+                {
+                    gzStream.CopyTo(outputStream);
+                    byte[] outputBytes = outputStream.ToArray();
+                    string FileContents = Encoding.UTF8.GetString(outputBytes);
+                    string _byteOrderMarkUtf8 = Encoding.UTF8.GetString(Encoding.UTF8.GetPreamble());
+                    FileContents = FileContents.Remove(0, _byteOrderMarkUtf8.Length);
+
+                    try
+                    {
+                        var doc = XDocument.Parse(FileContents);
+                        XmlSerializer serializer = new XmlSerializer(typeof(TV));
+                        allProgrames = (TV)serializer.Deserialize(doc.CreateReader());
+
+                        selProgrammes = allProgrames.Programmes.Where(x => x.StopDatetIme >= DateTime.Now).ToList();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+                }
+            }
+        }
+    }
+
+    protected override async void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await InitPlayer();
+        }
+    }
+
+    async Task InitPlayer()
+    {
+        await js.InvokeVoidAsync("playerInit", "player", AppState.KlioStreamUrl, AppState.KlioStreamPoster, "", 0);
+    }
+
+    int GetDuration(DateTime start, DateTime stop)
+    {
+        var diffInSeconds = (stop - start).TotalMinutes;
+        return (int)Math.Round(diffInSeconds, MidpointRounding.AwayFromZero);
+    }
+}

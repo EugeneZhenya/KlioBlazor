@@ -14,7 +14,7 @@
 
             <div class="row g-3">
                 <div style="width: 150px;">
-                    <select @bind="AppState.Color" class="form-control">
+                    <select class="form-control">
                         <option value="#2B96CC">Blue</option>
                         <option value="#fd0e30">Red</option>
                         <option value="#e4d804">Yellow</option>
@@ -22,7 +22,7 @@
                 </div>
 
                 <div style="width: 150px;">
-                    <select @bind="AppState.Size" class="form-control">
+                    <select class="form-control">
                         <option value="12px">12px</option>
                         <option value="16px">16px</option>
                         <option value="28px">28px</option>
@@ -32,7 +32,7 @@
 
             <p>This component demonstrates showing data.</p>
 
-            <p style="color: @AppState.Color; font-size: @AppState.Size;">Singleton count: @singleton.Value</p>
+            <p>Singleton count: @singleton.Value</p>
 
             @if (forecasts == null)
             {
@@ -70,7 +70,6 @@
 <!-- up-coming-movie-area-end -->
 
 @code {
-    [CascadingParameter] public AppState AppState { get; set; }
     private WeatherForecast[]? forecasts;
     private List<Movie> movies;
 

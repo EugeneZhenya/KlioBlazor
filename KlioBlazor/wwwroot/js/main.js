@@ -2,19 +2,6 @@
 	"use strict";
 
 	$(window).on('load', function () {
-		$('.mobile-menu li.menu-item-has-children .dropdown-btn').on('click', function () {
-			$(this).toggleClass('open');
-			$(this).prev('ul').slideToggle(500);
-		});
-
-		$('.mobile-nav-toggler').on('click', function () {
-			$('body').addClass('mobile-menu-visible');
-		});
-
-		$('.menu-backdrop, .mobile-menu .close-btn').on('click', function () {
-			$('body').removeClass('mobile-menu-visible');
-		});
-
 		console.log("loaded");
 	});
 

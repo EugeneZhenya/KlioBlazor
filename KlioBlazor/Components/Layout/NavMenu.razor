@@ -1,11 +1,12 @@
 ﻿@implements IDisposable
 @inject NavigationManager NavigationManager
+@inject IJSRuntime js
 
 <div id="sticky-header" class="menu-area transparent-header">
     <div class="container custom-container">
         <div class="row">
             <div class="col-12">
-                <div class="mobile-nav-toggler">
+                <div class="mobile-nav-toggler" @onclick="ShowMobMenu">
                     <i class="fa-solid fa-bars"></i>
                 </div>
                 <div class="menu-wrap">
@@ -48,7 +49,9 @@
                                     </a>
                                 </li>
                                 <li class="header-btn">
-                                    <a href="" class="btn btnlive"><span class="live-icon"></span>Наживо</a>
+                                    <NavLink class="btn btnlive" href="live">
+                                        <span class="live-icon"></span>Наживо
+                                    </NavLink>
                                 </li>
                             </ul>
                         </div>
@@ -57,7 +60,7 @@
 
                 <!-- Mobile Menu  -->
                 <div class="mobile-menu">
-                    <div class="close-btn">
+                    <div class="close-btn" @onclick="HideMobMenu">
                         <i class="fa-solid fa-xmark"></i>
                     </div>
 
@@ -78,7 +81,7 @@
                                         <li><a href="">Фільми</a></li>
                                         <li><a href="">Серіали</a></li>
                                     </ul>
-                                    <div class="dropdown-btn">
+                                    <div class="dropdown-btn" id="mnuFilm" @onclick="@(e => DropdownToogle("mnuFilm"))">
                                         <span class="fa-solid fa-angle-down"></span>
                                     </div>
                                 </li>
@@ -88,7 +91,7 @@
                                         <li><a href="">Мультфільми</a></li>
                                         <li><a href="">Мультсеріали</a></li>
                                     </ul>
-                                    <div class="dropdown-btn">
+                                    <div class="dropdown-btn" id="mnuMult" @onclick="@(e => DropdownToogle("mnuMult"))">
                                         <span class="fa-solid fa-angle-down"></span>
                                     </div>
                                 </li>
@@ -114,6 +117,11 @@
                                 <li>
                                     <a href="">
                                         <span class="fa-brands fa-youtube"></span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="">
+                                        <span class="fa-brands fa-telegram"></span>
                                     </a>
                                 </li>
                             </ul>
@@ -148,6 +156,24 @@
     public void Dispose()
     {
         NavigationManager.LocationChanged -= OnLocationChanged;
+    }
+
+    [JSInvokable]
+    public async Task ShowMobMenu()
+    {
+        await js.InvokeVoidAsync("mobMenuVisible");
+    }
+
+    [JSInvokable]
+    public async Task HideMobMenu()
+    {
+        await js.InvokeVoidAsync("mobMenuUnisible");
+    }
+
+    [JSInvokable]
+    public async Task DropdownToogle(string elId)
+    {
+        await js.InvokeVoidAsync("mobDropdownToggle", elId);
     }
 }
 

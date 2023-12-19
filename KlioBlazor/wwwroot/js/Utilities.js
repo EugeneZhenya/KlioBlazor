@@ -12,3 +12,21 @@ function dotnetStaticInvocation() {
 function dotnetInstanceInvocation(dotnetHelper) {
     dotnetHelper.invokeMethodAsync("AddNewMovie");
 }
+
+function mobMenuVisible() {
+    $('body').addClass('mobile-menu-visible');
+}
+
+function mobMenuUnisible() {
+    $('body').removeClass('mobile-menu-visible');
+}
+
+function mobDropdownToggle(element) {
+    $('#' + element).toggleClass('open');
+    $('#' + element).prev('ul').slideToggle(500);
+}
+
+function playerInit(id, file, poster, title, autoplay) {
+    console.log('player');
+    var player = new Playerjs({ id: id, file: file, poster: poster, title: title, autoplay: autoplay });
+}

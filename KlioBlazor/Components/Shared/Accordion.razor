@@ -1,0 +1,30 @@
+﻿<div class="accordion">
+    <div class="card">
+        <div class="card-header">
+            <button class="col-12 text-start" type="button" @onclick="Toggle">
+                @CardHeaderTitle
+            </button>
+        </div>
+        <div class="@BtnClass">
+            @if (ShowCardBody)
+            {
+                <div class="card-body">
+                    @CardBody
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public RenderFragment CardHeaderTitle { get; set; }
+    [Parameter] public RenderFragment CardBody { get; set; }
+    [Parameter] public bool ShowCardBody { get; set; } = false;
+
+    public string BtnClass => ShowCardBody ? "collapse show" : "collapse";
+
+    public void Toggle()
+    {
+        ShowCardBody = !ShowCardBody;
+    }
+}
