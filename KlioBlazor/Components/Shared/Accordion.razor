@@ -20,11 +20,15 @@
     [Parameter] public RenderFragment CardHeaderTitle { get; set; }
     [Parameter] public RenderFragment CardBody { get; set; }
     [Parameter] public bool ShowCardBody { get; set; } = false;
+    [Parameter] public bool IsCollapsible { get; set; } = true;
 
     public string BtnClass => ShowCardBody ? "collapse show" : "collapse";
 
     public void Toggle()
     {
-        ShowCardBody = !ShowCardBody;
+        if (IsCollapsible)
+        {
+            ShowCardBody = !ShowCardBody;
+        }
     }
 }

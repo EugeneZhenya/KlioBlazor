@@ -6,6 +6,7 @@
 @using System.Xml.Linq
 @attribute [StreamRendering]
 @inject IJSRuntime js
+@implements IDisposable
 
 <PageTitle>Наживо :: Медійний архів 'KLIO</PageTitle>
 
@@ -32,29 +33,54 @@
                         -->
                     </div>
                     <div class="episode-watch-wrap">
-                        <Accordion ShowCardBody="true">
+                        <Accordion ShowCardBody="true" IsCollapsible="false">
                             <CardHeaderTitle>
-                                <span class="season">Велич особистості: Тарас Шевченко</span>
-                                <span class="video-count">В етері зараз</span>
+                                @if (selProgrammes.Count > 0)
+                                {
+                                    <span class="season">@StringUtilities.FirstCharToUpper(selProgrammes[0].Title.Text)</span>
+                                    <span class="video-count">В етері зараз</span>
+                                }
+                                else
+                                {
+                                    <span class="season">Програма передач наразі недоступна</span>
+                                }
                             </CardHeaderTitle>
                             <CardBody>
                                 <ul>
                                     @if (selProgrammes.Count > 0)
                                     {
                                         <ul>
-                                            @for (int i = 0; i < 4; i++)
+                                            @foreach (var prog in selProgrammes)
                                             {
-                                                <li>
-                                                    <a style="cursor: pointer;">
-                                                        @selProgrammes[i].StartDatetIme.ToString("H:mm")
-                                                        <i class="fa-solid fa-play"></i>
-                                                        @selProgrammes[i].TitleBrief
-                                                    </a>
-                                                    <span class="duration">
-                                                        <i class="fa-regular fa-clock"></i> @GetDuration(selProgrammes[i].StartDatetIme, selProgrammes[i].StopDatetIme) хв
-                                                    </span>
-                                                    <div style="width: 0%; background-color: #fd0e30; height: 5px;"></div>
-                                                </li>
+                                                try
+                                                {
+                                                    <li>
+                                                        <a>
+                                                            @prog.StartDatetIme.ToString("HH:mm")
+                                                            <i class="fa-solid fa-play"></i>
+                                                            @prog.TitleBrief
+                                                        </a>
+                                                        <span class="duration">
+                                                            <i class="fa-regular fa-clock"></i> @GetDuration(prog.StartDatetIme, prog.StopDatetIme) хв
+                                                        </span>
+                                                        @if (prog == selProgrammes[0])
+                                                        {
+                                                            <div style="width: @curPercent%; background-color: #fd0e30; height: 5px;"></div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div style="width: 0%; background-color: #fd0e30; height: 5px;"></div>
+                                                        }
+                                                    </li>
+                                                    @if (prog == selProgrammes[4])
+                                                    {
+                                                        break;
+                                                    }
+                                                }
+                                                catch (Exception)
+                                                {
+                                                    break;
+                                                }
                                             }
                                         </ul>
                                     }
@@ -73,15 +99,21 @@
         <div class="row">
             <div class="col-12">
                 <div class="movie-history-wrap">
-                    <h3 class="title">Велич особистості: <span>Тарас Шевченко</span></h3>
+                    <h3 class="title">
+                        @for (int i = 0; i < curTitle.Length; i++)
+                        {
+                            if (i % 2 == 0)
+                            {
+                                @curTitle[i]
+                            }
+                            else
+                            {
+                                <span>@curTitle[i]</span>
+                            }
+                        }
+                    </h3>
                     <p>
-                        Lorem ipsum dolor sit amet, consecetur adipiscing elseddo eiusmod tempor.There are many variations of passages of lorem
-                        Ipsum available, but the majority have suffered alteration in some injected humour.There are many variations of passages
-                        of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised
-                        words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure
-                        there isn't anything errassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to
-                        repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of
-                        over 200 Latin words, combined with a handful
+                        @curDesc
                     </p>
                 </div>
             </div>
@@ -94,8 +126,11 @@
     [CascadingParameter] public AppState AppState { get; set; }
     TV allProgrames;
     List<Programme> selProgrammes = new List<Programme>();
+    Timer timer;
 
-    int curPercent = 50;
+    int curPercent;
+    string[] curTitle;
+    string curDesc;
 
     protected override async Task OnInitializedAsync()
     {
@@ -120,7 +155,7 @@
                         XmlSerializer serializer = new XmlSerializer(typeof(TV));
                         allProgrames = (TV)serializer.Deserialize(doc.CreateReader());
 
-                        selProgrammes = allProgrames.Programmes.Where(x => x.StopDatetIme >= DateTime.Now).ToList();
+                        UpdateCurState();
                     }
                     catch (Exception ex)
                     {
@@ -128,6 +163,36 @@
                     }
                 }
             }
+
+            timer = new Timer(new TimerCallback(_ =>
+            {
+                UpdateCurState();
+                InvokeAsync(() =>
+                {
+                    StateHasChanged();
+                });
+            }), null, 1000, 1000);
+        }
+    }
+
+    void UpdateCurState()
+    {
+        selProgrammes = allProgrames.Programmes.Where(x => x.StopDatetIme >= DateTime.Now).ToList();
+        if (selProgrammes.Count > 0)
+        {
+            if (selProgrammes[0].Title.Text.StartsWith("т/с ") || selProgrammes[0].Title.Text.StartsWith("х/ф ") || selProgrammes[0].Title.Text.StartsWith("д/с ") || selProgrammes[0].Title.Text.StartsWith("д/ф "))
+            {
+                curTitle = StringUtilities.SeparateString(selProgrammes[0].Title.Text.Substring(4, selProgrammes[0].Title.Text.Length - 4));
+            }
+            else
+            {
+                curTitle = StringUtilities.SeparateString(selProgrammes[0].Title.Text);
+            };
+            curDesc = selProgrammes[0].Desc.Text;
+
+            var TotalSeconds = (selProgrammes[0].StopDatetIme - selProgrammes[0].StartDatetIme).TotalSeconds;
+            var NowSeconds = (DateTime.Now - selProgrammes[0].StartDatetIme).TotalSeconds;
+            curPercent = (int)Math.Round(NowSeconds / TotalSeconds * 100);
         }
     }
 
@@ -148,5 +213,13 @@
     {
         var diffInSeconds = (stop - start).TotalMinutes;
         return (int)Math.Round(diffInSeconds, MidpointRounding.AwayFromZero);
+    }
+
+    public void Dispose()
+    {
+        if (timer != null)
+        {
+            timer.Dispose();
+        }
     }
 }

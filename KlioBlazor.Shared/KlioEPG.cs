@@ -46,7 +46,7 @@ namespace KlioBlazor.Shared
         {
             get
             {
-                return DateTime.ParseExact(Start, "yyyyMMddHHmmss zzz", DateTimeFormatInfo.CurrentInfo, DateTimeStyles.AssumeLocal);
+                return DateTime.ParseExact(Start, "yyyyMMddHHmmss zzz", DateTimeFormatInfo.CurrentInfo);
             }
         }
 
@@ -54,7 +54,7 @@ namespace KlioBlazor.Shared
         {
             get
             {
-                return DateTime.ParseExact(Stop, "yyyyMMddHHmmss zzz", DateTimeFormatInfo.CurrentInfo, DateTimeStyles.AssumeLocal);
+                return DateTime.ParseExact(Stop, "yyyyMMddHHmmss zzz", DateTimeFormatInfo.CurrentInfo);
             }
         }
 
