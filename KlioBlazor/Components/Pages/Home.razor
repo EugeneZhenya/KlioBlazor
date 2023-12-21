@@ -6,18 +6,7 @@
 
 <BannerArea />
 
-<!-- up-coming-movie-area -->
-<section class="ucm-area ucm-bg" style="background-image: url('img/service-bg.jpg')">
-    <div class="layer">
-        <div class="container">
-            <div>
-                <h3>Movie</h3>
-                <MoviesListWrapper Movies="movies" />
-            </div>
-        </div>
-    </div>
-</section>
-<!-- up-coming-movie-area-end -->
+<UpComingMovieArea Movies="movies" />
 
 @code {
     private List<Movie> movies;

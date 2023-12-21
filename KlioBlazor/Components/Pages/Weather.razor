@@ -1,6 +1,5 @@
 ﻿@page "/weather"
 @attribute [StreamRendering]
-@inject SingletonService singleton
 
 <PageTitle>Weather</PageTitle>
 
@@ -8,62 +7,42 @@
 
 <!-- up-coming-movie-area -->
 <section class="ucm-area ucm-bg" style="background-image: url('img/service-bg.jpg')">
-    <div class="container">
-        <div>
-            <h3>Weather</h3>
+    <div class="layer">
+        <div class="container">
+            <div>
+                <h3>Weather</h3>
 
-            <div class="row g-3">
-                <div style="width: 150px;">
-                    <select class="form-control">
-                        <option value="#2B96CC">Blue</option>
-                        <option value="#fd0e30">Red</option>
-                        <option value="#e4d804">Yellow</option>
-                    </select>
-                </div>
+                <p>This component demonstrates showing data.</p>
 
-                <div style="width: 150px;">
-                    <select class="form-control">
-                        <option value="12px">12px</option>
-                        <option value="16px">16px</option>
-                        <option value="28px">28px</option>
-                    </select>
-                </div>
-            </div>
-
-            <p>This component demonstrates showing data.</p>
-
-            <p>Singleton count: @singleton.Value</p>
-
-            @if (forecasts == null)
-            {
-                <p><em>Loading...</em></p>
-            }
-            else
-            {
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Temp. (C)</th>
-                            <th>Temp. (F)</th>
-                            <th>Summary</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var forecast in forecasts)
-                        {
+                @if (forecasts == null)
+                {
+                    <p><em>Loading...</em></p>
+                }
+                else
+                {
+                    <table class="table">
+                        <thead>
                             <tr>
-                                <td>@forecast.Date.ToShortDateString()</td>
-                                <td>@forecast.TemperatureC</td>
-                                <td>@forecast.TemperatureF</td>
-                                <td>@forecast.Summary</td>
+                                <th>Date</th>
+                                <th>Temp. (C)</th>
+                                <th>Temp. (F)</th>
+                                <th>Summary</th>
                             </tr>
-                        }
-                    </tbody>
-                </table>
-            }
-
-            <MoviesList Movies="movies" />
+                        </thead>
+                        <tbody>
+                            @foreach (var forecast in forecasts)
+                            {
+                                <tr>
+                                    <td>@forecast.Date.ToShortDateString()</td>
+                                    <td>@forecast.TemperatureC</td>
+                                    <td>@forecast.TemperatureF</td>
+                                    <td>@forecast.Summary</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
         </div>
     </div>
 </section>
@@ -71,18 +50,11 @@
 
 @code {
     private WeatherForecast[]? forecasts;
-    private List<Movie> movies;
 
     protected override async Task OnInitializedAsync()
     {
         // Simulate asynchronous loading to demonstrate streaming rendering
         await Task.Delay(500);
-
-        movies = new List<Movie>()
-        {
-            new Movie() {Title = "Joker", ReleaseDate = new DateTime(2023, 12, 11)},
-            new Movie() {Title = "Avenger", ReleaseDate = new DateTime(2023, 12, 23)}
-        };
 
         var startDate = DateOnly.FromDateTime(DateTime.Now);
         var summaries = new[] { "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching" };

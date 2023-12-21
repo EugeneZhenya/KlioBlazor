@@ -33,7 +33,7 @@
                         -->
                     </div>
                     <div class="episode-watch-wrap">
-                        <Accordion ShowCardBody="true" IsCollapsible="false">
+                        <Accordion ShowCardBody="true" IsCollapsible="false" Percentage="curPercent">
                             <CardHeaderTitle>
                                 @if (selProgrammes.Count > 0)
                                 {
@@ -63,14 +63,6 @@
                                                         <span class="duration">
                                                             <i class="fa-regular fa-clock"></i> @GetDuration(prog.StartDatetIme, prog.StopDatetIme) хв
                                                         </span>
-                                                        @if (prog == selProgrammes[0])
-                                                        {
-                                                            <div style="width: @curPercent%; background-color: #fd0e30; height: 5px;"></div>
-                                                        }
-                                                        else
-                                                        {
-                                                            <div style="width: 0%; background-color: #fd0e30; height: 5px;"></div>
-                                                        }
                                                     </li>
                                                     @if (prog == selProgrammes[4])
                                                     {
@@ -128,9 +120,9 @@
     List<Programme> selProgrammes = new List<Programme>();
     Timer timer;
 
-    int curPercent;
-    string[] curTitle;
-    string curDesc;
+    int curPercent = 0;
+    string[] curTitle = [];
+    string curDesc = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {

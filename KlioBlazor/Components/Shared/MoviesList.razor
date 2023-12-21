@@ -1,13 +1,13 @@
 ﻿@inject IJSRuntime js
 @attribute [StreamRendering]
 
-<label><input type="checkbox" @bind="displayButtons" />Display Buttons</label>
-
-<GenericList List="Movies">
-    <ElementTemplate Context="movie">
-        <IndividualMovie Movie="movie" DisplayButtons="displayButtons" DeleteMovie="DeleteMovie" />
-    </ElementTemplate>
-</GenericList>
+<div class="ucm-active" style="display: -webkit-flex; -webkit-flex-direction: column; -webkit-flex-wrap: wrap; -webkit-flex-direction: row;">
+    <GenericList List="Movies">
+        <ElementTemplate Context="movie">
+            <IndividualMovie Movie="movie" DeleteMovie="DeleteMovie" />
+        </ElementTemplate>
+    </GenericList>
+</div>
 
 <Confirmation @ref="confirmation" OnCancel="OnCancel" OnConfirm="OnConfirm">
     <div>Ви впевнені, що хочете видалити фільм: "@movieToBeDeleted.Title"?</div>
@@ -15,7 +15,6 @@
 
 @code {
     [Parameter] public List<Movie> Movies { get; set; }
-    bool displayButtons = true;
     Confirmation confirmation;
     Movie movieToBeDeleted;
 
