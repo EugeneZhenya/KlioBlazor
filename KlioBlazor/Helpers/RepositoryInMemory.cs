@@ -8,9 +8,9 @@ namespace KlioBlazor.Helpers
         {
             return new List<Movie>()
             {
-                new Movie() {Title = "Spider-Man: Far From Home", ReleaseDate = new DateTime(2023, 12, 11), Poster = "content/movies/1/background.jpg"},
-                new Movie() {Title = "Moana", ReleaseDate = new DateTime(2023, 12, 23), Poster = "content/movies/2/background.jpg"},
-                new Movie() {Title = "Inception", ReleaseDate = new DateTime(2013, 7, 16), Poster = "content/movies/3/background.jpg"}
+                new Movie() {Title = "Тарас Шевченко", ReleaseDate = new DateTime(2015, 3, 08), Poster = "content/movies/1/cover.jpg"},
+                new Movie() {Title = "Емма Андієвська: Зустріч у Львові 13 вересня", ReleaseDate = new DateTime(2013, 9, 13), Poster = "content/movies/2/cover.jpg"},
+                new Movie() {Title = "Battles and Brotherhood", ReleaseDate = new DateTime(2009, 8, 31), Poster = "content/movies/3/cover.jpg"}
             };
         }
     }

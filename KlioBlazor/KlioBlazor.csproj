@@ -21,8 +21,4 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\Content\Movies\1\" />
-  </ItemGroup>
-
 </Project>

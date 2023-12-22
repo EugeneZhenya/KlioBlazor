@@ -38,7 +38,7 @@
                                 @if (selProgrammes.Count > 0)
                                 {
                                     <span class="season">@StringUtilities.FirstCharToUpper(selProgrammes[0].Title.Text)</span>
-                                    <span class="video-count">В етері зараз</span>
+                                    <span class="video-count">@NowOrNot</span>
                                 }
                                 else
                                 {
@@ -123,6 +123,7 @@
     int curPercent = 0;
     string[] curTitle = [];
     string curDesc = string.Empty;
+    string NowOrNot = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
@@ -185,6 +186,15 @@
             var TotalSeconds = (selProgrammes[0].StopDatetIme - selProgrammes[0].StartDatetIme).TotalSeconds;
             var NowSeconds = (DateTime.Now - selProgrammes[0].StartDatetIme).TotalSeconds;
             curPercent = (int)Math.Round(NowSeconds / TotalSeconds * 100);
+            if (curPercent < 0)
+            {
+                curPercent = 0;
+                NowOrNot = "Незабаром";
+            }
+            else
+            {
+                NowOrNot = "В етері зараз";
+            }
         }
     }
 
