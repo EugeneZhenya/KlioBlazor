@@ -19,24 +19,34 @@
                         <div class="navbar-wrap main-menu d-none d-lg-flex">
                             <ul class="navigation">
                                 <li>
-                                    <NavLink class="nav-link" href="counter">Історія</NavLink>
+                                    <NavLink class="nav-link" href="history">Історія</NavLink>
                                 </li>
                                 <li>
-                                    <NavLink class="nav-link" href="weather">Література</NavLink>
+                                    <NavLink class="nav-link" href="literacy">Література</NavLink>
                                 </li>
-                                <li><a href="">Музика</a></li>
+                                <li>
+                                    <NavLink class="nav-link" href="music">Музика</NavLink>
+                                </li>
                                 <li class="menu-item-has-children">
-                                    <a href="">Фільми</a>
+                                    <NavLink class="nav-link" href="films" Match="NavLinkMatch.Prefix">Фільми</NavLink>
                                     <ul class="submenu">
-                                        <li><a href="">Фільми</a></li>
-                                        <li><a href="">Серіали</a></li>
+                                        <li>
+                                            <NavLink class="nav-link" href="films/movies">Фільми</NavLink>
+                                        </li>
+                                        <li>
+                                            <NavLink class="nav-link" href="films/serials">Серіали</NavLink>
+                                        </li>
                                     </ul>
                                 </li>
                                 <li class="menu-item-has-children">
-                                    <a href="">Мультфільми</a>
+                                    <NavLink class="nav-link" href="mults" Match="NavLinkMatch.Prefix">Мультфільми</NavLink>
                                     <ul class="submenu">
-                                        <li><a href="">Мультфільми</a></li>
-                                        <li><a href="">Мультсеріали</a></li>
+                                        <li>
+                                            <NavLink class="nav-link" href="mults/animation">Мультфільми</NavLink>
+                                        </li>
+                                        <li>
+                                            <NavLink class="nav-link" href="mults/series">Мультсеріали</NavLink>
+                                        </li>
                                     </ul>
                                 </li>
                             </ul>

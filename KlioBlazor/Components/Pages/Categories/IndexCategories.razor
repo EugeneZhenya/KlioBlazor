@@ -1,0 +1,13 @@
+﻿@page "/history"
+@page "/literacy"
+@page "/music"
+@page "/films"
+@page "/films/{CatName}"
+@page "/mults"
+@page "/mults/{CatName}"
+
+<h3>Index</h3>
+
+@code {
+    [Parameter] public string CatName { get; set; }
+}
