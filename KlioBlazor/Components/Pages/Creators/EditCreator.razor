@@ -1,5 +1,5 @@
-﻿@page "/creator/edit"
+﻿@page "/creator/edit/{CreatorId:int}"
 
 @code {
-
+    [Parameter] public int CreatorId { get; set; }
 }

@@ -41,6 +41,6 @@
 
     protected override void OnInitialized()
     {
-        movieUrl = $"movie/";
+        movieUrl = $"movie/{Movie.Id}/{StringUtilities.Translit(Movie.Title)}";
     }
 }

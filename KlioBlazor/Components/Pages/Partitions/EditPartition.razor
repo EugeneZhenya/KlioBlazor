@@ -1,7 +1,7 @@
-﻿@page "/partition/edit"
+﻿@page "/partition/edit/{PartitionId:int}"
 
 <h3>EditPartition</h3>
 
 @code {
-
+    [Parameter] public int PartitionId { get; set; }
 }

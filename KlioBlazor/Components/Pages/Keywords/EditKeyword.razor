@@ -1,7 +1,7 @@
-﻿@page "/keyword/edit"
+﻿@page "/keyword/edit/{KeywordString}"
 
 <h3>EditKeyword</h3>
 
 @code {
-
+    [Parameter] public string KeywordString { get; set; }
 }

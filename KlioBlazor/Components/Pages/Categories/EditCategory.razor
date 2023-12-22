@@ -1,7 +1,7 @@
-﻿@page "/category/edit"
+﻿@page "/category/edit/{CategoryId:int}"
 
 <h3>EditCategory</h3>
 
 @code {
-
+    [Parameter] public int CategoryId { get; set; }
 }

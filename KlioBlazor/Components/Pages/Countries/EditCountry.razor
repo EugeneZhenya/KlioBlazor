@@ -1,7 +1,7 @@
-﻿@page "/country/edit"
+﻿@page "/country/edit/{CountryId:int}"
 
 <h3>EditCountry</h3>
 
 @code {
-
+    [Parameter] public int CountryId { get; set; }
 }
