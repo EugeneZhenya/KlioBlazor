@@ -1,0 +1,38 @@
+﻿<HeadContent>
+    <meta name="description" content="@MetaData.Description" />
+    <meta name="keywords" content="@MetaData.Keywords" />
+    <meta name="author" content="@MetaData.Author" />
+    <meta name="robots" content="@MetaData.Robots" />
+    <meta itemprop="name" content="@MetaData.Title" />
+    <meta itemprop="description" content="@MetaData.Description" />
+    <meta itemprop="image" content="@MetaData.Image" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@MetaData.SiteName" />
+    <meta name="twitter:title" content="@MetaData.Title" />
+    <meta name="twitter:description" content="@MetaData.Description" />
+    <meta name="twitter:creator" content="@MetaData.Author" />
+    <meta name="twitter:image:src" content="@MetaData.Image" />
+    <meta name="twitter:domain" content="@MetaData.Url" />
+    <meta property="og:title" content="@MetaData.Title" />
+    <meta property="og:type" content="@MetaData.Type" />
+    <meta property="og:url" content="@MetaData.Url" />
+    <meta property="og:site_name" content="@MetaData.SiteName" />
+    <meta property="og:description" content="@MetaData.Description" />
+    <meta property="og:locale" content="@MetaData.Locale" />
+    <meta property="fb:admins" content="@MetaData.FBAdmins" />
+    <meta property="fb:app_id" content="@MetaData.FBAppId" />
+    <meta property="og:image" content="@MetaData.Image" />
+    <meta property="og:image:secure_url" content="@MetaData.SecureImage" />
+    <meta property="og:image:type" content="@MetaData.ImageType" />
+    <meta property="og:image:width" content="@MetaData.ImageWidth" />
+    <meta property="og:image:height" content="@MetaData.ImageHeight" />
+    <meta property="og:image" content="@MetaData.Image2" />
+    <meta property="og:image:secure_url" content="@MetaData.SecureImage2" />
+    <meta property="og:image:type" content="@MetaData.ImageType2" />
+    <meta property="og:image:width" content="@MetaData.ImageWidth2" />
+    <meta property="og:image:height" content="@MetaData.ImageHeight2" />
+</HeadContent>
+
+@code {
+    [Parameter] public OpenGraphModel MetaData { get; set; }
+}
