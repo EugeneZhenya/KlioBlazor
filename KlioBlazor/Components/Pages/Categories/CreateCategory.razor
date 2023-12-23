@@ -11,7 +11,8 @@
     </TitleContent>
     <ChildContent>
         <li class="breadcrumb-item"><a href="">Домівка</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Додати категорію</li>
+        <li class="breadcrumb-item"><a href="films">Категорії</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Додати</li>
     </ChildContent>
 </BreadcrumbArea>
 
@@ -25,17 +26,7 @@
                             <h5 class="title">Додати категорію</h5>
                         </div>
                         <div class="contact-form">
-                            <EditForm Model="category" OnValidSubmit="Create" FormName="CreateForm">
-                                <div class="row mb-2">
-                                    <DataAnnotationsValidator />
-                                    <ValidationSummary style="color: #fd0e30;" />
-                                </div>
-                                <div class="row">
-                                    <InputText placeholder="Назва *" @bind-Value="@category.Name" />
-                                    <InputTextArea placeholder="Опис..." @bind-Value="@category.Description" />
-                                    <button class="btn" type="submit">Зберегти</button>
-                                </div>
-                            </EditForm>
+                            <CategoryForm Category="category" OnValidSubmit="Create" />
                         </div>
                     </div>
                 </div>
@@ -75,6 +66,7 @@
 
     private void Create()
     {
+        Console.WriteLine("Create method");
         Console.WriteLine(category.Name);
         Console.WriteLine(category.Description);
     }
