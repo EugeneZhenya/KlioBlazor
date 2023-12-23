@@ -25,7 +25,11 @@
                             <h5 class="title">Додати категорію</h5>
                         </div>
                         <div class="contact-form">
-                            <EditForm Model="category" OnSubmit="Create">
+                            <EditForm Model="category" OnValidSubmit="Create" FormName="CreateForm">
+                                <div class="row mb-2">
+                                    <DataAnnotationsValidator />
+                                    <ValidationSummary style="color: #fd0e30;" />
+                                </div>
                                 <div class="row">
                                     <InputText placeholder="Назва *" @bind-Value="@category.Name" />
                                     <InputTextArea placeholder="Опис..." @bind-Value="@category.Description" />
