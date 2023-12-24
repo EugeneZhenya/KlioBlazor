@@ -1,0 +1,123 @@
+﻿@page "/movies/search"
+@attribute [StreamRendering]
+@inject NavigationManager NavManager
+@inject IRepository repository
+
+<PageTitle>@allMeta.Title</PageTitle>
+
+<MetaContent MetaData="allMeta" />
+
+<BreadcrumbArea>
+    <TitleContent>
+        <h2 class="title">Пошук <span>фільмів</span></h2>
+    </TitleContent>
+    <ChildContent>
+        <li class="breadcrumb-item"><a href="">Домівка</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Пошук</li>
+    </ChildContent>
+</BreadcrumbArea>
+
+<!-- contact-area -->
+<section class="contact-area contact-bg" style="background-image: url('img/contact_bg.jpg')">
+    <div class="container">
+        <div class="row">
+                <div class="col-xl-12 col-lg-11">
+                    <div class="contact-form-wrap">
+                        <div class="widget-title mb-50">
+                            <h5 class="title">Пошук фільмів</h5>
+                        </div>
+                        <div class="contact-form">
+                            <div class="col-md-12">
+                                <input type="text" placeholder="Назва фільму..." id="title" @bind-value="title" @bind-value:event="oninput"
+                                       @onkeypress="@((KeyboardEventArgs e) => TitleKeyPress(e))">
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <select @bind="selectedGenre">
+                                        <option value="0">
+                                            -- Виберіть жанр
+                                        </option>
+                                        @foreach (var genre in Genres)
+                                    {
+                                        <option value="@genre.Id">@genre.Name</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-6" style="text-align: end;">
+                                <button type="button" class="btn" @onclick="Clear">Очистити</button>
+                                <button type="button" class="btn" @onclick="SearchForMovies">Шукати</button>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</section>
+<!-- contact-area-end -->
+
+<UpComingMovieArea Movies="Movies" Title="@titleDiplay" Subtitle="Результати пошуку" NoRecords="Нічого не знайдено" />
+
+@code {
+    OpenGraphModel allMeta = new OpenGraphModel();
+    string title = "";
+    string titleDiplay = "";
+    string selectedGenre = "0";
+    private List<Genre> Genres = new List<Genre>()
+    {
+        new Genre() { Id = 1, Name = "Документальний"},
+        new Genre() { Id = 2, Name = "Дитячий"},
+    };
+    private List<Movie> Movies;
+
+    protected async override Task OnInitializedAsync()
+    {
+        allMeta.Title = "Пошук фільмів :: Український медійний архів 'KLIO'";
+        allMeta.Description = "Медійний архів 'KLIO': Музика, література, історія, фільми, мультфільми, серіали, мультсеріали, наживо, пряма трансляція, дивитися он-лайн";
+        allMeta.Robots = "all";
+        allMeta.Author = "Eugene Baklanov";
+        allMeta.Keywords = "Klio, архів, video, відео, історія, література, політика, музика, music, наживо, трансляція, пряма трансляція, дивитися он-лайн, фільм, серіал, сезон, епізод, мультфільм, мультсерал";
+        allMeta.Type = "article";
+        allMeta.Image = (NavManager.BaseUri + "img/WatchTVMockup.jpg").Replace("https://", "http://");
+        allMeta.SecureImage = (NavManager.BaseUri + "img/WatchTVMockup.jpg").Replace("http://", "https://");
+        allMeta.ImageWidth = 1920;
+        allMeta.ImageHeight = 1077;
+        allMeta.ImageType = "image/jpeg";
+        allMeta.Url = NavManager.Uri;
+        allMeta.SiteName = "Медійний архів 'KLIO'";
+        allMeta.Locale = "uk_UA";
+        allMeta.FBAdmins = "100007730161243,100002204709179";
+        allMeta.FBAppId = "885986785210347";
+        allMeta.Image2 = (NavManager.BaseUri + "img/logo_750_transp.png").Replace("https://", "http://");
+        allMeta.SecureImage2 = (NavManager.BaseUri + "img/logo_750_transp.png").Replace("http://", "https://");
+        allMeta.ImageWidth2 = 750;
+        allMeta.ImageHeight2 = 750;
+        allMeta.ImageType2 = "image/png";
+
+        Movies = repository.GetMovies();
+    }
+
+    private void TitleKeyPress(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            SearchForMovies();
+        }
+    }
+
+    private void SearchForMovies()
+    {
+        titleDiplay = title;
+        Movies = Movies.Where(x => x.Title.Contains(title)).ToList();
+        Console.WriteLine($"title: {title}");
+        Console.WriteLine($"selectedGenre: {selectedGenre}");
+    }
+
+    private void Clear()
+    {
+        Movies = repository.GetMovies();
+        title = "";
+        selectedGenre = "0";
+        titleDiplay = title;
+    }
+}

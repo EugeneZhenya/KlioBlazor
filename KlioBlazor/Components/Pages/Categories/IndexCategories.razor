@@ -1,10 +1,5 @@
-﻿@page "/history"
-@page "/literacy"
-@page "/music"
-@page "/films"
-@page "/films/{CatName}"
-@page "/mults"
-@page "/mults/{CatName}"
+﻿@page "/Home/{CatName}"
+@page "/Home/{CatName}/{CatSubName}"
 @inject NavigationManager NavManager
 
 <PageTitle>@allMeta.Title</PageTitle>
@@ -31,6 +26,7 @@
 
 @code {
     [Parameter] public string CatName { get; set; }
+    [Parameter] public string CatSubName { get; set; }
     OpenGraphModel allMeta = new OpenGraphModel();
 
     protected async override Task OnInitializedAsync()

@@ -1,4 +1,6 @@
-﻿<div class="footer-top-wrap">
+﻿@inject NavigationManager NavManager
+
+<div class="footer-top-wrap">
     <div class="container">
         <div class="footer-menu-wrap">
             <div class="row align-items-center">
@@ -13,21 +15,21 @@
                     <div class="footer-menu">
                         <nav>
                             <ul class="navigation">
-                                <li><NavLink class="nav-link" href="history">Історія</NavLink></li>
-                                <li><NavLink class="nav-link" href="literacy">Література</NavLink></li>
-                                <li> <NavLink class="nav-link" href="music">Музика</NavLink></li>
-                                <li><NavLink class="nav-link" href="films/movies">Фільми</NavLink></li>
-                                <li><NavLink class="nav-link" href="films/serials">Серіали</NavLink></li>
-                                <li><NavLink class="nav-link" href="mults/animation">Мультфільми</NavLink></li>
-                                <li><NavLink class="nav-link" href="mults/series">Мультсеріали</NavLink></li>
+                                <li><NavLink class="nav-link" href="Home/history">Історія</NavLink></li>
+                                <li><NavLink class="nav-link" href="Home/literacy">Література</NavLink></li>
+                                <li><NavLink class="nav-link" href="Home/music">Музика</NavLink></li>
+                                <li><NavLink class="nav-link" href="Home/films/movies">Фільми</NavLink></li>
+                                <li><NavLink class="nav-link" href="Home/films/serials">Серіали</NavLink></li>
+                                <li><NavLink class="nav-link" href="Home/mults/animation">Мультфільми</NavLink></li>
+                                <li><NavLink class="nav-link" href="Home/mults/series">Мультсеріали</NavLink></li>
                             </ul>
                             <div class="footer-search">
-                                <form action="#">
+                                <div>
                                     <input type="text" placeholder="Знайти фільм" />
-                                    <button>
+                                    <button @onclick="SearchMovie">
                                         <i class="fa-solid fa-magnifying-glass"></i>
                                     </button>
-                                </form>
+                                </div>
                             </div>
                         </nav>
                     </div>
@@ -45,10 +47,10 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="col-md-1" style="text-align: center;">
+                    <div class="col-md-2" style="text-align: center;">
                         <a href="" class="btn">Допомогти</a>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="footer-social">
                             <ul>
                                 <li><a href="#"><i class="fa-brands fa-facebook-f"></i></a></li>
@@ -81,5 +83,8 @@
 </div>
 
 @code {
-
+    private void SearchMovie()
+    {
+        NavManager.NavigateTo("movies/search");
+    }
 }

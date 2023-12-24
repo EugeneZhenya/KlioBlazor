@@ -5,8 +5,8 @@
             <div class="row align-items-end mb-55">
                 <div class="col-lg-6">
                     <div class="section-title text-center text-lg-start title-style-two">
-                        <span class="sub-title">Дивіться зараз</span>
-                        <h2 class="title">Найпопулярніші фільми</h2>
+                        <span class="sub-title">@Subtitle</span>
+                        <h2 class="title">@Title</h2>
                     </div>
                 </div>
                 <!--
@@ -36,7 +36,7 @@
             </div>
             <div class="tab-content">
                 <div class="tab-pane fade show active">
-                    <MoviesList Movies="Movies" />
+                    <MoviesList Movies="Movies" NoRecords="@NoRecords" />
                 </div>
             </div>
         </div>
@@ -45,5 +45,8 @@
 <!-- up-coming-movie-area-end -->
 
 @code {
+    [Parameter] public string Title { get; set; }
+    [Parameter] public string Subtitle { get; set; }
+    [Parameter] public String NoRecords { get; set; } = "Розділ не має записів.";
     [Parameter] public List<Movie> Movies { get; set; }
 }

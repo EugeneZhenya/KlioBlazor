@@ -28,7 +28,7 @@ else if (List.Count == 0)
     else
     {
         // Default Content
-        <text>Розділ не має записів.</text>
+        <text>@NoRecords</text>
     }
 }
 else
@@ -44,5 +44,6 @@ else
     [Parameter] public RenderFragment EmptyTemplate { get; set; }
     [Parameter] public RenderFragment<TItem> ElementTemplate { get; set; }
     [Parameter] public List<TItem> List { get; set; }
+    [Parameter] public String NoRecords { get; set; } = "Розділ не має записів.";
 
 }

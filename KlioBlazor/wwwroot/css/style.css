@@ -3168,7 +3168,8 @@ label {
 }
 
     .contact-form input,
-    .contact-form textarea {
+    .contact-form textarea,
+    .contact-form select {
         width: 100%;
         border: 1px solid #1f1e24;
         background: #1f1e24;
@@ -3192,7 +3193,8 @@ label {
     }
 
         .contact-form input:focus,
-        .contact-form textarea:focus {
+        .contact-form textarea:focus,
+        .contact-form select:focus {
             border-color: #fd0e30;
         }
 
@@ -3293,13 +3295,13 @@ label {
                 line-height: 1;
             }
 
-.footer-search form {
+.footer-search div {
     min-width: 285px;
     position: relative;
     margin-left: 30px;
 }
 
-    .footer-search form input {
+    .footer-search div input {
         width: 100%;
         border: none;
         background: #12151e;
@@ -3311,13 +3313,13 @@ label {
         box-shadow: inset 0px 4px 9px 0px rgba(0, 0, 0, 0.25);
     }
 
-        .footer-search form input::placeholder {
+        .footer-search div input::placeholder {
             color: #656870;
             font-weight: 500;
             font-size: 12px;
         }
 
-    .footer-search form button {
+    .footer-search div button {
         position: absolute;
         right: 20px;
         top: 50%;
@@ -3329,7 +3331,7 @@ label {
         padding: 0;
     }
 
-        .footer-search form button::before {
+        .footer-search div button::before {
             content: "|";
             position: absolute;
             left: -15px;
