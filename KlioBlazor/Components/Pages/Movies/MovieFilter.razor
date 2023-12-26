@@ -38,15 +38,15 @@
                                             -- Виберіть жанр
                                         </option>
                                         @foreach (var genre in Genres)
-                                    {
-                                        <option value="@genre.Id">@genre.Name</option>
-                                    }
+                                        {
+                                            <option value="@genre.Id">@genre.Name</option>
+                                        }
                                 </select>
-                            </div>
-                            <div class="col-md-6" style="text-align: end;">
-                                <button type="button" class="btn" @onclick="Clear">Очистити</button>
-                                <button type="button" class="btn" @onclick="SearchForMovies">Шукати</button>
-                            </div>
+                                </div>
+                                <div class="col-md-6" style="text-align: end;">
+                                    <button type="button" class="btn" @onclick="Clear">Очистити</button>
+                                    <button type="button" class="btn" @onclick="SearchForMovies">Шукати</button>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -1,0 +1,36 @@
+﻿<EditForm Model="Person" OnValidSubmit="OnValidSubmit" FormName="PersonForm">
+    <div class="row mb-2">
+        <DataAnnotationsValidator />
+        <ValidationSummary style="color: #fd0e30;" />
+    </div>
+    <div class="row">
+        <InputText placeholder="Ім'я *" @bind-Value="@Person.Name" />
+        <div class="row">
+            <div class="col-md-5">
+                <label style="width: 100%">Дата народження</label>
+                <InputDate placeholder="Дата народження" @bind-Value="@Person.DateOfBirth" style="width: 70%" />
+                <input type="checkbox" @bind="@Person.DateOfBirthExact" style="width: auto" />
+                <label>Достеменна</label>
+            </div>
+            <div class="col-md-5">
+                <label style="width: 100%">Дата смерті</label>
+                <InputDate placeholder="Дата смерті" @bind-Value="@Person.DateOfDeath" style="width: 70%" />
+                <input type="checkbox" @bind="@Person.DateOfDeathExact" style="width: auto" />
+                <label>Достеменна</label>
+            </div>
+            <div class="col-md-2 d-flex align-items-center justify-content-center">
+                <div style="display: inline-block">
+                    <input type="checkbox" @bind="@Person.IsFemale" style="width: auto" />
+                    <label>Жінка</label>
+                </div>
+            </div>
+        </div>
+        <InputTextArea placeholder="Коротка біографія..." @bind-Value="@Person.Biography" />
+        <button class="btn" type="submit">Зберегти</button>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter] public Person Person { get; set; }
+    [Parameter] public EventCallback OnValidSubmit { get; set; }
+}
