@@ -3517,3 +3517,25 @@ label {
     height: 5px;
     transition: all .3s ease;
 }
+
+input::file-selector-button {
+    background: #12151e none repeat scroll 0 0;
+    border: 2px solid #fd0e30;
+    border-radius: 50px;
+    color: #e3dfdf;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    line-height: 1.5;
+    margin-bottom: 0;
+    padding: 8px 16px;
+    text-align: center;
+    text-transform: uppercase;
+    touch-action: manipulation;
+    transition: all 0.3s ease 0s;
+    vertical-align: middle;
+    white-space: nowrap;
+    max-width: 200px;
+}

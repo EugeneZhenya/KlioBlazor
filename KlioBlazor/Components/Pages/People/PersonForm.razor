@@ -26,6 +26,7 @@
             </div>
         </div>
         <InputTextArea placeholder="Коротка біографія..." @bind-Value="@Person.Biography" />
+        <InputImg OnSelectedImage="OnSelectedImage" ImageURL="@imageUrl" />
         <button class="btn" type="submit">Зберегти</button>
     </div>
 </EditForm>
@@ -33,4 +34,20 @@
 @code {
     [Parameter] public Person Person { get; set; }
     [Parameter] public EventCallback OnValidSubmit { get; set; }
+    string imageUrl;
+
+    protected override void OnInitialized()
+    {
+        if (!string.IsNullOrEmpty(Person.Picture))
+        {
+            imageUrl = Person.Picture;
+            Person.Picture = null;
+        }
+    }
+
+    private void OnSelectedImage(string imageBase64)
+    {
+        Person.Picture = imageBase64;
+        imageUrl = null;
+    }
 }
