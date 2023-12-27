@@ -14,6 +14,7 @@
   <ItemGroup>
     <ProjectReference Include="..\KlioBlazor.Client\KlioBlazor.Client.csproj" />
     <ProjectReference Include="..\KlioBlazor.Shared\KlioBlazor.Shared.csproj" />
+    <PackageReference Include="Markdig" Version="0.34.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.0" />

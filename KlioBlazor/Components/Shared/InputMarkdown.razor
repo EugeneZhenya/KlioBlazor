@@ -1,0 +1,19 @@
+﻿@using System.Linq.Expressions
+@inherits InputTextArea
+@typeparam TValue
+
+<div class="row" style="margin-bottom: 30px;">
+    <div class="col-md-6">
+        <InputTextArea placeholder="@Placeholder" @bind-Value="CurrentValue" style="resize: none; margin-bottom: 0;" />
+        <ValidationMessage For="For" />
+        <a href="https://www.markdownguide.org/basic-syntax/" target="_blank">Базовий синтаксис</a>
+    </div>
+    <div class="col-md-6 markdown-container" style="min-height: 155px; max-height: 155px;">
+        <RenderMarkdown MarkdownContent="@CurrentValue" />
+    </div>
+</div>
+
+@code {
+    [Parameter] public Expression<Func<TValue>> For { get; set; }
+    [Parameter] public string Placeholder { get; set; }
+}

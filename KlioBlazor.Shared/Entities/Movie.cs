@@ -2,10 +2,17 @@
 {
     public class Movie
     {
-        public int Id { get; set; } = 1;
+        public int Id { get; set; }
         public string Title { get; set; }
-        public DateTime ReleaseDate { get; set; }
+        public string Summary { get; set; }
         public string Poster { get; set; }
+        public DateTime ReleaseDate { get; set; }
+        public DateTime ReleaseDateExact { get; set; }
+        public DateTime PublicDate { get; set; }
+        public bool HasTrailer { get; set; }
+        public int AgeLimit { get; set; }
+        public int Duration { get; set; }
+        public int ViewCounter { get; set; }
         public string TitleBrief
         {
             get
