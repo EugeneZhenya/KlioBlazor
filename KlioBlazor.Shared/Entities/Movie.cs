@@ -5,12 +5,12 @@ namespace KlioBlazor.Shared.Entities
     public class Movie
     {
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Поле \"Назва\" не може бути порожнім.")]
         public string Title { get; set; }
         public string Summary { get; set; }
         public string Poster { get; set; }
         public string Background { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Поле \"Дата виходу\" не може бути порожнім.")]
         public DateTime? ReleaseDate { get; set; }
         public bool ReleaseDateExact { get; set; }
         [Required]
@@ -19,6 +19,7 @@ namespace KlioBlazor.Shared.Entities
         public int AgeLimit { get; set; }
         public int Duration { get; set; }
         public int ViewCounter { get; set; }
+        public List<MoviesGenres> MoviesGenres { get; set; } = new List<MoviesGenres>();
         public string TitleBrief
         {
             get

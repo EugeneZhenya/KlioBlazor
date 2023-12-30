@@ -28,7 +28,7 @@
                         <div class="contact-form">
                             @if (Movie != null)
                             {
-                                <MovieForm Movie="Movie" OnValidSubmit="Edit" />
+                                <MovieForm Movie="Movie" OnValidSubmit="Edit" NotSelectedGenres="NotSelectedGenres" SelectedGenres="SelectedGenres" />
                             }
                         </div>
                     </div>
@@ -39,10 +39,20 @@
 <!-- contact-area-end -->
 
 
-    @code {
+@code {
     [Parameter] public int MovieId { get; set; }
     OpenGraphModel allMeta = new OpenGraphModel();
     private Movie Movie;
+    private List<Genre> NotSelectedGenres = new List<Genre>()
+    {
+        new Genre() {Id = 1, Name = "Бойовик"},
+        new Genre() {Id = 1, Name = "Комедія"},
+        new Genre() {Id = 1, Name = "Драма"}
+    };
+    private List<Genre> SelectedGenres = new List<Genre>()
+    {
+        new Genre() {Id = 1, Name = "Бойовик"}
+    };
 
     protected async override Task OnInitializedAsync()
     {

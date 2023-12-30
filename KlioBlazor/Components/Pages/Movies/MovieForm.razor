@@ -28,6 +28,11 @@
             </div>
         </div>
         <InputMarkdown @bind-Value="Movie.Summary" Placeholder="Короткий опис..." For="@(() => Movie.Summary)" />
+        <div class="row">
+            <div class="col-md-12">
+                <MultipleSelector Selected="genresSelected" NoSelected="genresNotSelected" />
+            </div>
+        </div>
     </div>
     <button class="btn" type="submit">Зберегти</button>
 </EditForm>
@@ -35,11 +40,18 @@
 @code {
     [Parameter] public Movie Movie { get; set; }
     [Parameter] public EventCallback OnValidSubmit { get; set; }
+    [Parameter] public List<Genre> SelectedGenres { get; set; } = new List<Genre>();
+    [Parameter] public List<Genre> NotSelectedGenres { get; set; } = new List<Genre>();
+    private List<MultipleSelectorModel> genresSelected = new List<MultipleSelectorModel>();
+    private List<MultipleSelectorModel> genresNotSelected = new List<MultipleSelectorModel>();
     private string coverUrl;
     private string backUrl;
 
     protected override void OnInitialized()
     {
+        genresSelected = SelectedGenres.Select(x => new MultipleSelectorModel(x.Id.ToString(), x.Name)).ToList();
+        genresNotSelected = NotSelectedGenres.Select(x => new MultipleSelectorModel(x.Id.ToString(), x.Name)).ToList();
+
         if (!string.IsNullOrEmpty(Movie.Poster))
         {
             coverUrl = Movie.Poster;
