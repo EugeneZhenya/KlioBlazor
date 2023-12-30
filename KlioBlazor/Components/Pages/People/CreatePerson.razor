@@ -35,9 +35,9 @@
 </section>
 <!-- contact-area-end -->
 
-@code {
+    @code {
     OpenGraphModel allMeta = new OpenGraphModel();
-    Person person = new Person();
+    Person person = new Person() { Picture = "/Content/People/male.png" };
 
     protected async override Task OnInitializedAsync()
     {

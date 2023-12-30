@@ -25,9 +25,8 @@
                 </div>
             </div>
         </div>
-        <!-- <InputTextArea placeholder="Коротка біографія..." @bind-Value="@Person.Biography" /> -->
         <InputMarkdown @bind-Value="Person.Biography" Placeholder="Коротка біографія..." For="@(() => Person.Biography)" />
-        <InputImg OnSelectedImage="OnSelectedImage" ImageURL="@imageUrl" />
+        <InputImg OnSelectedImage="OnSelectedImage" ImageURL="@imageUrl" IsPortrait="true" />
         <button class="btn" type="submit">Зберегти</button>
     </div>
 </EditForm>

@@ -3,14 +3,14 @@
         <label>@Label</label>
         <InputFile accept=".jpg,.jpeg,.png" OnChange="OnChange" placeholder="@Label" />
     </div>
-    <div class="col-md-6" style="text-align: center; height: 400px; min-height: 400px; max-height: 400px;">
+    <div class="col-md-6 mb-4" style="@style1">
         @if (imageBase64 != null)
         {
-            <img src="data:image/jpeg;base64, @imageBase64" style="width: 320px; height: 400px; min-width: 320px; min-height: 400px; max-width: 320px; max-height: 400px;" />
+            <img src="data:image/jpeg;base64, @imageBase64" style="@style2" alt="@Label" />
         }
         @if (ImageURL != null)
         {
-            <img src="@ImageURL" style="width: 320px; height: 400px; min-width: 320px; min-height: 400px; max-width: 320px; max-height: 400px;" />
+            <img src="@ImageURL" style="@style2" alt="@Label" />
         }
     </div>
 </div>
@@ -19,7 +19,23 @@
     [Parameter] public string Label { get; set; } = "Світлина";
     [Parameter] public EventCallback<string> OnSelectedImage { get; set; }
     [Parameter] public string ImageURL { get; set; }
+    [Parameter] public bool IsPortrait { get; set; } = false;
     private string imageBase64;
+    private string style1 = "";
+    private string style2 = "";
+
+    protected override void OnInitialized()
+    {
+        if (IsPortrait)
+        {
+            style1 = "text-align: center; height: 400px; min-height: 400px; max-height: 400px;";
+            style2 = "width: 320px; min-width: 320px; max-width: 320px; height: 400px; min-height: 400px; max-height: 400px;";
+        }
+        else
+        {
+            style2 = "width: 100%;";
+        }
+    }
 
     async Task OnChange(InputFileChangeEventArgs e)
     {
@@ -27,12 +43,22 @@
 
         foreach (var imageFile in imagesFiles)
         {
-            var buffer = new byte[imageFile.Size];
-            await imageFile.OpenReadStream().ReadAsync(buffer);
-            imageBase64 = Convert.ToBase64String(buffer);
+            await using MemoryStream fs = new MemoryStream();
+            await imageFile.OpenReadStream(maxAllowedSize: 1048576).CopyToAsync(fs);
+            byte[] buffer = GetBytes(fs);
+            imageBase64 = Convert.ToBase64String(buffer, 0, buffer.Length);
             await OnSelectedImage.InvokeAsync(imageBase64);
             ImageURL = null;
             StateHasChanged();
         }
+    }
+
+    public static byte[] GetBytes(Stream stream)
+    {
+        var bytes = new byte[stream.Length];
+        stream.Seek(0, SeekOrigin.Begin);
+        stream.ReadAsync(bytes, 0, bytes.Length);
+        stream.Dispose();
+        return bytes;
     }
 }

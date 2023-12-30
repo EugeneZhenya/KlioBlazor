@@ -1,4 +1,5 @@
-﻿@page "/movies/create"
+﻿@page "/Home/movies"
+@page "/movies"
 @inject NavigationManager NavManager
 
 <PageTitle>@allMeta.Title</PageTitle>
@@ -7,12 +8,11 @@
 
 <BreadcrumbArea>
     <TitleContent>
-        <h2 class="title">Додати <span>відео</span></h2>
+        <h2 class="title">Список <span>відео</span></h2>
     </TitleContent>
     <ChildContent>
         <li class="breadcrumb-item"><a href="">Домівка</a></li>
-        <li class="breadcrumb-item"><a href="Home/movies">Відео</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Додати відео</li>
+        <li class="breadcrumb-item active" aria-current="page">Відео</li>
     </ChildContent>
 </BreadcrumbArea>
 
@@ -23,10 +23,10 @@
                 <div class="col-xl-12 col-lg-11">
                     <div class="contact-form-wrap">
                         <div class="widget-title mb-50">
-                            <h5 class="title">Додати відео</h5>
+                            <h5 class="title">Список відео</h5>
                         </div>
                         <div class="contact-form">
-                            <MovieForm Movie="Movie" OnValidSubmit="SaveMovie" />
+                            <a class="btn" href="movies/create">Додати</a>
                         </div>
                     </div>
                 </div>
@@ -35,13 +35,12 @@
     </section>
 <!-- contact-area-end -->
 
-    @code {
+@code {
     OpenGraphModel allMeta = new OpenGraphModel();
-    private Movie Movie = new Movie();
 
     protected async override Task OnInitializedAsync()
     {
-        allMeta.Title = "Додати відео :: Український медійний архів 'KLIO'";
+        allMeta.Title = "Список відео :: Український медійний архів 'KLIO'";
         allMeta.Description = "Медійний архів 'KLIO': Музика, література, історія, фільми, мультфільми, серіали, мультсеріали, наживо, пряма трансляція, дивитися он-лайн";
         allMeta.Robots = "all";
         allMeta.Author = "Eugene Baklanov";
@@ -62,14 +61,5 @@
         allMeta.ImageWidth2 = 750;
         allMeta.ImageHeight2 = 750;
         allMeta.ImageType2 = "image/png";
-    }
-
-    private void SaveMovie()
-    {
-        Movie.PublicDate = DateTime.Now;
-
-        // Saving movie...
-        Console.WriteLine("this is works...");
-        // NavManager.NavigateTo("movie");
     }
 }

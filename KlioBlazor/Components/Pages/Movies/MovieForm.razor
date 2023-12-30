@@ -9,7 +9,7 @@
             <div class="col-md-6">
                 <label style="width: 100%">Дата виходу</label>
                 <InputDate @bind-Value="@Movie.ReleaseDate" style="width: 70%" />
-                <InputCheckbox @bind="@Movie.ReleaseDateExact" style="width: auto" />
+                <InputCheckbox @bind-Value="@Movie.ReleaseDateExact" style="width: auto" />
                 <label>Достеменна</label>
             </div>
             <div class="col-md-6 d-flex align-items-center justify-content-center">
@@ -19,19 +19,49 @@
                 </div>
             </div>
         </div>
-        <InputTextArea placeholder="Короткий опис..." @bind-Value="@Movie.Summary" />
         <div class="row">
             <div class="col-md-6">
-                <!-- <InputImg OnSelectedImage="OnSelectedCover" ImageURL="@coverUrl" Label="Обкладинка" /> -->
+                <InputImg OnSelectedImage="OnSelectedCover" ImageURL="@coverUrl" Label="Обкладинка" />
             </div>
-            <div class="col-md-6 d-flex align-items-center justify-content-center">
-                <!-- <InputImg OnSelectedImage="OnSelectedBackground" ImageURL="@backUrl" Label="Тло" /> -->
+            <div class="col-md-6">
+                <InputImg OnSelectedImage="OnSelectedBackground" ImageURL="@backUrl" Label="Тло" />
             </div>
         </div>
+        <InputMarkdown @bind-Value="Movie.Summary" Placeholder="Короткий опис..." For="@(() => Movie.Summary)" />
     </div>
+    <button class="btn" type="submit">Зберегти</button>
 </EditForm>
 
 @code {
     [Parameter] public Movie Movie { get; set; }
     [Parameter] public EventCallback OnValidSubmit { get; set; }
+    private string coverUrl;
+    private string backUrl;
+
+    protected override void OnInitialized()
+    {
+        if (!string.IsNullOrEmpty(Movie.Poster))
+        {
+            coverUrl = Movie.Poster;
+            Movie.Poster = null;
+        }
+
+        if (!string.IsNullOrEmpty(Movie.Background))
+        {
+            backUrl = Movie.Background;
+            Movie.Background = null;
+        }
+    }
+
+    private void OnSelectedCover(string imageBase64)
+    {
+        Movie.Poster = imageBase64;
+        coverUrl = null;
+    }
+
+    private void OnSelectedBackground(string imageBase64)
+    {
+        Movie.Background = imageBase64;
+        backUrl = null;
+    }
 }
