@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace KlioBlazor.Shared.Entities
 {
@@ -8,7 +9,9 @@ namespace KlioBlazor.Shared.Entities
         [Required(ErrorMessage = "Поле \"Назва\" не може бути порожнім.")]
         public string Title { get; set; }
         public string Summary { get; set; }
+        [NotMapped]
         public string Poster { get; set; }
+        [NotMapped]
         public string Background { get; set; }
         [Required(ErrorMessage = "Поле \"Дата виходу\" не може бути порожнім.")]
         public DateTime? ReleaseDate { get; set; }
@@ -19,7 +22,13 @@ namespace KlioBlazor.Shared.Entities
         public int AgeLimit { get; set; }
         public int Duration { get; set; }
         public int ViewCounter { get; set; }
+        public int PatitionId { get; set; }
+        public Partition Partition { get; set; } = null!;
         public List<MoviesGenres> MoviesGenres { get; set; } = new List<MoviesGenres>();
+        public List<MoviesCountries> MoviesCountries { get; set; } = new List<MoviesCountries>();
+        public List<MoviesCreators> MoviesCreators { get; set; } = new List<MoviesCreators>();
+        public List<MoviesKeywords> MoviesKeywords { get; set; } = new List<MoviesKeywords>();
+        public List<MovieInfo> MovieInfos { get; set; } = new List<MovieInfo>();
         public string TitleBrief
         {
             get

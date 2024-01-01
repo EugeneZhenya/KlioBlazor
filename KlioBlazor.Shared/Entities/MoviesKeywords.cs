@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace KlioBlazor.Shared.Entities
 {
-    public class MoviesGenres
+    public class MoviesKeywords
     {
         public int MovieId { get; set; }
-        public int GenreId { get; set; }
+        public int KeywordId { get; set; }
         public Movie Movie { get; set; }
-        public Genre Genre { get; set; }
+        public Keyword Keyword { get; set; }
         public int Order { get; set; }
     }
 }
