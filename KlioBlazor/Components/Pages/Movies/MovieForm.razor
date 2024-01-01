@@ -33,6 +33,20 @@
                 <MultipleSelector Selected="genresSelected" NoSelected="genresNotSelected" />
             </div>
         </div>
+        <div class="row">
+            <label>Знімальна група:</label>
+            <div class="col-md-12">
+                <MultipleSelectorTypeahead Context="person" SearchMethod="SearchMethod" SelectedElements="SelectedActors">
+                    <MyResultTemplate>
+                        <img style="width: 50px;" src="@person.Picture" />
+                        @person.Name
+                    </MyResultTemplate>
+                    <MyListTemplate>
+                        @person.Name
+                    </MyListTemplate>
+                </MultipleSelectorTypeahead>
+            </div>
+        </div>
     </div>
     <button class="btn" type="submit">Зберегти</button>
 </EditForm>
@@ -42,6 +56,7 @@
     [Parameter] public EventCallback OnValidSubmit { get; set; }
     [Parameter] public List<Genre> SelectedGenres { get; set; } = new List<Genre>();
     [Parameter] public List<Genre> NotSelectedGenres { get; set; } = new List<Genre>();
+    [Parameter] public List<Person> SelectedActors { get; set; } = new List<Person>();
     private List<MultipleSelectorModel> genresSelected = new List<MultipleSelectorModel>();
     private List<MultipleSelectorModel> genresNotSelected = new List<MultipleSelectorModel>();
     private string coverUrl;
@@ -75,5 +90,14 @@
     {
         Movie.Background = imageBase64;
         backUrl = null;
+    }
+
+    private async Task<IEnumerable<Person>> SearchMethod(string searchText)
+    {
+        return new List<Person>()
+        { 
+            new Person() { Id = 1, Name = "Ірина Фаріон", Picture = "/Content/People/Iryna_Farion.png" },
+            new Person() { Id = 2, Name = "Євген Бакланов", Picture = "/Content/People/male.png" }
+        };
     }
 }
