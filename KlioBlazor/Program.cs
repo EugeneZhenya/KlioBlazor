@@ -26,6 +26,7 @@ builder.Services.AddTransient<IRepository, RepositoryInMemory>();
 builder.Services.AddHttpClient<HttpService>();
 builder.Services.AddScoped<IHttpService, HttpService>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<IPersonRepository, PersonRepository>();
 
 builder.Services.AddAuthentication(options =>
     {

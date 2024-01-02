@@ -1,4 +1,5 @@
 ﻿@page "/person/create"
+@inject IPersonRepository personRepository
 @inject NavigationManager NavManager
 
 <PageTitle>@allMeta.Title</PageTitle>
@@ -64,8 +65,16 @@
         allMeta.ImageType2 = "image/png";
     }
 
-    private void Create()
+    private async Task Create()
     {
-        Console.WriteLine("creating person...");
+        try
+        {
+            await personRepository.CreatePerson(person);
+            NavManager.NavigateTo("people");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
     }
 }
