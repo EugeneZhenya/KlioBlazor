@@ -4,6 +4,7 @@ using KlioBlazor.Components;
 using KlioBlazor.Components.Account;
 using KlioBlazor.Data;
 using KlioBlazor.Helpers;
+using KlioBlazor.Repository;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +23,9 @@ builder.Services.AddScoped<IdentityRedirectManager>();
 builder.Services.AddScoped<AuthenticationStateProvider, PersistingRevalidatingAuthenticationStateProvider>();
 
 builder.Services.AddTransient<IRepository, RepositoryInMemory>();
+builder.Services.AddHttpClient<HttpService>();
+builder.Services.AddScoped<IHttpService, HttpService>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 
 builder.Services.AddAuthentication(options =>
     {
@@ -41,6 +45,8 @@ builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.Requ
     .AddDefaultTokenProviders();
 
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
+
+builder.Services.AddControllers();
 
 var app = builder.Build();
 
@@ -74,5 +80,7 @@ app.MapAdditionalIdentityEndpoints();
 var cultureInfo = new CultureInfo("uk-UA");
 CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
 CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
+
+app.MapControllers();
 
 app.Run();

@@ -1,4 +1,5 @@
 ﻿@page "/category/create"
+@inject ICategoryRepository categoryrepository
 @inject NavigationManager NavManager
 
 <PageTitle>@allMeta.Title</PageTitle>
@@ -35,7 +36,7 @@
 </section>
 <!-- contact-area-end -->
 
- @code {
+    @code {
     OpenGraphModel allMeta = new OpenGraphModel();
     private Category category = new Category();
 
@@ -64,10 +65,21 @@
         allMeta.ImageType2 = "image/png";
     }
 
-    private void Create()
+    private async Task Create()
     {
         Console.WriteLine("Create method");
         Console.WriteLine(category.Name);
         Console.WriteLine(category.Description);
+
+        try
+        {
+            await categoryrepository.CreateCategory(category);
+            NavManager.NavigateTo("Home/films");
+        }
+        catch (Exception ex)
+        {
+            // ...
+            Console.WriteLine(ex.Message);
+        }
     }
 }
