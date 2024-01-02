@@ -22,9 +22,11 @@ builder.Services.AddScoped<IdentityUserAccessor>();
 builder.Services.AddScoped<IdentityRedirectManager>();
 builder.Services.AddScoped<AuthenticationStateProvider, PersistingRevalidatingAuthenticationStateProvider>();
 
-builder.Services.AddTransient<IRepository, RepositoryInMemory>();
 builder.Services.AddHttpClient<HttpService>();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddTransient<IRepository, RepositoryInMemory>();
 builder.Services.AddScoped<IHttpService, HttpService>();
+builder.Services.AddScoped<IFileStorageService, InAppStorageService>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IPersonRepository, PersonRepository>();
 
