@@ -1,0 +1,55 @@
+﻿<EditForm Model="Creator" OnValidSubmit="OnValidSubmit" FormName="CreatorForm">
+    <div class="row mb-2">
+        <DataAnnotationsValidator />
+        <ValidationSummary style="color: #fd0e30;" />
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <InputText placeholder="Назва *" @bind-Value="@Creator.Title" />
+        </div>
+        <div class="col-md-6">
+            <InputImg OnSelectedImage="OnSelectedLogo" ImageURL="@logoUrl" Label="Логотип" />
+        </div>
+        <InputMarkdown @bind-Value="Creator.Description" Placeholder="Опис..." For="@(() => Creator.Description)" />
+        <div class="row">
+            <div class="col-md-4">
+                <select id="countrySelect" class="form-control" @bind="Creator.CountryId">
+                    <option selected value="0">-- Країна</option>
+                    @foreach (var country in CountryList)
+                    {
+                        <option value="@country.Id">@country.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-4">
+                <InputText placeholder="Адреса" @bind-Value="@Creator.Location" />
+            </div>
+            <div class="col-md-4">
+                <InputText placeholder="Веб-сайт" @bind-Value="@Creator.HomeUrl" />
+            </div>
+        </div>
+        <button class="btn" type="submit">Зберегти</button>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter] public Creator Creator { get; set; }
+    [Parameter] public List<Country> CountryList { get; set; }
+    [Parameter] public EventCallback OnValidSubmit { get; set; }
+    private string logoUrl;
+
+    protected override void OnInitialized()
+    {
+        if (!string.IsNullOrEmpty(Creator.Logo))
+        {
+            logoUrl = Creator.Logo;
+            Creator.Logo = null;
+        }
+    }
+
+    private void OnSelectedLogo(string imageBase64)
+    {
+        Creator.Logo = imageBase64;
+        logoUrl = null;
+    }
+}

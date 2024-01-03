@@ -12,7 +12,7 @@
             <label style="width: 100%">День незалежности</label>
             <InputDate @bind-Value="@Country.IndependenceDay" />
         </div>
-        <InputTextArea placeholder="Опис..." @bind-Value="@Country.Description" />
+        <InputMarkdown @bind-Value="Country.Description" Placeholder="Опис..." For="@(() => Country.Description)" />
         <div class="row">
             <div class="col-md-4">
                 <InputImg OnSelectedImage="OnSelectedFlag" ImageURL="@flagUrl" Label="Прапор" />

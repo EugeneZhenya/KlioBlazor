@@ -72,12 +72,15 @@
                                                             <i class="fa-regular fa-clock"></i> @GetDuration(prog.StartDatetIme, prog.StopDatetIme) хв
                                                         </span>
                                                     </li>
-                                                    @if (prog == selProgrammes[4])
+                                                    @if (selProgrammes.Count > 4)
                                                     {
-                                                        break;
+                                                        @if (prog == selProgrammes[4])
+                                                        {
+                                                            break;
+                                                        }
                                                     }
                                                 }
-                                                catch (Exception)
+                                                catch (Exception ex)
                                                 {
                                                     break;
                                                 }
