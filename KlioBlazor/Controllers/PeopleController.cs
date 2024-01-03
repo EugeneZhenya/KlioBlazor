@@ -22,8 +22,8 @@ namespace KlioBlazor.Controllers
         [HttpPost]
         public async Task<ActionResult<int>> Post(Person person)
         {
-            // context.Add(person);
-            // await context.SaveChangesAsync();
+            context.Add(person);
+            await context.SaveChangesAsync();
 
             if (!string.IsNullOrWhiteSpace(person.Picture))
             {

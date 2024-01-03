@@ -1,12 +1,14 @@
-﻿<div class="row">
+﻿@using System.Text
+
+<div class="row">
     <div class="col-md-6">
         <label>@Label</label>
-        <InputFile accept=".jpg,.jpeg,.png" OnChange="OnChange" placeholder="@Label" />
+        <InputFile accept=".jpg,.jpeg,.png,.svg" OnChange="OnChange" placeholder="@Label" />
     </div>
     <div class="col-md-6 mb-4" style="@style1">
         @if (imageBase64 != null)
         {
-            <img src="data:image/jpeg;base64, @imageBase64" style="@style2" alt="@Label" />
+            <img src="@format,@((MarkupString)imageBase64)" style="@style2" alt="@Label" />
         }
         @if (ImageURL != null)
         {
@@ -23,6 +25,7 @@
     private string imageBase64;
     private string style1 = "";
     private string style2 = "";
+    private string format = "";
 
     protected override void OnInitialized()
     {
@@ -43,9 +46,11 @@
 
         foreach (var imageFile in imagesFiles)
         {
+            format = imageFile.ContentType;
             await using MemoryStream fs = new MemoryStream();
             await imageFile.OpenReadStream(maxAllowedSize: 1048576).CopyToAsync(fs);
             byte[] buffer = GetBytes(fs);
+            format = "data:" + format + ";base64";
             imageBase64 = Convert.ToBase64String(buffer, 0, buffer.Length);
             await OnSelectedImage.InvokeAsync(imageBase64);
             ImageURL = null;

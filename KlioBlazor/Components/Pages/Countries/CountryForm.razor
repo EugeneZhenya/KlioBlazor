@@ -1,0 +1,76 @@
+﻿<EditForm Model="Country" OnValidSubmit="OnValidSubmit" FormName="CountryForm">
+    <div class="row mb-2">
+        <DataAnnotationsValidator />
+        <ValidationSummary style="color: #fd0e30;" />
+    </div>
+    <div class="row">
+        <div class="col-md-8">
+            <label style="width: 100%">Назва *</label>
+            <InputText @bind-Value="@Country.Name" />
+        </div>
+        <div class="col-md-4">
+            <label style="width: 100%">День незалежности</label>
+            <InputDate @bind-Value="@Country.IndependenceDay" />
+        </div>
+        <InputTextArea placeholder="Опис..." @bind-Value="@Country.Description" />
+        <div class="row">
+            <div class="col-md-4">
+                <InputImg OnSelectedImage="OnSelectedFlag" ImageURL="@flagUrl" Label="Прапор" />
+            </div>
+            <div class="col-md-4">
+                <InputImg OnSelectedImage="OnSelectedEmblem" ImageURL="@emblemUrl" Label="Герб (емблема)" />
+            </div>
+            <div class="col-md-4">
+                <InputImg OnSelectedImage="OnSelectedBackground" ImageURL="@backUrl" Label="Обкладинка" />
+            </div>
+        </div>
+        <button class="btn" type="submit">Зберегти</button>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter] public Country Country { get; set; }
+    [Parameter] public EventCallback OnValidSubmit { get; set; }
+    private string flagUrl;
+    private string emblemUrl;
+    private string backUrl;
+
+    protected override void OnInitialized()
+    {
+        if (!string.IsNullOrEmpty(Country.Flag))
+        {
+            flagUrl = Country.Flag;
+            Country.Flag = null;
+        }
+
+        if (!string.IsNullOrEmpty(Country.Emblem))
+        {
+            emblemUrl = Country.Emblem;
+            Country.Emblem = null;
+        }
+
+        if (!string.IsNullOrEmpty(Country.Background))
+        {
+            backUrl = Country.Background;
+            Country.Background = null;
+        }
+    }
+
+    private void OnSelectedFlag(string imageBase64)
+    {
+        Country.Flag = imageBase64;
+        flagUrl = null;
+    }
+
+    private void OnSelectedEmblem(string imageBase64)
+    {
+        Country.Emblem = imageBase64;
+        emblemUrl = null;
+    }
+
+    private void OnSelectedBackground(string imageBase64)
+    {
+        Country.Background = imageBase64;
+        backUrl = null;
+    }
+}
