@@ -22,8 +22,8 @@ namespace KlioBlazor.Controllers
         [HttpPost]
         public async Task<ActionResult<int>> Post(Genre genre)
         {
-            // context.Add(genre);
-            // await context.SaveChangesAsync();
+            context.Add(genre);
+            await context.SaveChangesAsync();
 
             if (!string.IsNullOrWhiteSpace(genre.Icon))
             {

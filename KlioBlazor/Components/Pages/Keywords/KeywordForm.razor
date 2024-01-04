@@ -1,0 +1,16 @@
+﻿<EditForm Model="Keyword" OnValidSubmit="OnValidSubmit" FormName="KeywordForm">
+    <div class="row mb-2">
+        <DataAnnotationsValidator />
+        <ValidationSummary style="color: #fd0e30;" />
+    </div>
+    <div class="row">
+        <InputText placeholder="Слово *" @bind-Value="@Keyword.Word" />
+        <InputTextArea placeholder="Коментар..." @bind-Value="@Keyword.Comment" />
+        <button class="btn" type="submit">Зберегти</button>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter] public Keyword Keyword { get; set; }
+    [Parameter] public EventCallback OnValidSubmit { get; set; }
+}

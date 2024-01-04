@@ -1,5 +1,5 @@
 ﻿@page "/category/create"
-@inject ICategoryRepository categoryrepository
+@inject ICategoryRepository categoryRepository
 @inject NavigationManager NavManager
 
 <PageTitle>@allMeta.Title</PageTitle>
@@ -73,7 +73,7 @@
 
         try
         {
-            await categoryrepository.CreateCategory(category);
+            await categoryRepository.CreateCategory(category);
             NavManager.NavigateTo("Home/films");
         }
         catch (Exception ex)
