@@ -1,0 +1,37 @@
+﻿<EditForm Model="Genre" OnValidSubmit="OnValidSubmit" FormName="GenreForm">
+    <div class="row mb-2">
+        <DataAnnotationsValidator />
+        <ValidationSummary style="color: #fd0e30;" />
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <InputText placeholder="Назва *" @bind-Value="@Genre.Name" />
+        </div>
+        <div class="col-md-6">
+            <InputImg OnSelectedImage="OnSelectedIcon" ImageURL="@iconUrl" Label="Зображення" />
+        </div>
+        <InputMarkdown @bind-Value="Genre.Description" Placeholder="Опис..." For="@(() => Genre.Description)" />
+        <button class="btn" type="submit">Зберегти</button>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter] public Genre Genre { get; set; }
+    [Parameter] public EventCallback OnValidSubmit { get; set; }
+    private string iconUrl;
+
+    protected override void OnInitialized()
+    {
+        if (!string.IsNullOrEmpty(Genre.Icon))
+        {
+            iconUrl = Genre.Icon;
+            Genre.Icon = null;
+        }
+    }
+
+    private void OnSelectedIcon(string imageBase64)
+    {
+        Genre.Icon = imageBase64;
+        iconUrl = null;
+    }
+}
