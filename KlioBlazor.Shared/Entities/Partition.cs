@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KlioBlazor.Shared.Helpers;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -16,8 +17,15 @@ namespace KlioBlazor.Shared.Entities
         public string? Description { get; set; }
         [NotMapped]
         public string Picture { get; set; }
+        public string PictureUrl
+        {
+            get
+            {
+                return Id + "-" + StringUtilities.Translit(Name) + ".jpg"; ;
+            }
+        }
         public int CategoryId { get; set; }
-        public Category Category { get; set; } = null!;
+        public Category? Category { get; set; } = null!;
         public List<Movie> Movies { get; set; } = new List<Movie>();
     }
 }

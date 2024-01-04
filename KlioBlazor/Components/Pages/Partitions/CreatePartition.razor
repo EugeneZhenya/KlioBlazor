@@ -1,7 +1,91 @@
 ﻿@page "/partition/create"
+@inject NavigationManager NavManager
+@inject IPartitionRepository partitionRepository
 
-<h3>CreatePartition</h3>
+<PageTitle>@allMeta.Title</PageTitle>
 
-@code {
+<MetaContent MetaData="allMeta" />
 
+<BreadcrumbArea>
+    <TitleContent>
+        <h2 class="title">Додати <span>розділ</span></h2>
+    </TitleContent>
+    <ChildContent>
+        <li class="breadcrumb-item"><a href="">Домівка</a></li>
+        <li class="breadcrumb-item"><a href="Partitions">Розділи</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Додати</li>
+    </ChildContent>
+</BreadcrumbArea>
+
+<!-- contact-area -->
+<section class="contact-area contact-bg" style="background-image: url('img/contact_bg.jpg')">
+    <div class="container">
+        <div class="row">
+                <div class="col-xl-12 col-lg-11">
+                    <div class="contact-form-wrap">
+                        <div class="widget-title mb-50">
+                            <h5 class="title">Додати розділ</h5>
+                        </div>
+                        <div class="contact-form">
+                            <PartitionForm Partition="partition" CategoryList="categoryList" OnValidSubmit="Create" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</section>
+<!-- contact-area-end -->
+
+ @code {
+    OpenGraphModel allMeta = new OpenGraphModel();
+    private Partition partition = new Partition();
+    private List<Category> categoryList = new List<Category>() {
+        new Category { Id = 1, Name = "Фільми" },
+        new Category { Id = 2, Name = "Мультфільми" },
+        new Category { Id = 3, Name = "Історія" }
+    };
+
+    protected async override Task OnInitializedAsync()
+    {
+        allMeta.Title = "Додати виробника :: Український медійний архів 'KLIO'";
+        allMeta.Description = "Медійний архів 'KLIO': Музика, література, історія, фільми, мультфільми, серіали, мультсеріали, наживо, пряма трансляція, дивитися он-лайн";
+        allMeta.Robots = "all";
+        allMeta.Author = "Eugene Baklanov";
+        allMeta.Keywords = "Klio, архів, video, відео, історія, література, політика, музика, music, наживо, трансляція, пряма трансляція, дивитися он-лайн, фільм, серіал, сезон, епізод, мультфільм, мультсерал";
+        allMeta.Type = "article";
+        allMeta.Image = (NavManager.BaseUri + "img/WatchTVMockup.jpg").Replace("https://", "http://");
+        allMeta.SecureImage = (NavManager.BaseUri + "img/WatchTVMockup.jpg").Replace("http://", "https://");
+        allMeta.ImageWidth = 1920;
+        allMeta.ImageHeight = 1077;
+        allMeta.ImageType = "image/jpeg";
+        allMeta.Url = NavManager.Uri;
+        allMeta.SiteName = "Медійний архів 'KLIO'";
+        allMeta.Locale = "uk_UA";
+        allMeta.FBAdmins = "100007730161243,100002204709179";
+        allMeta.FBAppId = "885986785210347";
+        allMeta.Image2 = (NavManager.BaseUri + "img/logo_750_transp.png").Replace("https://", "http://");
+        allMeta.SecureImage2 = (NavManager.BaseUri + "img/logo_750_transp.png").Replace("http://", "https://");
+        allMeta.ImageWidth2 = 750;
+        allMeta.ImageHeight2 = 750;
+        allMeta.ImageType2 = "image/png";
+    }
+
+    private async Task Create()
+    {
+        Console.WriteLine("Create method");
+        Console.WriteLine(partition.Name);
+        Console.WriteLine(partition.Description);
+
+        try
+        {
+            await partitionRepository.CreatePartition(partition);
+            NavManager.NavigateTo("Partitions");
+        }
+        catch (Exception ex)
+        {
+            // ...
+            Console.WriteLine(ex.Message);
+        }
+    }
 }
+

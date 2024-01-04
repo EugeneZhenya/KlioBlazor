@@ -1,0 +1,47 @@
+﻿<EditForm Model="Partition" OnValidSubmit="OnValidSubmit" FormName="PartitionForm">
+    <div class="row mb-2">
+        <DataAnnotationsValidator />
+        <ValidationSummary style="color: #fd0e30;" />
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <InputText placeholder="Назва *" @bind-Value="@Partition.Name" />
+        </div>
+        <div class="col-md-4">
+            <InputImg OnSelectedImage="OnSelectedPicture" ImageURL="@pictureUrl" Label="Зображення" />
+        </div>
+        <div class="col-md-4">
+            <select id="categorySelect" class="form-control" @bind="Partition.CategoryId">
+                <option selected value="0">-- Категорія</option>
+                @foreach (var category in CategoryList)
+                {
+                    <option value="@category.Id">@category.Name</option>
+                }
+            </select>
+        </div>
+        <InputMarkdown @bind-Value="Partition.Description" Placeholder="Опис..." For="@(() => Partition.Description)" />
+        <button class="btn" type="submit">Зберегти</button>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter] public Partition Partition { get; set; }
+    [Parameter] public List<Category> CategoryList { get; set; }
+    [Parameter] public EventCallback OnValidSubmit { get; set; }
+    private string pictureUrl;
+
+    protected override void OnInitialized()
+    {
+        if (!string.IsNullOrEmpty(Partition.Picture))
+        {
+            pictureUrl = Partition.Picture;
+            Partition.Picture = null;
+        }
+    }
+
+    private void OnSelectedPicture(string imageBase64)
+    {
+        Partition.Picture = imageBase64;
+        pictureUrl = null;
+    }
+}
