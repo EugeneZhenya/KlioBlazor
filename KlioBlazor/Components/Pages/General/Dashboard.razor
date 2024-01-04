@@ -1,7 +1,75 @@
 ﻿@page "/Dashboard"
+@inject NavigationManager NavManager
 
-<h3>Dashboard</h3>
+<PageTitle>@allMeta.Title</PageTitle>
+
+<MetaContent MetaData="allMeta" />
+
+<BreadcrumbArea>
+    <TitleContent>
+        <h2 class="title">Адміністративна <span>панель</span></h2>
+    </TitleContent>
+    <ChildContent>
+        <li class="breadcrumb-item"><a href="">Домівка</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Адміністративна панель</li>
+    </ChildContent>
+</BreadcrumbArea>
+
+<!-- contact-area -->
+<section class="contact-area contact-bg" style="background-image: url('img/contact_bg.jpg')">
+    <div class="container">
+        <div class="row">
+                <div class="col-xl-12 col-lg-11">
+                    <div class="contact-form-wrap">
+                        <div class="widget-title mb-50">
+                            <h5 class="title">Розділи сайту</h5>
+                        </div>
+                        <div class="contact-info-wrap">
+                            <p><span>Eugene :</span> Перехід за розділами сайту дозволяє керувати їхнім вмістом.</p>
+                            <div class="contact-info-list">
+                                <ul>
+                                    <li>
+                                        <div class="icon"><i class="fa-solid fa-icons"></i></div>
+                                        <p><span><a href="Home">Категорії</a> :</span> Основні категорії відеовмісту</p>
+                                    </li>
+                                    <li>
+                                        <div class="icon"><i class="fa-solid fa-swatchbook"></i></div>
+                                        <p><span><a href="Partitions">Розділи</a> :</span> Розділи, що входять до категорії</p>
+                                    </li>
+                                    <li>
+                                        <div class="icon"><i class="fa-solid fa-keyboard"></i></div>
+                                        <p><span><a href="Keywords">Ключові слова</a> :</span> Ключові слова, що описують відеовміст</p>
+                                    </li>
+                                    <li>
+                                        <div class="icon"><i class="fa-brands fa-themeisle"></i></div>
+                                        <p><span><a href="Genres">Жанри</a> :</span> Жанри, до яких належить відеовміст</p>
+                                    </li>
+                                    <li>
+                                        <div class="icon"><i class="fa-solid fa-globe"></i></div>
+                                        <p><span><a href="Countries">Країни</a> :</span> Країни, виробники яких створили відеовміст</p>
+                                    </li>
+                                    <li>
+                                        <div class="icon"><i class="fa-solid fa-building"></i></div>
+                                        <p><span><a href="Creators">Виробники</a> :</span> Виробники, що створили відеовміст</p>
+                                    </li>
+                                    <li>
+                                        <div class="icon"><i class="fa-solid fa-users"></i></div>
+                                        <p><span><a href="people">Люди</a> :</span> Актори та інші особи, що створили відеовміст</p>
+                                    </li>
+                                    <li>
+                                        <div class="icon"><i class="fa-solid fa-film"></i></div>
+                                        <p><span><a href="movies">Відео</a> :</span> Безпосередньо відеовміст</p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</section>
+<!-- contact-area-end -->
 
 @code {
-
+    OpenGraphModel allMeta = new OpenGraphModel();
 }
