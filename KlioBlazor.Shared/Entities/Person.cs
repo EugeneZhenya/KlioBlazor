@@ -22,6 +22,7 @@ namespace KlioBlazor.Shared.Entities
         public DateTime? DateOfDeath { get; set; }
         public bool DateOfDeathExact { get; set; }
         public bool IsFemale { get; set; }
+        public bool HasPicture { get; set; }
         public string PictureUrl
         {
             get

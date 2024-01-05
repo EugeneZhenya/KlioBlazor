@@ -1,10 +1,30 @@
-﻿<EditForm Model="Movie" OnValidSubmit="OnValidSubmit" FormName="MovieForm">
+﻿<EditForm Model="Movie" OnValidSubmit="OnDataAnnotationsVallidated" FormName="MovieForm">
     <div class="row mb-2">
         <DataAnnotationsValidator />
         <ValidationSummary style="color: #fd0e30;" />
     </div>
     <div class="row">
         <InputText placeholder="Назва *" @bind-Value="@Movie.Title" />
+        <div class="row">
+            <div class="col-md-6">
+                <select id="categorySelect" class="form-control" @bind:get="@selectedCategory" @bind:set="CategorySelect">
+                    <option selected value="0">-- Категорія</option>
+                    @foreach (var category in CategoryList)
+                    {
+                        <option value="@category.Id">@category.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-6">
+                <select id="partitionSelect" class="form-control" @bind:get="@selectedPartition" @bind:set="PartitionSelect">
+                    <option selected value="0">-- Розділ</option>
+                    @foreach (var partition in partitionList)
+                    {
+                        <option value="@partition.Id">@partition.Name</option>
+                    }
+                </select>
+            </div>
+        </div>
         <div class="row">
             <div class="col-md-6">
                 <label style="width: 100%">Дата виходу</label>
@@ -29,16 +49,32 @@
         </div>
         <InputMarkdown @bind-Value="Movie.Summary" Placeholder="Короткий опис..." For="@(() => Movie.Summary)" />
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-4">
+                <label>Країни:</label>
+                <MultipleSelector Selected="countriesSelected" NoSelected="countriesNotSelected" />
+            </div>
+            <div class="col-md-4">
+                <label>Жанри:</label>
                 <MultipleSelector Selected="genresSelected" NoSelected="genresNotSelected" />
+            </div>
+            <div class="col-md-4">
+                <label>Ключові слова:</label>
+                <MultipleSelectorTypeahead Context="keyword" SearchMethod="SearchKeyword" SelectedElements="SelectedKeywords">
+                    <MyResultTemplate>
+                        @keyword.Word
+                    </MyResultTemplate>
+                    <MyListTemplate>
+                        @keyword.Word
+                    </MyListTemplate>
+                </MultipleSelectorTypeahead>
             </div>
         </div>
         <div class="row">
-            <label>Знімальна група:</label>
-            <div class="col-md-12">
-                <MultipleSelectorTypeahead Context="person" SearchMethod="SearchMethod" SelectedElements="SelectedActors">
+            <div class="col-md-6">
+                <label>Знімальна група:</label>
+                <MultipleSelectorTypeahead Context="person" SearchMethod="SearchPerson" SelectedElements="SelectedActors">
                     <MyResultTemplate>
-                        <img style="width: 50px;" src="@person.Picture" />
+                        <img style="width: 50px;" src="@CheckPicture(person)" />
                         @person.Name
                     </MyResultTemplate>
                     <MyListTemplate>
@@ -46,26 +82,64 @@
                     </MyListTemplate>
                 </MultipleSelectorTypeahead>
             </div>
+            <div class="col-md-6">
+                <label>Виробники:</label>
+                <MultipleSelectorTypeahead Context="creator" SearchMethod="SearchCreator" SelectedElements="SelectedCreators">
+                    <MyResultTemplate>
+                        <img style="width: 50px;" src="@(appState.KlioContentUrl + "creators/" + creator.LogoUrl)" />
+                        @creator.Title
+                    </MyResultTemplate>
+                    <MyListTemplate>
+                        @creator.Title
+                    </MyListTemplate>
+                </MultipleSelectorTypeahead>
+            </div>
+        </div>
+        <div class="row mb-4">
+            <label>Додаткові дані:</label>
+            <AdditionalInfo ListInfo="MovieInfos" AddInfo="@((MovieInfo newItem) => AddInfo(newItem))" DelInfo="@((MovieInfo item) => DelInfo(item))" EditInfo="@((MovieInfo item) => EditInfo(item))" />
         </div>
     </div>
     <button class="btn" type="submit">Зберегти</button>
 </EditForm>
 
 @code {
+    [CascadingParameter] public AppState appState {get; set;}
     [Parameter] public Movie Movie { get; set; }
     [Parameter] public EventCallback OnValidSubmit { get; set; }
+    [Parameter] public List<Country> SelectedCountries { get; set; } = new List<Country>();
+    [Parameter] public List<Country> NotSelectedCountries { get; set; } = new List<Country>();
     [Parameter] public List<Genre> SelectedGenres { get; set; } = new List<Genre>();
     [Parameter] public List<Genre> NotSelectedGenres { get; set; } = new List<Genre>();
     [Parameter] public List<Person> SelectedActors { get; set; } = new List<Person>();
+    [Parameter] public List<Creator> SelectedCreators { get; set; } = new List<Creator>();
+    [Parameter] public List<Keyword> SelectedKeywords { get; set; } = new List<Keyword>();
+    [Parameter] public List<Category> CategoryList { get; set; } = new List<Category>();
+    [Parameter] public List<Partition> AllPartitions { get; set; } = new List<Partition>();
+    [Parameter] public List<MovieInfo> MovieInfos { get; set; } = new List<MovieInfo>();
+    private List<MultipleSelectorModel> countriesSelected = new List<MultipleSelectorModel>();
+    private List<MultipleSelectorModel> countriesNotSelected = new List<MultipleSelectorModel>();
     private List<MultipleSelectorModel> genresSelected = new List<MultipleSelectorModel>();
     private List<MultipleSelectorModel> genresNotSelected = new List<MultipleSelectorModel>();
     private string coverUrl;
     private string backUrl;
+    private int selectedCategory;
+    private int selectedPartition;
+    private List<Partition> partitionList = new List<Partition>();
 
     protected override void OnInitialized()
     {
+        countriesSelected = SelectedCountries.Select(x => new MultipleSelectorModel(x.Id.ToString(), x.Name)).ToList();
+        countriesNotSelected = NotSelectedCountries.Select(x => new MultipleSelectorModel(x.Id.ToString(), x.Name)).ToList();
         genresSelected = SelectedGenres.Select(x => new MultipleSelectorModel(x.Id.ToString(), x.Name)).ToList();
         genresNotSelected = NotSelectedGenres.Select(x => new MultipleSelectorModel(x.Id.ToString(), x.Name)).ToList();
+
+        if (partitionList.Where(x => x.Id == Movie.PatitionId).FirstOrDefault() != null)
+        {
+            selectedCategory = partitionList.Where(x => x.Id == Movie.PatitionId).FirstOrDefault().Id;
+        }
+        CategorySelect(selectedCategory);
+        selectedPartition = Movie.PatitionId;
 
         if (!string.IsNullOrEmpty(Movie.Poster))
         {
@@ -92,12 +166,84 @@
         backUrl = null;
     }
 
-    private async Task<IEnumerable<Person>> SearchMethod(string searchText)
+    private async Task<IEnumerable<Person>> SearchPerson(string searchText)
     {
         return new List<Person>()
         { 
-            new Person() { Id = 1, Name = "Ірина Фаріон", Picture = "/Content/People/Iryna_Farion.png" },
-            new Person() { Id = 2, Name = "Євген Бакланов", Picture = "/Content/People/male.png" }
+            new Person() { Id = 1, Name = "Ірина Фаріон", IsFemale = true },
+            new Person() { Id = 2, Name = "Євген Бакланов", IsFemale = false }
         };
+    }
+
+    private async Task<IEnumerable<Creator>> SearchCreator(string searchText)
+    {
+        return new List<Creator>()
+        {
+            new Creator() { Id = 1, Title = "Київнаукфільм" },
+            new Creator() { Id = 2, Title = "BBC" }
+        };
+    }
+
+    private async Task<IEnumerable<Keyword>> SearchKeyword(string searchText)
+    {
+        return new List<Keyword>()
+        {
+            new Keyword() { Id = 1, Word = "Фантастика" },
+            new Keyword() { Id = 2, Word = "Історія" },
+            new Keyword() { Id = 3, Word = "Жахливе вбивство" }
+        };
+    }
+
+    private void OnDataAnnotationsVallidated()
+    {
+        Movie.MoviesCountries = countriesSelected.Select(x => new MoviesCountries { CountryId = int.Parse(x.Key) }).ToList();
+        Movie.MoviesGenres = genresSelected.Select(x => new MoviesGenres { GenreId = int.Parse(x.Key) }).ToList();
+    }
+
+    private string CheckPicture(Person person)
+    {
+        string url = appState.KlioContentUrl + "people/" + person.PictureUrl;
+        if (!person.HasPicture)
+        {
+            if (person.IsFemale)
+            {
+                url = appState.KlioContentUrl + "people/female.png";
+            }
+            else
+            {
+                url = appState.KlioContentUrl + "people/male.png";
+            }
+        }
+
+        return url;
+    }
+
+    private void CategorySelect(int value)
+    {
+        selectedPartition = 0;
+        selectedCategory = value;
+        partitionList = AllPartitions.Where(x => x.CategoryId == selectedCategory).ToList();
+    }
+
+    private void PartitionSelect(int value)
+    {
+        selectedPartition = value;
+        Movie.PatitionId = selectedPartition;
+    }
+
+    private void AddInfo(MovieInfo item)
+    {
+        MovieInfos.Add(item);
+    }
+
+    private void DelInfo(MovieInfo item)
+    {
+        MovieInfos.Remove(item);
+    }
+
+    private void EditInfo(MovieInfo item)
+    {
+        int index = MovieInfos.FindIndex(s => s == item);
+        if (index != -1) MovieInfos[index] = item;
     }
 }

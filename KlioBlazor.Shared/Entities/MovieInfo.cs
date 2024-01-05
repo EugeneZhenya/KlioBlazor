@@ -16,6 +16,6 @@ namespace KlioBlazor.Shared.Entities
         public string Text { get; set; }
         public string? Remark { get; set; }
         public int MovieId { get; set; }
-        public Movie Movie { get; set; }
+        public Movie? Movie { get; set; }
     }
 }

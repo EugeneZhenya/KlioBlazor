@@ -1,5 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using KlioBlazor.Shared.Helpers;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Xml.Linq;
 
 namespace KlioBlazor.Shared.Entities
 {
@@ -23,7 +25,7 @@ namespace KlioBlazor.Shared.Entities
         public int Duration { get; set; }
         public int ViewCounter { get; set; }
         public int PatitionId { get; set; }
-        public Partition Partition { get; set; } = null!;
+        public Partition? Partition { get; set; } = null!;
         public List<MoviesGenres> MoviesGenres { get; set; } = new List<MoviesGenres>();
         public List<MoviesCountries> MoviesCountries { get; set; } = new List<MoviesCountries>();
         public List<MoviesCreators> MoviesCreators { get; set; } = new List<MoviesCreators>();

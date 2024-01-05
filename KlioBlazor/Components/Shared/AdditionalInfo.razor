@@ -1,0 +1,75 @@
+﻿<div class="row">
+    <div class="col-md-3">
+        <select class="form-control mb-1" @bind="@NewInfo.Info">
+            <option selected value="">-- Інформація</option>
+            <option value="Value1">Value 1</option>
+            <option value="Value2">Value 2</option>
+        </select>
+    </div>
+    <div class="col-md-3">
+        <InputText placeholder="Значення *" @bind-Value="@NewInfo.Text" class="mb-1" />
+    </div>
+    <div class="col-md-4">
+        <InputText placeholder="Коментар" @bind-Value="@NewInfo.Remark" class="mb-1" />
+    </div>
+    <div class="col-md-2 align-middle text-center">
+        <button class="btn mb-1" style="padding: 12px 40px;" @onclick="@(() => InfoComplete(NewInfo))"><i class="fa-solid fa-plus" style="margin-right: 0;"></i></button>
+    </div>
+</div>
+<div class="row">
+    @foreach (var info in ListInfo)
+    {
+        <div class="col-md-3">
+            <select class="form-control mb-1" @bind="@info.Info" disabled="@IsDiabled">
+                <option selected value="">-- Інформація</option>
+                <option value="Value1">Value 1</option>
+                <option value="Value2">Value 2</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <InputText placeholder="Значення *" @bind-Value="@info.Text" class="mb-1" disabled="@IsDiabled" />
+        </div>
+        <div class="col-md-4">
+            <InputText placeholder="Коментар" @bind-Value="@info.Remark" class="mb-1" disabled="@IsDiabled" />
+        </div>
+        <div class="col-md-2 d-inline p-2 align-middle text-center">
+            <button class="btn mb-1" style="padding: 10px 20px;" @onclick="@(() => EditComplete(info))"><i class="fa-solid fa-pen-to-square" style="margin-right: 0;"></i></button>
+            <button class="btn mb-1" style="padding: 10px 20px;" @onclick="@(() => DelComplete(info))"><i class="fa-regular fa-trash-can" style="margin-right: 0;"></i></button>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter] public List<MovieInfo> ListInfo { get; set; } = new List<MovieInfo>();
+    [Parameter] public EventCallback<MovieInfo> AddInfo { get; set; }
+    [Parameter] public EventCallback<MovieInfo> DelInfo { get; set; }
+    [Parameter] public EventCallback<MovieInfo> EditInfo { get; set; }
+    public MovieInfo NewInfo { get; set; } = new MovieInfo();
+    private bool IsDiabled = true;
+
+    private async Task InfoComplete(MovieInfo movieInfo)
+    {
+        NewInfo = new MovieInfo();
+        IsDiabled = true;
+        await AddInfo.InvokeAsync(movieInfo);
+    }
+
+    private async Task DelComplete(MovieInfo movieInfo)
+    {
+        IsDiabled = true;
+        await DelInfo.InvokeAsync(movieInfo);
+    }
+
+    private async Task EditComplete(MovieInfo movieInfo)
+    {
+        if (IsDiabled)
+        {
+            IsDiabled = false;
+        }
+        else
+        {
+            IsDiabled = true;
+            await EditInfo.InvokeAsync(movieInfo);
+        }
+    }
+}

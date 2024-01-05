@@ -29,9 +29,7 @@ namespace KlioBlazor.Controllers
             {
                 var personPicture = Convert.FromBase64String(person.Picture);
                 var filePath = await fileStorageService.SaveFile(personPicture, person.PictureUrl, "people");
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine(filePath);
-                Console.ForegroundColor = ConsoleColor.White;
+                person.HasPicture = true;
             }
 
             return person.Id;
