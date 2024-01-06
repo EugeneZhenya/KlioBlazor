@@ -23,6 +23,9 @@ namespace KlioBlazor.Shared.Entities
         public bool DateOfDeathExact { get; set; }
         public bool IsFemale { get; set; }
         public bool HasPicture { get; set; }
+        [NotMapped]
+        public string Character { get; set; }
+        public List<MoviesActors> MoviesActors { get; set; } = new List<MoviesActors>();
         public string PictureUrl
         {
             get

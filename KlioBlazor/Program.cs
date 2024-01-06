@@ -34,6 +34,7 @@ builder.Services.AddScoped<IGenreRepository, GenreRepository>();
 builder.Services.AddScoped<IKeywordRepository, KeywordRepository>();
 builder.Services.AddScoped<IPartitionRepository, PartitionRepository>();
 builder.Services.AddScoped<IPersonRepository, PersonRepository>();
+builder.Services.AddScoped<IMoviesRepository, MoviesRepository>();
 
 builder.Services.AddAuthentication(options =>
     {

@@ -27,6 +27,7 @@ namespace KlioBlazor.Shared.Entities
         public int PatitionId { get; set; }
         public Partition? Partition { get; set; } = null!;
         public List<MoviesGenres> MoviesGenres { get; set; } = new List<MoviesGenres>();
+        public List<MoviesActors> MoviesActors { get; set; } = new List<MoviesActors>();
         public List<MoviesCountries> MoviesCountries { get; set; } = new List<MoviesCountries>();
         public List<MoviesCreators> MoviesCreators { get; set; } = new List<MoviesCreators>();
         public List<MoviesKeywords> MoviesKeywords { get; set; } = new List<MoviesKeywords>();

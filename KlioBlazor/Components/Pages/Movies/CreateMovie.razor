@@ -1,5 +1,6 @@
 ﻿@page "/movies/create"
 @inject NavigationManager NavManager
+@inject IMoviesRepository moviesRepository
 
 <PageTitle>@allMeta.Title</PageTitle>
 
@@ -94,12 +95,19 @@
         allMeta.ImageType2 = "image/png";
     }
 
-    private void SaveMovie()
+    private async Task SaveMovie()
     {
         Movie.PublicDate = DateTime.Now;
 
-        // Saving movie...
-        Console.WriteLine("this is works...");
-        // NavManager.NavigateTo("movie");
+        try
+        {
+            var movieId = await moviesRepository.CreateMovie(Movie);
+            NavManager.NavigateTo($"movie/{movieId}/{StringUtilities.Translit(Movie.Title)}");
+        }
+        catch (Exception ex)
+        {
+            
+            throw;
+        }
     }
 }

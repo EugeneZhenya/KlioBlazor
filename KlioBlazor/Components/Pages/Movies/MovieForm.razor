@@ -78,7 +78,13 @@
                         @person.Name
                     </MyResultTemplate>
                     <MyListTemplate>
-                        @person.Name
+                        <div class="row" style="align-items: stretch; width: 100%; float: left;">
+                            <p style="width: 37%; margin-bottom: 0;">@person.Name</p>
+                            <p style="width: 3%; margin-bottom: 0;">&nbsp;/&nbsp;</p>
+                            <div style="width: 50%;">
+                                <input type="text" placeholder="Персонаж" @bind="person.Character" style="padding: inherit; margin-bottom: auto;" />
+                            </div>
+                        </div>
                     </MyListTemplate>
                 </MultipleSelectorTypeahead>
             </div>
@@ -194,10 +200,23 @@
         };
     }
 
-    private void OnDataAnnotationsVallidated()
+    private async Task OnDataAnnotationsVallidated()
     {
+        Movie.PatitionId = selectedPartition;
+
         Movie.MoviesCountries = countriesSelected.Select(x => new MoviesCountries { CountryId = int.Parse(x.Key) }).ToList();
         Movie.MoviesGenres = genresSelected.Select(x => new MoviesGenres { GenreId = int.Parse(x.Key) }).ToList();
+
+        Movie.MoviesActors = SelectedActors.Select(x => new MoviesActors { PersonId= x.Id, Character = x.Character }).ToList();
+        Movie.MoviesCreators = SelectedCreators.Select(x => new MoviesCreators { CreatorID = x.Id }).ToList();
+        Movie.MoviesKeywords = SelectedKeywords.Select(x => new MoviesKeywords { KeywordId = x.Id }).ToList();
+
+        Movie.MovieInfos = MovieInfos;
+
+        if (!string.IsNullOrWhiteSpace(Movie.Poster)) { coverUrl = null; }
+        if (!string.IsNullOrWhiteSpace(Movie.Background)) { backUrl = null; }
+
+        await OnValidSubmit.InvokeAsync(null);
     }
 
     private string CheckPicture(Person person)
