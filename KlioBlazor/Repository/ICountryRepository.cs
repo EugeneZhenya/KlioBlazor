@@ -5,5 +5,6 @@ namespace KlioBlazor.Repository
     public interface ICountryRepository
     {
         Task CreateCountry(Country country);
+        Task<List<Country>> GetCountries();
     }
 }

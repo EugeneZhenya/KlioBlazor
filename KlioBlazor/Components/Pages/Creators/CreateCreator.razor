@@ -1,6 +1,7 @@
 ﻿@page "/creator/create"
 @inject NavigationManager NavManager
 @inject ICreatorRepository creatorRepository
+@inject ICountryRepository countryRepository
 
 <PageTitle>@allMeta.Title</PageTitle>
 
@@ -27,7 +28,10 @@
                             <h5 class="title">Додати виробника</h5>
                         </div>
                         <div class="contact-form">
-                            <CreatorForm Creator="creator" CountryList="countryList" OnValidSubmit="Create" />
+                            @if (countryList != null)
+                            {
+                                <CreatorForm Creator="creator" CountryList="countryList" OnValidSubmit="Create" />
+                            }
                         </div>
                     </div>
                 </div>
@@ -39,11 +43,7 @@
  @code {
     OpenGraphModel allMeta = new OpenGraphModel();
     private Creator creator = new Creator();
-    private List<Country> countryList = new List<Country>() {
-        new Country { Id = 1, Name = "Україна" },
-        new Country { Id = 2, Name = "США" },
-        new Country { Id = 3, Name = "Мексика" }
-    };
+    private List<Country> countryList;
 
     protected async override Task OnInitializedAsync()
     {
@@ -68,6 +68,15 @@
         allMeta.ImageWidth2 = 750;
         allMeta.ImageHeight2 = 750;
         allMeta.ImageType2 = "image/png";
+
+        try
+        {
+            countryList = await countryRepository.GetCountries();
+        }
+        catch (Exception ex)
+        {
+
+        }
     }
 
     private async Task Create()

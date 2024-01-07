@@ -17,6 +17,16 @@ namespace KlioBlazor.Repository
             this.url = this.navigationManager.BaseUri + this.url;
         }
 
+        public async Task<List<Country>> GetCountries()
+        {
+            var response = await httpService.Get<List<Country>>(url);
+            if (!response.Success)
+            {
+                throw new ApplicationException(await response.GetBody());
+            }
+            return response.Response;
+        }
+
         public async Task CreateCountry(Country country)
         {
             var response = await httpService.Post(url, country);

@@ -17,6 +17,16 @@ namespace KlioBlazor.Repository
             this.url = this.navigationManager.BaseUri + this.url;
         }
 
+        public async Task<List<Partition>> GetPartitions()
+        {
+            var response = await httpService.Get<List<Partition>>(url);
+            if (!response.Success)
+            {
+                throw new ApplicationException(await response.GetBody());
+            }
+            return response.Response;
+        }
+
         public async Task CreatePartition(Partition partition)
         {
             var response = await httpService.Post(url, partition);

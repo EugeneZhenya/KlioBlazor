@@ -1,5 +1,6 @@
 ﻿@page "/people"
 @inject NavigationManager NavManager
+@inject IPersonRepository personRepository
 
 <PageTitle>@allMeta.Title</PageTitle>
 
@@ -11,29 +12,75 @@
     </TitleContent>
     <ChildContent>
         <li class="breadcrumb-item"><a href="">Домівка</a></li>
-        <li class="breadcrumb-item"><a href="people">Особи</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Особи</li>
     </ChildContent>
 </BreadcrumbArea>
 
-<!-- contact-area -->
-<section class="contact-area contact-bg" style="background-image: url('img/contact_bg.jpg')">
-    <div class="container">
-        <div class="row">
-            <div class="col-xl-12 col-lg-11">
-                <div class="contact-form-wrap">
-                    <div class="contact-form">
+<section class="ucm-area ucm-bg" style="background-image: url('img/ucm_bg_shape.png')">
+    <div class="layer">
+        <div class="container">
+            <div class="row align-items-end mb-55">
+                <div class="col-lg-6">
+                    <div class="section-title text-center text-lg-start title-style-two">
+                        <span class="sub-title">Люди</span>
+                        <h2 class="title">Список персоналій</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-content">
+                <div class="tab-pane fade show active">
+                    <div class="ucm-active" style="display: -webkit-flex; -webkit-flex-direction: column; -webkit-flex-wrap: wrap; -webkit-flex-direction: row;">
+                        <GenericList List="People">
+                            <WholeListTemplate>
+                                <div class="rc-post" style="width: 100%;">
+                                        <ul style="display: flex; align-items: flex-start; flex-direction: row; flex-wrap: wrap;">
+                                        @foreach (var item in People)
+                                        {
+                                            <li class="rc-post-item" style="min-width: 320px; margin-right: 2rem; border: 1px solid #ccc;">
+                                                <div class="thumb">
+                                                    <a href="person/@item.Id/@StringUtilities.Translit(item.Name)">
+                                                        <img src="@CheckPicture(item)" alt="@item.Name" style="max-width: 100px; margin-left: .5rem; margin-right: .5rem;" />
+                                                    </a>
+                                                </div>
+                                                <div class="content">
+                                                    <h5 class="title"><a href="person/@item.Id/@StringUtilities.Translit(item.Name)">@item.Name</a></h5>
+                                                    <span class="date"><i class="fa-solid fa-cake-candles"></i> @StringUtilities.DateToString(item.DateOfBirth, "dd MMMM yyyy")</span>
+                                                    <div>
+                                                        <p>
+                                                            <br />
+                                                            <a href="#">Редагувати</a> <a style="cursor: pointer;">Видалити</a>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        }
+                                    </ul>
+                                 </div>
+                            </WholeListTemplate>
+                        </GenericList>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12 col-lg-11">
+                    <div class="contact-form-wrap">
+                        <div class="contact-form" style="text-align: right;">
                             <a class="btn" href="person/create">Додати</a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
-<!-- contact-area-end -->
-
 
 @code {
+    [CascadingParameter] public AppState appState { get; set; }
     OpenGraphModel allMeta = new OpenGraphModel();
+    List<Person> People;
 
     protected async override Task OnInitializedAsync()
     {
@@ -58,5 +105,32 @@
         allMeta.ImageWidth2 = 750;
         allMeta.ImageHeight2 = 750;
         allMeta.ImageType2 = "image/png";
+
+        try
+        {
+            People = await personRepository.GetPeople();
+        }
+        catch (Exception ex)
+        {
+
+        }
+    }
+
+    private string CheckPicture(Person person)
+    {
+        string url = appState.KlioContentUrl + "people/" + person.PictureUrl;
+        if (!person.HasPicture)
+        {
+            if (person.IsFemale)
+            {
+                url = appState.KlioContentUrl + "people/female.png";
+            }
+            else
+            {
+                url = appState.KlioContentUrl + "people/male.png";
+            }
+        }
+
+        return url;
     }
 }

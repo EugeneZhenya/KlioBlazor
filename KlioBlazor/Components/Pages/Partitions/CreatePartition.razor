@@ -1,6 +1,7 @@
 ﻿@page "/partition/create"
 @inject NavigationManager NavManager
 @inject IPartitionRepository partitionRepository
+@inject ICategoryRepository categoryRepository
 
 <PageTitle>@allMeta.Title</PageTitle>
 
@@ -17,7 +18,6 @@
     </ChildContent>
 </BreadcrumbArea>
 
-<!-- contact-area -->
 <section class="contact-area contact-bg" style="background-image: url('img/contact_bg.jpg')">
     <div class="container">
         <div class="row">
@@ -27,27 +27,25 @@
                             <h5 class="title">Додати розділ</h5>
                         </div>
                         <div class="contact-form">
-                            <PartitionForm Partition="partition" CategoryList="categoryList" OnValidSubmit="Create" />
+                            @if (categoryList != null)
+                            {
+                                <PartitionForm Partition="partition" CategoryList="categoryList" OnValidSubmit="Create" />
+                            }
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 </section>
-<!-- contact-area-end -->
 
- @code {
+@code {
     OpenGraphModel allMeta = new OpenGraphModel();
     private Partition partition = new Partition();
-    private List<Category> categoryList = new List<Category>() {
-        new Category { Id = 1, Name = "Фільми" },
-        new Category { Id = 2, Name = "Мультфільми" },
-        new Category { Id = 3, Name = "Історія" }
-    };
+    private List<Category> categoryList;
 
     protected async override Task OnInitializedAsync()
     {
-        allMeta.Title = "Додати виробника :: Український медійний архів 'KLIO'";
+        allMeta.Title = "Додати розділ :: Український медійний архів 'KLIO'";
         allMeta.Description = "Медійний архів 'KLIO': Музика, література, історія, фільми, мультфільми, серіали, мультсеріали, наживо, пряма трансляція, дивитися он-лайн";
         allMeta.Robots = "all";
         allMeta.Author = "Eugene Baklanov";
@@ -68,6 +66,15 @@
         allMeta.ImageWidth2 = 750;
         allMeta.ImageHeight2 = 750;
         allMeta.ImageType2 = "image/png";
+
+        try
+        {
+            categoryList = await categoryRepository.GetCategories();
+        }
+        catch (Exception ex)
+        {
+            
+        }
     }
 
     private async Task Create()

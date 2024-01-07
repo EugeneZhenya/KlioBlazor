@@ -58,5 +58,7 @@ namespace KlioBlazor.Shared.Helpers
 
             return ret.ToString();
         }
+
+        public static string DateToString(DateTime? dt, string format) => dt == null ? "---" : ((DateTime)dt).ToString(format);
     }
 }

@@ -17,6 +17,16 @@ namespace KlioBlazor.Repository
             this.url = this.navigationManager.BaseUri + this.url;
         }
 
+        public async Task<List<Keyword>> GetKeywords()
+        {
+            var response = await httpService.Get<List<Keyword>>(url);
+            if (!response.Success)
+            {
+                throw new ApplicationException(await response.GetBody());
+            }
+            return response.Response;
+        }
+
         public async Task CreateKeyword(Keyword keyword)
         {
             var response = await httpService.Post(url, keyword);

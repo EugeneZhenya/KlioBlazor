@@ -74,7 +74,7 @@
                 <label>Знімальна група:</label>
                 <MultipleSelectorTypeahead Context="person" SearchMethod="SearchPerson" SelectedElements="SelectedActors">
                     <MyResultTemplate>
-                        <img style="width: 50px;" src="@CheckPicture(person)" />
+                        <img style="width: 50px;" src="@CheckPicture(person)" alt="@person.Name" />
                         @person.Name
                     </MyResultTemplate>
                     <MyListTemplate>

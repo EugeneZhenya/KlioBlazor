@@ -2,6 +2,7 @@
 using KlioBlazor.Shared.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace KlioBlazor.Controllers
 {
@@ -14,6 +15,12 @@ namespace KlioBlazor.Controllers
         public KeywordsController(ApplicationDbContext context)
         {
             this.context = context;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<List<Keyword>>> Get()
+        {
+            return await context.Keywords.ToListAsync();
         }
 
         [HttpPost]

@@ -3,6 +3,7 @@ using KlioBlazor.Helpers;
 using KlioBlazor.Shared.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace KlioBlazor.Controllers
 {
@@ -17,6 +18,12 @@ namespace KlioBlazor.Controllers
         {
             this.context = context;
             this.fileStorageService = fileStorageService;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<List<Genre>>> Get()
+        {
+            return await context.Genres.ToListAsync();
         }
 
         [HttpPost]

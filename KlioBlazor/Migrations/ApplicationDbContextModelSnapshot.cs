@@ -39,7 +39,7 @@ namespace KlioBlazor.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("KlioBlazor.Shared.Entities.Country", b =>
@@ -62,7 +62,7 @@ namespace KlioBlazor.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Countries");
+                    b.ToTable("Countries", (string)null);
                 });
 
             modelBuilder.Entity("KlioBlazor.Shared.Entities.Creator", b =>
@@ -93,7 +93,7 @@ namespace KlioBlazor.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("Creators");
+                    b.ToTable("Creators", (string)null);
                 });
 
             modelBuilder.Entity("KlioBlazor.Shared.Entities.Genre", b =>
@@ -113,7 +113,7 @@ namespace KlioBlazor.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Genres");
+                    b.ToTable("Genres", (string)null);
                 });
 
             modelBuilder.Entity("KlioBlazor.Shared.Entities.Keyword", b =>
@@ -133,7 +133,7 @@ namespace KlioBlazor.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Keywords");
+                    b.ToTable("Keywords", (string)null);
                 });
 
             modelBuilder.Entity("KlioBlazor.Shared.Entities.Movie", b =>
@@ -181,7 +181,7 @@ namespace KlioBlazor.Migrations
 
                     b.HasIndex("PatitionId");
 
-                    b.ToTable("Movies");
+                    b.ToTable("Movies", (string)null);
                 });
 
             modelBuilder.Entity("KlioBlazor.Shared.Entities.MovieInfo", b =>
@@ -210,7 +210,7 @@ namespace KlioBlazor.Migrations
 
                     b.HasIndex("MovieId");
 
-                    b.ToTable("MovieInfos");
+                    b.ToTable("MovieInfos", (string)null);
                 });
 
             modelBuilder.Entity("KlioBlazor.Shared.Entities.MoviesActors", b =>
@@ -238,7 +238,7 @@ namespace KlioBlazor.Migrations
 
                     b.HasIndex("PersonId");
 
-                    b.ToTable("MoviesActors");
+                    b.ToTable("MoviesActors", (string)null);
                 });
 
             modelBuilder.Entity("KlioBlazor.Shared.Entities.MoviesCountries", b =>
@@ -256,7 +256,7 @@ namespace KlioBlazor.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("MoviesCountries");
+                    b.ToTable("MoviesCountries", (string)null);
                 });
 
             modelBuilder.Entity("KlioBlazor.Shared.Entities.MoviesCreators", b =>
@@ -274,7 +274,7 @@ namespace KlioBlazor.Migrations
 
                     b.HasIndex("CreatorID");
 
-                    b.ToTable("MoviesCreators");
+                    b.ToTable("MoviesCreators", (string)null);
                 });
 
             modelBuilder.Entity("KlioBlazor.Shared.Entities.MoviesGenres", b =>
@@ -292,7 +292,7 @@ namespace KlioBlazor.Migrations
 
                     b.HasIndex("GenreId");
 
-                    b.ToTable("MoviesGenres");
+                    b.ToTable("MoviesGenres", (string)null);
                 });
 
             modelBuilder.Entity("KlioBlazor.Shared.Entities.MoviesKeywords", b =>
@@ -310,7 +310,7 @@ namespace KlioBlazor.Migrations
 
                     b.HasIndex("KeywordId");
 
-                    b.ToTable("MoviesKeywords");
+                    b.ToTable("MoviesKeywords", (string)null);
                 });
 
             modelBuilder.Entity("KlioBlazor.Shared.Entities.Partition", b =>
@@ -335,7 +335,7 @@ namespace KlioBlazor.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Partitions");
+                    b.ToTable("Partitions", (string)null);
                 });
 
             modelBuilder.Entity("KlioBlazor.Shared.Entities.Person", b =>
@@ -373,7 +373,7 @@ namespace KlioBlazor.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("People");
+                    b.ToTable("People", (string)null);
                 });
 
             modelBuilder.Entity("KlioBlazor.Shared.Entities.Creator", b =>

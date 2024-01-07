@@ -1,6 +1,10 @@
 ﻿@page "/movies/create"
 @inject NavigationManager NavManager
 @inject IMoviesRepository moviesRepository
+@inject ICountryRepository countryRepository
+@inject IGenreRepository genreRepository
+@inject ICategoryRepository categoryRepository
+@inject IPartitionRepository partitionRepository
 
 <PageTitle>@allMeta.Title</PageTitle>
 
@@ -27,9 +31,12 @@
                             <h5 class="title">Додати відео</h5>
                         </div>
                         <div class="contact-form">
-                            <MovieForm Movie="Movie" OnValidSubmit="SaveMovie"
-                                NotSelectedGenres="NotSelectedGenres" NotSelectedCountries="NotSelectedCountries"
-                                CategoryList="CategoryList" AllPartitions="AllPartitions" />
+                            @if (NotSelectedCountries != null)
+                            {
+                                <MovieForm Movie="Movie" OnValidSubmit="SaveMovie"
+                                           NotSelectedGenres="NotSelectedGenres" NotSelectedCountries="NotSelectedCountries"
+                                           CategoryList="CategoryList" AllPartitions="AllPartitions" />
+                            }
                         </div>
                     </div>
                 </div>
@@ -38,37 +45,13 @@
     </section>
 <!-- contact-area-end -->
 
-    @code {
+@code {
     OpenGraphModel allMeta = new OpenGraphModel();
     private Movie Movie = new Movie();
-    private List<Country> NotSelectedCountries = new List<Country>()
-    {
-        new Country() {Id = 1, Name = "Україна"},
-        new Country() {Id = 1, Name = "США"},
-        new Country() {Id = 1, Name = "Данія"}
-    };
-    private List<Genre> NotSelectedGenres = new List<Genre>()
-    {
-        new Genre() {Id = 1, Name = "Бойовик"},
-        new Genre() {Id = 1, Name = "Комедія"},
-        new Genre() {Id = 1, Name = "Драма"}
-    };
-    private List<Category> CategoryList = new List<Category>() {
-        new Category { Id = 1, Name = "Фільми" },
-        new Category { Id = 2, Name = "Мультфільми" },
-        new Category { Id = 3, Name = "Історія" }
-    };
-    private List<Partition> AllPartitions = new List<Partition>() {
-        new Partition { Id = 1, Name = "Розділ 1", CategoryId = 1 },
-        new Partition { Id = 2, Name = "Розділ 2", CategoryId = 1 },
-        new Partition { Id = 3, Name = "Розділ 3", CategoryId = 1 },
-        new Partition { Id = 4, Name = "Розділ 4", CategoryId = 2 },
-        new Partition { Id = 5, Name = "Розділ 5", CategoryId = 2 },
-        new Partition { Id = 6, Name = "Розділ 6", CategoryId = 3 },
-        new Partition { Id = 7, Name = "Розділ 7", CategoryId = 3 },
-        new Partition { Id = 8, Name = "Розділ 8", CategoryId = 3 },
-        new Partition { Id = 9, Name = "Розділ 9", CategoryId = 3 }
-    };
+    private List<Country> NotSelectedCountries;
+    private List<Genre> NotSelectedGenres;
+    private List<Category> CategoryList;
+    private List<Partition> AllPartitions;
 
     protected async override Task OnInitializedAsync()
     {
@@ -93,6 +76,18 @@
         allMeta.ImageWidth2 = 750;
         allMeta.ImageHeight2 = 750;
         allMeta.ImageType2 = "image/png";
+
+        try
+        {
+            NotSelectedCountries = await countryRepository.GetCountries();
+            NotSelectedGenres = await genreRepository.GetGenres();
+            CategoryList = await categoryRepository.GetCategories();
+            AllPartitions = await partitionRepository.GetPartitions();
+        }
+        catch (Exception ex)
+        {
+            
+        }
     }
 
     private async Task SaveMovie()
