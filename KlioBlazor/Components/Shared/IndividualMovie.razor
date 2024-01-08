@@ -1,10 +1,10 @@
 ﻿<div class="movie-item mb-50" style="width: 380px; margin-right: 30px;">
     <div class="section-title text-center text-lg-start">
-        <span class="sub-title">Історія</span>
+        <span class="sub-title">Movie.Partition.Category.Name</span>
     </div>
     <div class="movie-poster">
         <a href="@movieUrl">
-            <img src="@Movie.Poster" alt="@Movie.Title" />
+            <img src="@($"{appState.KlioContentUrl}movies/{Movie.Id}/cover.jpg")" alt="@Movie.Title" />
         </a>
     </div>
     <div class="movie-content">
@@ -19,10 +19,10 @@
                 </li>
                 <li>
                     <span class="duration">
-                        <i class="fa-solid fa-clock"></i> 28 хв
+                        <i class="fa-solid fa-clock"></i> @StringUtilities.SecondsToMinutes(Movie.Duration)
                     </span>
                     <span class="rating">
-                        <i class="fa-solid fa-thumbs-up"></i> 3.5
+                        <i class="fa-solid fa-thumbs-up"></i> @Movie.ViewCounter
                     </span>
                 </li>
             </ul>
@@ -35,6 +35,7 @@
 </div>
 
 @code {
+    [CascadingParameter] public AppState appState { get; set; }
     [Parameter] public Movie Movie { get; set; }
     [Parameter] public EventCallback<Movie> DeleteMovie { get; set; }
     private string movieUrl = string.Empty;

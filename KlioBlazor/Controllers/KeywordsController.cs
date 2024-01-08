@@ -23,6 +23,13 @@ namespace KlioBlazor.Controllers
             return await context.Keywords.ToListAsync();
         }
 
+        [HttpGet("search/{searchText}")]
+        public async Task<ActionResult<List<Keyword>>> FilterByWord(string searchText)
+        {
+            if (string.IsNullOrWhiteSpace(searchText)) { return new List<Keyword>(); }
+            return await context.Keywords.Where(x => x.Word.Contains(searchText)).Take(5).ToListAsync();
+        }
+
         [HttpPost]
         public async Task<ActionResult<int>> Post(Keyword keyword)
         {

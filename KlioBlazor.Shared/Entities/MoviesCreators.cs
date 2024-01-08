@@ -10,8 +10,8 @@ namespace KlioBlazor.Shared.Entities
     {
         public int MovieId { get; set; }
         public int CreatorID { get; set; }
-        public Movie Movie { get; set; }
-        public Creator Creator { get; set; }
+        public Movie? Movie { get; set; }
+        public Creator? Creator { get; set; }
         public int Order { get; set; }
     }
 }

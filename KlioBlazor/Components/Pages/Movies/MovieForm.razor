@@ -1,4 +1,8 @@
-﻿<EditForm Model="Movie" OnValidSubmit="OnDataAnnotationsVallidated" FormName="MovieForm">
+﻿@inject IPersonRepository personRepository
+@inject IKeywordRepository keywordRepository
+@inject ICreatorRepository creatorRepository
+
+<EditForm EditContext="editContext" FormName="MovieForm">
     <div class="row mb-2">
         <DataAnnotationsValidator />
         <ValidationSummary style="color: #fd0e30;" />
@@ -37,6 +41,20 @@
                     <InputCheckbox @bind-Value="@Movie.HasTrailer" style="width: auto" />
                     <label>Має вістовика</label>
                 </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <label style="width: 100%">Вікові обмеження</label>
+                <InputNumber @bind-Value="@Movie.AgeLimit" />
+            </div>
+            <div class="col-md-4">
+                <label style="width: 100%">Тривалість (в секундах)</label>
+                <InputNumber @bind-Value="@Movie.Duration" />
+            </div>
+            <div class="col-md-4">
+                <label style="width: 100%">Кількість переглядів</label>
+                <InputNumber @bind-Value="@Movie.ViewCounter" />
             </div>
         </div>
         <div class="row">
@@ -82,7 +100,7 @@
                             <p style="width: 37%; margin-bottom: 0;">@person.Name</p>
                             <p style="width: 3%; margin-bottom: 0;">&nbsp;/&nbsp;</p>
                             <div style="width: 50%;">
-                                <input type="text" placeholder="Персонаж" @bind="person.Character" style="padding: inherit; margin-bottom: auto;" />
+                                <input type="text" placeholder="Роль" @bind="person.Character" style="padding: inherit; margin-bottom: auto;" />
                             </div>
                         </div>
                     </MyListTemplate>
@@ -106,8 +124,9 @@
             <AdditionalInfo ListInfo="MovieInfos" AddInfo="@((MovieInfo newItem) => AddInfo(newItem))" DelInfo="@((MovieInfo item) => DelInfo(item))" EditInfo="@((MovieInfo item) => EditInfo(item))" />
         </div>
     </div>
-    <button class="btn" type="submit">Зберегти</button>
 </EditForm>
+
+<button class="btn" @onclick="SubmitMovieForm">Зберегти</button>
 
 @code {
     [CascadingParameter] public AppState appState {get; set;}
@@ -132,6 +151,7 @@
     private int selectedCategory;
     private int selectedPartition;
     private List<Partition> partitionList = new List<Partition>();
+    private EditContext? editContext;
 
     protected override void OnInitialized()
     {
@@ -158,6 +178,8 @@
             backUrl = Movie.Background;
             Movie.Background = null;
         }
+
+        editContext = new EditContext(Movie);
     }
 
     private void OnSelectedCover(string imageBase64)
@@ -174,49 +196,41 @@
 
     private async Task<IEnumerable<Person>> SearchPerson(string searchText)
     {
-        return new List<Person>()
-        { 
-            new Person() { Id = 1, Name = "Ірина Фаріон", IsFemale = true },
-            new Person() { Id = 2, Name = "Євген Бакланов", IsFemale = false }
-        };
+        return await personRepository.GetPeopleByName(searchText);
     }
 
     private async Task<IEnumerable<Creator>> SearchCreator(string searchText)
     {
-        return new List<Creator>()
-        {
-            new Creator() { Id = 1, Title = "Київнаукфільм" },
-            new Creator() { Id = 2, Title = "BBC" }
-        };
+        return await creatorRepository.GetCreatorByTitle(searchText);
     }
 
     private async Task<IEnumerable<Keyword>> SearchKeyword(string searchText)
     {
-        return new List<Keyword>()
-        {
-            new Keyword() { Id = 1, Word = "Фантастика" },
-            new Keyword() { Id = 2, Word = "Історія" },
-            new Keyword() { Id = 3, Word = "Жахливе вбивство" }
-        };
+        return await keywordRepository.GetKeywordByWord(searchText);
     }
 
-    private async Task OnDataAnnotationsVallidated()
+    private async Task SubmitMovieForm()
     {
-        Movie.PatitionId = selectedPartition;
+        var validationResult = editContext.Validate();
 
-        Movie.MoviesCountries = countriesSelected.Select(x => new MoviesCountries { CountryId = int.Parse(x.Key) }).ToList();
-        Movie.MoviesGenres = genresSelected.Select(x => new MoviesGenres { GenreId = int.Parse(x.Key) }).ToList();
+        if (validationResult)
+        {
+            Movie.PatitionId = selectedPartition;
 
-        Movie.MoviesActors = SelectedActors.Select(x => new MoviesActors { PersonId= x.Id, Character = x.Character }).ToList();
-        Movie.MoviesCreators = SelectedCreators.Select(x => new MoviesCreators { CreatorID = x.Id }).ToList();
-        Movie.MoviesKeywords = SelectedKeywords.Select(x => new MoviesKeywords { KeywordId = x.Id }).ToList();
+            Movie.MoviesCountries = countriesSelected.Select(x => new MoviesCountries { CountryId = int.Parse(x.Key) }).ToList();
+            Movie.MoviesGenres = genresSelected.Select(x => new MoviesGenres { GenreId = int.Parse(x.Key) }).ToList();
 
-        Movie.MovieInfos = MovieInfos;
+            Movie.MoviesActors = SelectedActors.Select(x => new MoviesActors { PersonId = x.Id, Character = x.Character }).ToList();
+            Movie.MoviesCreators = SelectedCreators.Select(x => new MoviesCreators { CreatorID = x.Id }).ToList();
+            Movie.MoviesKeywords = SelectedKeywords.Select(x => new MoviesKeywords { KeywordId = x.Id }).ToList();
 
-        if (!string.IsNullOrWhiteSpace(Movie.Poster)) { coverUrl = null; }
-        if (!string.IsNullOrWhiteSpace(Movie.Background)) { backUrl = null; }
+            Movie.MovieInfos = MovieInfos;
 
-        await OnValidSubmit.InvokeAsync(null);
+            if (!string.IsNullOrWhiteSpace(Movie.Poster)) { coverUrl = null; }
+            if (!string.IsNullOrWhiteSpace(Movie.Background)) { backUrl = null; }
+
+            await OnValidSubmit.InvokeAsync(null);
+        }
     }
 
     private string CheckPicture(Person person)
@@ -253,6 +267,7 @@
     private void AddInfo(MovieInfo item)
     {
         MovieInfos.Add(item);
+        StateHasChanged();
     }
 
     private void DelInfo(MovieInfo item)

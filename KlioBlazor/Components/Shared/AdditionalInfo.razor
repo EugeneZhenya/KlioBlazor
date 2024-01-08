@@ -1,9 +1,11 @@
 ﻿<div class="row">
     <div class="col-md-3">
         <select class="form-control mb-1" @bind="@NewInfo.Info">
-            <option selected value="">-- Інформація</option>
-            <option value="Value1">Value 1</option>
-            <option value="Value2">Value 2</option>
+            <option value="">-- Інформація</option>
+            @foreach (var option in movieProperties)
+            {
+                <option value="@option">@option</option>
+            }
         </select>
     </div>
     <div class="col-md-3">
@@ -21,9 +23,11 @@
     {
         <div class="col-md-3">
             <select class="form-control mb-1" @bind="@info.Info" disabled="@IsDiabled">
-                <option selected value="">-- Інформація</option>
-                <option value="Value1">Value 1</option>
-                <option value="Value2">Value 2</option>
+                <option value="">-- Інформація</option>
+                @foreach (var option in movieProperties)
+                {
+                    <option value="@option">@option</option>
+                }
             </select>
         </div>
         <div class="col-md-3">
@@ -45,6 +49,7 @@
     [Parameter] public EventCallback<MovieInfo> DelInfo { get; set; }
     [Parameter] public EventCallback<MovieInfo> EditInfo { get; set; }
     public MovieInfo NewInfo { get; set; } = new MovieInfo();
+    public string[] movieProperties = ["OriginalLanguage", "Youtube", "KlioYoutube"];
     private bool IsDiabled = true;
 
     private async Task InfoComplete(MovieInfo movieInfo)

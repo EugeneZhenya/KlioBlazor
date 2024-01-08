@@ -60,5 +60,11 @@ namespace KlioBlazor.Shared.Helpers
         }
 
         public static string DateToString(DateTime? dt, string format) => dt == null ? "---" : ((DateTime)dt).ToString(format);
+
+        public static string SecondsToMinutes(decimal seconds)
+        {
+            var minutes = Math.Round(seconds / 60, 0, MidpointRounding.AwayFromZero);
+            return minutes + " хв";
+        }
     }
 }

@@ -8,9 +8,9 @@ namespace KlioBlazor.Helpers
         {
             return new List<Movie>()
             {
-                new Movie() {Title = "Тарас Шевченко", ReleaseDate = new DateTime(2015, 3, 08), Poster = "content/movies/1/cover.jpg"},
-                new Movie() {Title = "Емма Андієвська: Зустріч у Львові 13 вересня", ReleaseDate = new DateTime(2013, 9, 13), Poster = "content/movies/2/cover.jpg"},
-                new Movie() {Title = "Battles and Brotherhood", ReleaseDate = new DateTime(2009, 8, 31), Poster = "content/movies/3/cover.jpg"}
+                new Movie() {Title = "Тарас Шевченко", ReleaseDate = new DateTime(2015, 3, 08), Poster = "https://raw.githubusercontent.com/EugeneZhenya/KlioMoviesContent/main/movies/1/cover.jpg"},
+                new Movie() {Title = "Емма Андієвська: Зустріч у Львові 13 вересня", ReleaseDate = new DateTime(2013, 9, 13), Poster = "https://raw.githubusercontent.com/EugeneZhenya/KlioMoviesContent/main/movies/1/cover.jpg"},
+                new Movie() {Title = "Battles and Brotherhood", ReleaseDate = new DateTime(2009, 8, 31), Poster = "https://raw.githubusercontent.com/EugeneZhenya/KlioMoviesContent/main/movies/1/cover.jpg"}
             };
         }
     }

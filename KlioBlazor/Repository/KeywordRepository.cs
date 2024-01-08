@@ -27,6 +27,16 @@ namespace KlioBlazor.Repository
             return response.Response;
         }
 
+        public async Task<List<Keyword>> GetKeywordByWord(string word)
+        {
+            var response = await httpService.Get<List<Keyword>>($"{url}/search/{word}");
+            if (!response.Success)
+            {
+                throw new ApplicationException(await response.GetBody());
+            }
+            return response.Response;
+        }
+
         public async Task CreateKeyword(Keyword keyword)
         {
             var response = await httpService.Post(url, keyword);

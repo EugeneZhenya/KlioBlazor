@@ -6,5 +6,6 @@ namespace KlioBlazor.Repository
     {
         Task CreateCreator(Creator creator);
         Task<List<Creator>> GetCreators();
+        Task<List<Creator>> GetCreatorByTitle(string name);
     }
 }

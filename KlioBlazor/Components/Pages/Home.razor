@@ -1,7 +1,7 @@
 ﻿@page "/"
 @attribute [StreamRendering]
 @inject NavigationManager NavManager
-@inject IRepository repository
+@inject IMoviesRepository moviesRepository
 
 <PageTitle>@allMeta.Title</PageTitle>
 
@@ -9,16 +9,11 @@
 
 <BannerArea />
 
-<UpComingMovieArea Movies="movies" Title="Найпопулярніші фільми" Subtitle="Дивіться зараз" />
+<UpComingMovieArea Movies="moviesPopular" Title="Найпопулярніші фільми" Subtitle="Дивіться зараз" />
 
-<CustomTypeahead SearchMethod="SearchMethod">
-    <ResultTemplate>
-        @context
-    </ResultTemplate>
-</CustomTypeahead>
-
-    @code {
-    private List<Movie> movies;
+@code {
+    private List<Movie> moviesPopular;
+    private Movie lastMovie;
     OpenGraphModel allMeta = new OpenGraphModel();
 
     protected async override Task OnInitializedAsync()
@@ -45,14 +40,15 @@
         allMeta.ImageHeight2 = 750;
         allMeta.ImageType2 = "image/png";
 
-        // await Task.Delay(2000);
-        movies = repository.GetMovies();
-    }
-
-    private async Task<IEnumerable<string>> SearchMethod(string searchText)
-    {
-        await Task.Delay(2000);
-        if (searchText == "test") { return Enumerable.Empty<string>(); }
-        return new List<string>() { "Eugene", "Baklanov" };
+        try
+        {
+            var response = await moviesRepository.GetHomePageDTO();
+            lastMovie = response.LastMovie;
+            moviesPopular = response.MoviesPopular;
+        }
+        catch (Exception ex)
+        {
+            
+        }
     }
 }

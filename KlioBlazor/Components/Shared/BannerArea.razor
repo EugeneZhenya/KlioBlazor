@@ -1,5 +1,5 @@
 ﻿<!-- banner-area -->
-<section class="banner-area banner-bg" style="background-image: url('content/movies/1/background.jpg')">
+<section class="banner-area banner-bg" style="background-image: url('@(appState.KlioContentUrl + "movies/1/background.jpg")')">
     <div class="container custom-container">
         <div class="row">
             <div class="col-xl-6 col-lg-8">
@@ -35,5 +35,5 @@
 <!-- banner-area-end -->
 
 @code {
-
+    [CascadingParameter] public AppState appState { get; set; }
 }

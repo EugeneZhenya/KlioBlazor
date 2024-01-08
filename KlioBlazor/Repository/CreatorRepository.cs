@@ -27,6 +27,16 @@ namespace KlioBlazor.Repository
             return response.Response;
         }
 
+        public async Task<List<Creator>> GetCreatorByTitle(string name)
+        {
+            var response = await httpService.Get<List<Creator>>($"{url}/search/{name}");
+            if (!response.Success)
+            {
+                throw new ApplicationException(await response.GetBody());
+            }
+            return response.Response;
+        }
+
         public async Task CreateCreator(Creator creator)
         {
             var response = await httpService.Post(url, creator);

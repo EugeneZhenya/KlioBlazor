@@ -26,6 +26,13 @@ namespace KlioBlazor.Controllers
             return await context.Creators.ToListAsync();
         }
 
+        [HttpGet("search/{searchText}")]
+        public async Task<ActionResult<List<Creator>>> FilterByTitle(string searchText)
+        {
+            if (string.IsNullOrWhiteSpace(searchText)) { return new List<Creator>(); }
+            return await context.Creators.Where(x => x.Title.Contains(searchText)).Take(5).ToListAsync();
+        }
+
         [HttpPost]
         public async Task<ActionResult<int>> Post(Creator creator)
         {
