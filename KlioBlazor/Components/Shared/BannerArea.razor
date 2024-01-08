@@ -1,32 +1,56 @@
 ﻿<!-- banner-area -->
-<section class="banner-area banner-bg" style="background-image: url('@(appState.KlioContentUrl + "movies/1/background.jpg")')">
+<section class="banner-area banner-bg" style="background-image: url('@($"{appState.KlioContentUrl}movies/{ShowMovie.Id}/background.jpg")')">
     <div class="container custom-container">
         <div class="row">
             <div class="col-xl-6 col-lg-8">
                 <div class="banner-content">
-                    <h6 class="sub-title">Історія</h6>
                     <div class="section-title title-style-two">
-                        <span class="sub-title">Велич особистості</span>
+                        <span class="sub-title">@ShowMovie.Partition.Category.Name</span>
                     </div>
-                    <h2 class="title">Тарас <span>Шевченко</span></h2>
+                    <h6 class="sub-title">@ShowMovie.Partition.Name</h6>
+                    <h2 class="title">
+                        @for (int i = 0; i < SeparateTitle(ShowMovie.Title).Length; i++)
+                        {
+                            if (i % 2 == 0)
+                            {
+                                @SeparateTitle(ShowMovie.Title)[i]
+                            }
+                            else
+                            {
+                                <span>@SeparateTitle(ShowMovie.Title)[i]</span>
+                            }
+                        }
+                    </h2>
                     <div class="banner-meta">
                         <ul>
                             <li class="quality">
-                                <span style="color: lightgreen; border-color: lightgreen;">0+</span>
+                                <span style="@AgeLimitColor(ShowMovie.AgeLimit)">@ShowMovie.AgeLimit+</span>
                             </li>
                             <li class="category">
-                                <a href="">Біографічний,</a>
-                                <a href="">Телевізійний</a>
+                                @for (int i = 0; i < ShowMovie.MoviesGenres.Count; i++)
+                                {
+                                    if (i == ShowMovie.MoviesGenres.Count - 1)
+                                    {
+                                        <a href="genre/@ShowMovie.MoviesGenres[i].Genre.Id/@StringUtilities.Translit(ShowMovie.MoviesGenres[i].Genre.Name)">@ShowMovie.MoviesGenres[i].Genre.Name</a>
+                                    }
+                                    else
+                                    {
+                                        <a href="genre/@ShowMovie.MoviesGenres[i].Genre.Id/@StringUtilities.Translit(ShowMovie.MoviesGenres[i].Genre.Name)">@ShowMovie.MoviesGenres[i].Genre.Name,</a>
+                                    }
+                                }
                             </li>
                             <li class="release-time">
-                                <span><i class="fa-solid fa-calendar-days"></i> 2021</span>
-                                <span><i class="fa-solid fa-clock"></i> 28 хв</span>
+                                <span><i class="fa-solid fa-calendar-days"></i> @ShowMovie.ReleaseDate.Value.Year</span>
+                                <span><i class="fa-solid fa-clock"></i> @StringUtilities.SecondsToMinutes(ShowMovie.Duration)</span>
                             </li>
                         </ul>
                     </div>
-                    <a href="" class="banner-btn btn popup-video">
-                        <i class="fa-solid fa-play"></i> Вістовик
-                    </a>
+                    @if (ShowMovie.HasTrailer)
+                    {
+                        <a href="" class="banner-btn btn popup-video">
+                            <i class="fa-solid fa-play"></i> Вістовик
+                        </a>
+                    }
                 </div>
             </div>
         </div>
@@ -36,4 +60,35 @@
 
 @code {
     [CascadingParameter] public AppState appState { get; set; }
+    [Parameter] public Movie ShowMovie { get; set; }
+
+    string[] SeparateTitle(string title)
+    {
+        return StringUtilities.SeparateString(title);
+    }
+
+    string AgeLimitColor(int age)
+    {
+        string style = "color: lightgreen; border-color: lightgreen;";
+        switch (age)
+        {
+            case 12:
+                style = "color: sandybrown; border-color: sandybrown;";
+                break;
+
+            case 16:
+                style = "color: orange; border-color: orange;";
+                break;
+
+            case 18:
+                style = "color: maroon; border-color: maroon;";
+                break;
+
+            default:
+                style = "color: lightgreen; border-color: lightgreen;";
+                break;
+        }
+
+        return style;
+    }
 }

@@ -20,7 +20,17 @@ namespace KlioBlazor.Repository
 
         public async Task<HomePageDTO> GetHomePageDTO()
         {
-            var response = await httpService.Get<HomePageDTO>(url);
+            return await Get<HomePageDTO>(url);
+        }
+
+        public async Task<DetailsMovieDTO> GetDetailsMovieDTO(int id)
+        {
+            return await Get<DetailsMovieDTO>($"{url}/{id}");
+        }
+
+        private async Task<T> Get<T>(string url)
+        {
+            var response = await httpService.Get<T>(url);
             if (!response.Success)
             {
                 throw new ApplicationException(await response.GetBody());

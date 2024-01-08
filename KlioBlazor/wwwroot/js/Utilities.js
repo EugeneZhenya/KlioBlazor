@@ -27,6 +27,6 @@ function mobDropdownToggle(element) {
 }
 
 function playerInit(id, file, poster, title, autoplay) {
-    console.log('player');
+    console.log('player: ' + file );
     var player = new Playerjs({ id: id, file: file, poster: poster, title: title, autoplay: autoplay });
 }

@@ -26,14 +26,60 @@ namespace KlioBlazor.Controllers
         {
             var limit = 6;
 
-            var movieLast = await context.Movies.OrderByDescending(x => x.PublicDate).FirstOrDefaultAsync();
-            var moviesPopular = await context.Movies.OrderByDescending(x => x.ViewCounter).Take(limit).ToListAsync();
+            var movieLast = await context.Movies
+                .OrderByDescending(x => x.PublicDate)
+                .Include(x => x.Partition).ThenInclude(x => x.Category)
+                .FirstOrDefaultAsync();
+
+            var moviesPopular = await context.Movies
+                .OrderByDescending(x => x.ViewCounter)
+                .Include(x => x.Partition)
+                .Take(limit)
+                .ToListAsync();
 
             var response = new HomePageDTO();
             response.LastMovie = movieLast;
             response.MoviesPopular = moviesPopular;
 
             return response;
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<DetailsMovieDTO>> Get(int id)
+        {
+            var movie = await context.Movies.Where(x => x.Id == id)
+                .Include(x => x.Partition).ThenInclude(x => x.Category)
+                .Include(x => x.MoviesGenres).ThenInclude(x => x.Genre)
+                .Include(x => x.MoviesActors).ThenInclude(x => x.Person)
+                .Include(x => x.MoviesCountries).ThenInclude(x => x.Country)
+                .Include(x => x.MoviesCreators).ThenInclude(x => x.Creator)
+                .Include(x => x.MovieInfos)
+                .FirstOrDefaultAsync();
+
+            if (movie == null) { return NotFound(); }
+
+            movie.MoviesActors = movie.MoviesActors.OrderBy(x => x.Order).ToList();
+            movie.MoviesGenres = movie.MoviesGenres.OrderBy(x => x.Order).ToList();
+            movie.MoviesCreators = movie.MoviesCreators.OrderBy(x => x.Order).ToList();
+            movie.MoviesCountries = movie.MoviesCountries.OrderBy(x => x.Order).ToList();
+
+            var model = new DetailsMovieDTO();
+            model.Movie = movie;
+            model.Genres = movie.MoviesGenres.Select(x => x.Genre).ToList();
+            model.Creators = movie.MoviesCreators.Select(x => x.Creator).ToList();
+            model.Countries = movie.MoviesCountries.Select(x => x.Country).ToList();
+            model.Actors = movie.MoviesActors.Select(x =>
+                new Person
+                {
+                    Name = x.Person.Name,
+                    Id = x.Person.Id,
+                    Character = x.Person.Character,
+                    HasPicture = x.Person.HasPicture,
+                    IsFemale = x.Person.IsFemale
+                }
+            ).ToList();
+
+            return model;
         }
 
         [HttpPost]

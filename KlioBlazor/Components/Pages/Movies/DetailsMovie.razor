@@ -2,40 +2,228 @@
 @page "/movie/{MovieId:int}/{MovieName}"
 @page "/Home/View/{MovieId:int}"
 @inject NavigationManager NavManager
+@inject IMoviesRepository moviesRepository
+@inject IJSRuntime js
 
+<PageTitle>@allMeta.Title</PageTitle>
 
-<h3>DetailsMovie</h3>
+<MetaContent MetaData="allMeta" />
+
+@if (model == null)
+{
+    <div id="preloader" style="height: 75vh;">
+        <div id="loading-center">
+            <div id="loading-center-absolute">
+                <img src="img/preloader.svg" alt="">
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <!-- movie-details-area -->
+    <section class="movie-details-area" style="background-image: url('@($"{appState.KlioContentUrl}movies/{MovieId}/background.jpg")')">
+        <div class="movie-details-overlay">
+            <div class="container">
+                <div class="row align-items-center position-relative">
+                    <div class="col-xl-6 col-lg-6">
+                        <div class="movie-details-content">
+                            <div class="section-title title-style-two">
+                                <span class="sub-title">@model.Movie.Partition.Category.Name</span>
+                            </div>
+                            <h5><a href="partition/@model.Movie.Partition.Id/@StringUtilities.Translit(model.Movie.Partition.Name)">@model.Movie.Partition.Name</a></h5>
+                            <h2>
+                                @for (int i = 0; i < SeparateTitle(model.Movie.Title).Length; i++)
+                                {
+                                    if (i % 2 == 0)
+                                    {
+                                        @SeparateTitle(model.Movie.Title)[i]
+                                    }
+                                    else
+                                    {
+                                        <span>@SeparateTitle(model.Movie.Title)[i]</span>
+                                    }
+                                }
+                            </h2>
+                            <div class="banner-meta">
+                                <ul>
+                                    <li class="quality">
+                                        <span style="@AgeLimitColor(model.Movie.AgeLimit)">@model.Movie.AgeLimit+</span>
+                                    </li>
+                                    <li class="category">
+                                        @for (int i = 0; i < model.Genres.Count; i++)
+                                        {
+                                            if (i < model.Genres.Count - 1)
+                                            {
+                                                @linkGenre(model.Genres[i])<text>,</text>
+                                            }
+                                            else
+                                            {
+                                                @linkGenre(model.Genres[i])
+                                            }
+                                        }
+                                    </li>
+                                    <li class="release-time">
+                                        <span><i class="fa-solid fa-calendar-days"></i> @model.Movie.ReleaseDate.Value.Year</span>
+                                        <span><i class="fa-solid fa-clock"></i> @StringUtilities.SecondsToMinutes(model.Movie.Duration)</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="banner-meta">
+                                <ul>
+                                    <li class="category">
+                                        @foreach (var country in model.Countries)
+                                        {
+                                            <img src="@($"{appState.KlioContentUrl}countries/{country.FlagUrl}")" alt="@country.Name" style="width: 25px; padding-right: 5px;" />
+                                            <a href="country/@country.Id/@StringUtilities.Translit(@country.Name)">@country.Name</a>
+                                        }
+                                    </li>
+                                </ul>
+                            </div>
+                            <RenderMarkdown MarkdownContent="@model.Movie.Summary" />
+                            <div class="movie-details-prime">
+                                <ul style="min-width: 100%;">
+                                    <li class="share"><a href="#"><i class="fa-solid fa-share-nodes"></i> Поширити</a></li>
+                                    <li class="streaming">
+                                        <!--
+                                        <h6>Prime Video</h6>
+                                        <span>Streaming Channels</span>
+                                        -->
+                                        @foreach (var creator in model.Creators)
+                                        {
+                                            <img src="@($"{appState.KlioContentUrl}creators/{creator.LogoUrl}")" alt="@creator.Title" style="width: 50px;" title="@creator.Title" />
+                                        }
+                                    </li>
+                                    @if (model.Movie.HasTrailer)
+                                    {
+                                        <li class="watch">
+                                            <a href="https://www.youtube.com/watch?v=R2gbPxeNk2E" class="btn popup-video"><i class="fa-solid fa-play"></i> Вістовик</a>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-6 col-lg-6" style="align-self: start; margin-top: 10px;">
+                        <div class="movie-details-img">
+                            <div id="player"></div>
+                            <div style="text-align: center; margin-top: 20px;">
+                                <i>Ця відеопрограма подається на цьому сайті виключно для ознайомлення. Тому якість зображення та звуку навмисно занижена. Після ознайомлення, будь ласка, придбайте цю відеопрограмму в офіційних розповсюджувачів.</i>
+                            </div>
+                        </div>
+                    </div>
+                    @if (!string.IsNullOrEmpty(downloadUrl))
+                    {
+                        <div class="movie-details-btn" style="display: block; text-align: right;">
+                            <a href="@downloadUrl" class="download-btn" download style="position: unset; bottom: 0; right: 0; transform: unset; padding: 20px 35px; display: inline-block; margin-left: 15px;" target="_blank">Завантажити <img src="img/download.svg" alt="Завантажити" style="transform: unset;"></a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- movie-details-area-end -->
+
+    <section class="blog-area blog-bg" style="background-image: url("img/blog_bg.jpg");">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="blog-post-item">
+                        <div class="blog-post-content">
+                            <h2 class="title">Знімальна група</h2>
+                            @foreach (var actor in model.Actors)
+                            {
+                                
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
 
 @code {
+    [CascadingParameter] public AppState appState { get; set; }
     [Parameter] public int MovieId { get; set; }
     [Parameter] public string MovieName { get; set; }
     OpenGraphModel allMeta = new OpenGraphModel();
+    DetailsMovieDTO model;
+    private string downloadUrl = string.Empty;
+    private RenderFragment<Genre> linkGenre = (genre) => @<a href="genre/@genre.Id/@StringUtilities.Translit(genre.Name)">@genre.Name</a>;
 
-    protected override void OnInitialized()
+    protected async override Task OnInitializedAsync()
     {
-        allMeta.Title = "Український медійний архів 'KLIO'";
-        allMeta.Description = "Медійний архів 'KLIO': Музика, література, історія, фільми, мультфільми, серіали, мультсеріали, наживо, пряма трансляція, дивитися он-лайн";
+        model = await moviesRepository.GetDetailsMovieDTO(MovieId);
+
+        allMeta.Title = model.Movie.Title + " :: Український медійний архів 'KLIO'";
+        allMeta.Description = model.Movie.Title + " дивитися он-лайн, " + model.Movie.Summary;
         allMeta.Robots = "all";
         allMeta.Author = "Eugene Baklanov";
         allMeta.Keywords = "Klio, архів, video, відео, історія, література, політика, музика, music, наживо, трансляція, пряма трансляція, дивитися он-лайн, фільм, серіал, сезон, епізод, мультфільм, мультсерал";
         allMeta.Type = "article";
-        allMeta.Image = (NavManager.BaseUri + "img/WatchTVMockup.jpg").Replace("https://", "http://");
-        allMeta.SecureImage = (NavManager.BaseUri + "img/WatchTVMockup.jpg").Replace("http://", "https://");
-        allMeta.ImageWidth = 1920;
-        allMeta.ImageHeight = 1077;
+        allMeta.Image = $"{appState.KlioContentUrl}movies/{MovieId}/cover.jpg";
+        allMeta.SecureImage = allMeta.Image;
+        allMeta.ImageWidth = 1280;
+        allMeta.ImageHeight = 720;
         allMeta.ImageType = "image/jpeg";
         allMeta.Url = NavManager.Uri;
         allMeta.SiteName = "Медійний архів 'KLIO'";
         allMeta.Locale = "uk_UA";
         allMeta.FBAdmins = "100007730161243,100002204709179";
         allMeta.FBAppId = "885986785210347";
-        allMeta.Image2 = (NavManager.BaseUri + "img/logo_750_transp.png").Replace("https://", "http://");
-        allMeta.SecureImage2 = (NavManager.BaseUri + "img/logo_750_transp.png").Replace("http://", "https://");
-        allMeta.ImageWidth2 = 750;
-        allMeta.ImageHeight2 = 750;
-        allMeta.ImageType2 = "image/png";
+        allMeta.Image2 = $"{appState.KlioContentUrl}movies/{MovieId}/background.jpg";
+        allMeta.SecureImage2 = allMeta.Image2;
+        allMeta.ImageWidth2 = 1920;
+        allMeta.ImageHeight2 = 1080;
+        allMeta.ImageType2 = "image/jpeg";
+
+        if (model.Movie.MovieInfos.Where(x => x.Info == "DownloadUrl").FirstOrDefault() != null)
+        {
+            downloadUrl = model.Movie.MovieInfos.Where(x => x.Info == "DownloadUrl").FirstOrDefault().Text;
+        };
 
         Console.WriteLine($"The Id of the movie is {MovieId}");
         Console.WriteLine($"The Name of the movie is {MovieName}");
+    }
+
+    protected override async void OnAfterRender(bool firstRender)
+    {
+        await InitPlayer();
+    }
+
+    async Task InitPlayer()
+    {
+        await js.InvokeVoidAsync("playerInit", "player", $"{appState.KlioContentUrl}movies/{MovieId}/index.m3u8", $"{appState.KlioContentUrl}movies/{MovieId}/cover.jpg", "", 0);
+    }
+
+    string[] SeparateTitle(string title)
+    {
+        return StringUtilities.SeparateString(title);
+    }
+
+    string AgeLimitColor(int age)
+    {
+        string style = "color: lightgreen; border-color: lightgreen;";
+        switch (age)
+        {
+            case 12:
+                style = "color: sandybrown; border-color: sandybrown;";
+                break;
+
+            case 16:
+                style = "color: orange; border-color: orange;";
+                break;
+
+            case 18:
+                style = "color: maroon; border-color: maroon;";
+                break;
+
+            default:
+                style = "color: lightgreen; border-color: lightgreen;";
+                break;
+        }
+
+        return style;
     }
 }

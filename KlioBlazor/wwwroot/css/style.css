@@ -2108,7 +2108,7 @@ label {
 .movie-details-area {
     background-position: top center;
     background-size: cover;
-    padding: 175px 0 120px;
+    /* padding: 175px 0 120px; */
 }
 
 .movie-details-img {
@@ -3693,4 +3693,13 @@ input::file-selector-button {
         transform: scale(1.0);
         opacity: 0;
     }
+}
+
+.movie-details-overlay {
+    width: 100%;
+    height: 100%;
+    background: #04081a;
+    background: -webkit-linear-gradient(to right, rgba(4, 8, 26, .66), transparent);
+    background: linear-gradient(to right, #111, rgba(4, 8, 26, .55), black);
+    padding: 175px 0 120px;
 }
