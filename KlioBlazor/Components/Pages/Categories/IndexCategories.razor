@@ -8,7 +8,10 @@
 
 <MetaContent MetaData="allMeta" />
 
-<BannerArea />
+@if (lastMovie != null)
+{
+    <BannerArea ShowMovie="lastMovie" ShowMovieCountries="lastMovieCountries" />
+}
 
 @if (string.IsNullOrWhiteSpace(CatName))
 {
@@ -36,10 +39,10 @@
                                                     <li style="height: 75px;">
                                                         <div class="row" style="align-items: stretch; width: 100%; float: left;">
                                                             <div style="width: 65%; align-self: center;">
-                                                                <a href="@GetCatUrl(item)">@item.Name</a> <span>12</span>
+                                                                <a href="@GetCatUrl(item)">@item.Name</a> <span>@item.Partitions.Count() розд.</span>
                                                             </div>
                                                             <div style="width: 35%; text-align: right;">
-                                                                <a class="btn" onmouseover="this.style.color='#1e1b29';" onmouseout="this.style.color='#c8c8c8';">Редагувати</a>
+                                                                <a class="btn" onmouseover="this.style.color='#1e1b29';" onmouseout="this.style.color='#c8c8c8';" href="category/edit/@item.Id">Редагувати</a>
                                                                 <button class="btn">Видалити</button>
                                                             </div>
                                                         </div>
@@ -74,7 +77,9 @@
     [Parameter] public string CatName { get; set; }
     [Parameter] public string CatSubName { get; set; }
     OpenGraphModel allMeta = new OpenGraphModel();
-    List<Category> Categories;
+    private Movie lastMovie;
+    private List<Country> lastMovieCountries;
+    private List<Category> Categories;
 
     protected async override Task OnInitializedAsync()
     {
@@ -102,7 +107,10 @@
 
         try
         {
-            Categories = await categoryRepository.GetCategories();
+            var response = await categoryRepository.GetIndexCategoriesDTO();
+            lastMovie = response.LastMovie;
+            lastMovieCountries = response.LastMovieCountries;
+            Categories = response.AllCategories;
         }
         catch (Exception ex)
         {

@@ -9,7 +9,7 @@
 
 @if (lastMovie != null)
 {
-    <BannerArea ShowMovie="lastMovie" />
+    <BannerArea ShowMovie="lastMovie" ShowMovieCountries="lastMovieCountries" />
 }
 
 <UpComingMovieArea Movies="moviesPopular" Title="Найпопулярніші фільми" Subtitle="Дивіться зараз" />
@@ -17,6 +17,7 @@
 @code {
     private List<Movie> moviesPopular;
     private Movie lastMovie;
+    private List<Country> lastMovieCountries;
     OpenGraphModel allMeta = new OpenGraphModel();
 
     protected async override Task OnInitializedAsync()
@@ -48,6 +49,7 @@
             var response = await moviesRepository.GetHomePageDTO();
             lastMovie = response.LastMovie;
             moviesPopular = response.MoviesPopular;
+            lastMovieCountries = response.LastMovieCountries;
         }
         catch (Exception ex)
         {

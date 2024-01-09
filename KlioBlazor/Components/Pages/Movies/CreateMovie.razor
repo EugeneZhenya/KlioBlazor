@@ -81,8 +81,8 @@
         {
             NotSelectedCountries = await countryRepository.GetCountries();
             NotSelectedGenres = await genreRepository.GetGenres();
-            CategoryList = await categoryRepository.GetCategories();
             AllPartitions = await partitionRepository.GetPartitions();
+            CategoryList = await categoryRepository.GetAllCategories();
         }
         catch (Exception ex)
         {

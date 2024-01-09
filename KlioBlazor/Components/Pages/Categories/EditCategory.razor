@@ -1,5 +1,6 @@
 ﻿@page "/category/edit/{CategoryId:int}"
 @inject NavigationManager NavManager
+@inject ICategoryRepository categoryRepository
 
 <PageTitle>@allMeta.Title</PageTitle>
 
@@ -67,14 +68,12 @@
         allMeta.ImageHeight2 = 750;
         allMeta.ImageType2 = "image/png";
 
-        category = new Category() { Id = CategoryId, Name = "Історія", Description = "Історичні телефільми" };
+        category = await categoryRepository.GetCategory(CategoryId);
     }
 
     private void Edit()
     {
-        Console.WriteLine("Edit method");
-        Console.WriteLine($"Id = {category.Id} ");
-        Console.WriteLine($"Name = {category.Name} ");
-        Console.WriteLine($"Description = {category.Description} ");
+        categoryRepository.UpdateCategory(category);
+        NavManager.NavigateTo("Home");
     }
 }

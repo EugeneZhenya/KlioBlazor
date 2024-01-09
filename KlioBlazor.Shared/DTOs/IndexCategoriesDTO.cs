@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace KlioBlazor.Shared.DTOs
 {
-    public class HomePageDTO
+    public class IndexCategoriesDTO
     {
         public Movie LastMovie { get; set; }
         public List<Country> LastMovieCountries { get; set; }
-        public List<Movie> MoviesPopular { get; set; }
+        public List<Category> AllCategories { get; set; }
     }
 }

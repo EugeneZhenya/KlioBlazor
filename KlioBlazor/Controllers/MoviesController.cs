@@ -29,7 +29,13 @@ namespace KlioBlazor.Controllers
             var movieLast = await context.Movies
                 .OrderByDescending(x => x.PublicDate)
                 .Include(x => x.Partition).ThenInclude(x => x.Category)
+                .Include(x => x.MoviesGenres).ThenInclude(x => x.Genre)
+                .Include(x => x.MoviesCountries).ThenInclude(x => x.Country)
                 .FirstOrDefaultAsync();
+
+            movieLast.MoviesGenres = movieLast.MoviesGenres.OrderBy(x => x.Order).ToList();
+            movieLast.MoviesCountries = movieLast.MoviesCountries.OrderBy(x => x.Order).ToList();
+            var Countries = movieLast.MoviesCountries.Select(x => x.Country).ToList();
 
             var moviesPopular = await context.Movies
                 .OrderByDescending(x => x.ViewCounter)
@@ -40,6 +46,7 @@ namespace KlioBlazor.Controllers
             var response = new HomePageDTO();
             response.LastMovie = movieLast;
             response.MoviesPopular = moviesPopular;
+            response.LastMovieCountries = Countries;
 
             return response;
         }
@@ -72,12 +79,13 @@ namespace KlioBlazor.Controllers
                 new Person
                 {
                     Name = x.Person.Name,
-                    Id = x.Person.Id,
-                    Character = x.Person.Character,
                     HasPicture = x.Person.HasPicture,
-                    IsFemale = x.Person.IsFemale
-                }
-            ).ToList();
+                    IsFemale = x.Person.IsFemale,
+                    Character = x.Character,
+                    Id = x.PersonId
+
+                }).ToList();
+
 
             return model;
         }
