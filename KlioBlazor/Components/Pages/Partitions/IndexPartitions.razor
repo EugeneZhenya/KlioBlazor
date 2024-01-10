@@ -6,7 +6,10 @@
 
 <MetaContent MetaData="allMeta" />
 
-<BannerArea />
+    @if (lastMovie != null)
+{
+    <BannerArea ShowMovie="lastMovie" ShowMovieCountries="lastMovieCountries" />
+}
 
 <section class="ucm-area ucm-bg" style="background-image: url('img/ucm_bg_shape.png')">
     <div class="layer">
@@ -32,10 +35,10 @@
                                                 <li style="height: 75px;">
                                                     <div class="row" style="align-items: stretch; width: 100%; float: left;">
                                                         <div style="width: 65%; align-self: center;">
-                                                            <a href="partition/@item.Id/@StringUtilities.Translit(item.Name)">@item.Name</a> <span>12</span>
+                                                            <a href="partition/@item.Id/@StringUtilities.Translit(item.Name)">@item.Name</a> <span>@item.Movies.Count() фільмів</span>
                                                         </div>
                                                         <div style="width: 35%; text-align: right;">
-                                                            <a class="btn" onmouseover="this.style.color='#1e1b29';" onmouseout="this.style.color='#c8c8c8';">Редагувати</a>
+                                                            <a class="btn" onmouseover="this.style.color='#1e1b29';" onmouseout="this.style.color='#c8c8c8';" href="partition/edit/@item.Id">Редагувати</a>
                                                             <button class="btn">Видалити</button>
                                                         </div>
                                                     </div>
@@ -68,7 +71,9 @@
 @code {
     [CascadingParameter] public AppState appState { get; set; }
     OpenGraphModel allMeta = new OpenGraphModel();
-    List<Partition> Partitions;
+    private Movie lastMovie;
+    private List<Country> lastMovieCountries;
+    private List<Partition> Partitions;
 
     protected async override Task OnInitializedAsync()
     {
@@ -96,7 +101,10 @@
 
         try
         {
-            Partitions = await partitionRepository.GetPartitions();
+            var response = await partitionRepository.GetIndexPartitionsDTO();
+            lastMovie = response.LastMovie;
+            lastMovieCountries = response.LastMovieCountries;
+            Partitions = response.AllPartitions;
         }
         catch (Exception ex)
         {

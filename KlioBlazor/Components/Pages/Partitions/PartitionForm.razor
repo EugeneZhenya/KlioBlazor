@@ -25,6 +25,7 @@
 </EditForm>
 
 @code {
+    [CascadingParameter] public AppState appState { get; set; }
     [Parameter] public Partition Partition { get; set; }
     [Parameter] public List<Category> CategoryList { get; set; }
     [Parameter] public EventCallback OnValidSubmit { get; set; }
@@ -32,9 +33,9 @@
 
     protected override void OnInitialized()
     {
-        if (!string.IsNullOrEmpty(Partition.Picture))
+        if (Partition != null)
         {
-            pictureUrl = Partition.Picture;
+            pictureUrl = appState.KlioContentUrl + "partitions/" + Partition.PictureUrl;
             Partition.Picture = null;
         }
     }

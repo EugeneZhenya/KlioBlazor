@@ -137,7 +137,7 @@ else
                 <div class="row justify-content-start">
                     @for (int i = 0; i < model.Actors.Count; i++)
                     {
-                        <div class="col-lg-3 col-md-4 actor text-center crew_align">
+                        <div class="col-lg-3 col-md-4 actor text-center crew_align mb-5">
                             <div>@model.Actors[i].Name</div>
                             <a href="person/@model.Actors[i].Id/@StringUtilities.Translit(model.Actors[i].Name)">
                                 <div class="techBox" style="@(i % 2 == 0 ? "background: linear-gradient(45deg, #e52641 25%, #444 25%, #444 50%, #e52641 50%, #e52641 75%, #444 75%, #444 100%);" : "background: linear-gradient(-45deg, #e52641 25%, #444 25%, #444 50%, #e52641 50%, #e52641 75%, #444 75%, #444 100%);")background-size: 40px 40px;">
@@ -165,6 +165,48 @@ else
             </div>
         </div>
     </section>
+
+    <section class="episode-area episode-bg" style="background-image: url('img/episode_bg.jpg');">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="movie-episode-wrap">
+                        <div class="episode-top-wrap">
+                            <div class="section-title">
+                                <span class="sub-title">Додаткова інформація</span>
+                                <h2 class="title">Про фільм</h2>
+                            </div>
+                            <div class="total-views-count">
+                                <p>@model.Movie.ViewCounter <i class="fa-regular fa-eye"></i></p>
+                            </div>
+                        </div>
+                        <div class="row episode-watch-wrap">
+                            @foreach (var inf in model.Movie.MovieInfos)
+                            {
+                                switch (inf.Info)
+                                {
+                                    case "OriginalLanguage":
+                                        switch (inf.Text)
+                                        {
+                                            case "uk":
+                                                @infoOrigLangUA(inf);
+                                                break;
+                                        }
+                                        break;
+                                    case "Youtube":
+                                        @infoYoutubeUrl(inf);
+                                        break;
+                                    case "KlioYoutube":
+                                        @infoKlioYoutube(inf);
+                                        break;
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 }
 
 @code {
@@ -175,6 +217,10 @@ else
     DetailsMovieDTO model;
     private string downloadUrl = string.Empty;
     private RenderFragment<Genre> linkGenre = (genre) => @<a href="genre/@genre.Id/@StringUtilities.Translit(genre.Name)">@genre.Name</a>;
+    
+    private RenderFragment<MovieInfo> infoOrigLangUA = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><img src="inf/Flag_of_Ukraine.png" class="info-img" alt="Мова оригіналу: @info.Remark" title="Мова оригіналу: @info.Remark" /><div><div class="info-content">Мова оригіналу</div><div class="info-ingredients">@info.Remark</div></div></div>;
+    private RenderFragment<MovieInfo> infoYoutubeUrl = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><img src="inf/YouTube.png" class="info-img" alt="YouTube" title="YouTube" /><div><div class="info-content"><a href="https://www.youtube.com/watch?v=@info.Text" target="_blank">Дивитися на YouTube</a></div><div class="info-ingredients">YouTube-канал: @info.Remark</div></div></div>;
+    private RenderFragment<MovieInfo> infoKlioYoutube = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><img src="inf/KlioYouTube.png" class="info-img" alt="YouTube KlioDpUa" title="YouTube KlioDpUa" /><div><div class="info-content"><a href="https://www.youtube.com/watch?v=@info.Text" target="_blank">Дивитися на нашому YouTube-каналі</a></div></div></div>;
 
     protected async override Task OnInitializedAsync()
     {

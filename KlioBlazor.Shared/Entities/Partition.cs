@@ -16,7 +16,7 @@ namespace KlioBlazor.Shared.Entities
         public string Name { get; set; }
         public string? Description { get; set; }
         [NotMapped]
-        public string Picture { get; set; }
+        public string? Picture { get; set; }
         public string PictureUrl
         {
             get

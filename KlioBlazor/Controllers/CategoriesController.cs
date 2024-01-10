@@ -20,7 +20,7 @@ namespace KlioBlazor.Controllers
         }
 
 
-        [HttpGet("allCategories")]
+        [HttpGet("all")]
         public async Task<ActionResult<List<Category>>> GetAllCategories()
         {
             return await context.Categories.ToListAsync();

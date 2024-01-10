@@ -21,7 +21,7 @@ namespace KlioBlazor.Repository
 
         public async Task<List<Category>> GetAllCategories()
         {
-            return await Get<List<Category>>($"{url}/allCategories");
+            return await Get<List<Category>>($"{url}/all");
         }
 
         public async Task<IndexCategoriesDTO> GetIndexCategoriesDTO()

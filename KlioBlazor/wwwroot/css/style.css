@@ -3829,3 +3829,25 @@ input::file-selector-button {
     }
 }
 
+.info-img {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    float: left;
+    border: 5px solid rgba(255, 255, 255, 0.2);
+}
+
+.info-content {
+    margin-left: 25px;
+    overflow: hidden;
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+}
+
+.info-ingredients {
+    margin-left: 25px;
+    font-style: italic;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.5);
+}
