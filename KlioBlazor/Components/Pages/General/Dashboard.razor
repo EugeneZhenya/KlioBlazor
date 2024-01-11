@@ -1,5 +1,6 @@
 ﻿@page "/Dashboard"
 @inject NavigationManager NavManager
+@inject IDashboardRepository dashboardRepository
 
 <PageTitle>@allMeta.Title</PageTitle>
 
@@ -15,10 +16,11 @@
     </ChildContent>
 </BreadcrumbArea>
 
-<!-- contact-area -->
-<section class="contact-area contact-bg" style="background-image: url('img/contact_bg.jpg')">
-    <div class="container">
-        <div class="row">
+@if (DashboardInfo != null)
+{
+    <section class="contact-area contact-bg" style="background-image: url('img/contact_bg.jpg')">
+        <div class="container">
+            <div class="row">
                 <div class="col-xl-12 col-lg-11">
                     <div class="contact-form-wrap">
                         <div class="widget-title mb-50">
@@ -29,36 +31,92 @@
                             <div class="contact-info-list">
                                 <ul>
                                     <li>
-                                        <div class="icon"><i class="fa-solid fa-icons"></i></div>
-                                        <p><span><a href="Home">Категорії</a> :</span> Основні категорії відеовмісту</p>
+                                        <div class="row w-100">
+                                            <div class="col-6 d-flex justify-content-start">
+                                                <div class="icon"><i class="fa-solid fa-icons"></i></div>
+                                                <p style="margin-top: 15px;"><span><a href="Home">Категорії</a> :</span> Основні категорії відеовмісту</p>
+                                            </div>
+                                            <div class="col-6 d-flex align-items-center justify-content-end">
+                                                @DashboardInfo.CategoriesCount категорій
+                                            </div>
+                                        </div>
                                     </li>
                                     <li>
-                                        <div class="icon"><i class="fa-solid fa-swatchbook"></i></div>
-                                        <p><span><a href="Partitions">Розділи</a> :</span> Розділи, що входять до категорії</p>
+                                        <div class="row w-100">
+                                            <div class="col-6 d-flex justify-content-start">
+                                                <div class="icon"><i class="fa-solid fa-swatchbook"></i></div>
+                                                <p style="margin-top: 15px;"><span><a href="Partitions">Розділи</a> :</span> Розділи, що входять до категорії</p>
+                                            </div>
+                                            <div class="col-6 d-flex align-items-center justify-content-end">
+                                                @DashboardInfo.PartitionsCount розділів
+                                            </div>
+                                        </div>
                                     </li>
                                     <li>
-                                        <div class="icon"><i class="fa-solid fa-keyboard"></i></div>
-                                        <p><span><a href="Keywords">Ключові слова</a> :</span> Ключові слова, що описують відеовміст</p>
+                                        <div class="row w-100">
+                                            <div class="col-6 d-flex justify-content-start">
+                                                <div class="icon"><i class="fa-solid fa-keyboard"></i></div>
+                                                <p style="margin-top: 15px;"><span><a href="Keywords">Ключові слова</a> :</span> Ключові слова, що описують відеовміст</p>
+                                            </div>
+                                            <div class="col-6 d-flex align-items-center justify-content-end">
+                                                @DashboardInfo.KeywordsCount слів
+                                            </div>
+                                        </div>
                                     </li>
                                     <li>
-                                        <div class="icon"><i class="fa-brands fa-themeisle"></i></div>
-                                        <p><span><a href="Genres">Жанри</a> :</span> Жанри, до яких належить відеовміст</p>
+                                        <div class="row w-100">
+                                            <div class="col-6 d-flex justify-content-start">
+                                                <div class="icon"><i class="fa-brands fa-themeisle"></i></div>
+                                                <p style="margin-top: 15px;"><span><a href="Genres">Жанри</a> :</span> Жанри, до яких належить відеовміст</p>
+                                            </div>
+                                            <div class="col-6 d-flex align-items-center justify-content-end">
+                                                @DashboardInfo.GenresCount жанрів
+                                            </div>
+                                        </div>
                                     </li>
                                     <li>
-                                        <div class="icon"><i class="fa-solid fa-globe"></i></div>
-                                        <p><span><a href="Countries">Країни</a> :</span> Країни, виробники яких створили відеовміст</p>
+                                        <div class="row w-100">
+                                            <div class="col-6 d-flex justify-content-start">
+                                                <div class="icon"><i class="fa-solid fa-globe"></i></div>
+                                                <p style="margin-top: 15px;"><span><a href="Countries">Країни</a> :</span> Країни, виробники яких створили відеовміст</p>
+                                            </div>
+                                            <div class="col-6 d-flex align-items-center justify-content-end">
+                                                @DashboardInfo.CountriesCount країн
+                                            </div>
+                                        </div>
                                     </li>
                                     <li>
-                                        <div class="icon"><i class="fa-solid fa-building"></i></div>
-                                        <p><span><a href="Creators">Виробники</a> :</span> Виробники, що створили відеовміст</p>
+                                        <div class="row w-100">
+                                            <div class="col-6 d-flex justify-content-start">
+                                                <div class="icon"><i class="fa-solid fa-building"></i></div>
+                                                <p style="margin-top: 15px;"><span><a href="Creators">Виробники</a> :</span> Виробники, що створили відеовміст</p>
+                                            </div>
+                                            <div class="col-6 d-flex align-items-center justify-content-end">
+                                                @DashboardInfo.CreatorsCount виробників
+                                            </div>
+                                        </div>
                                     </li>
                                     <li>
-                                        <div class="icon"><i class="fa-solid fa-users"></i></div>
-                                        <p><span><a href="people">Люди</a> :</span> Актори та інші особи, що створили відеовміст</p>
+                                        <div class="row w-100">
+                                            <div class="col-6 d-flex justify-content-start">
+                                                <div class="icon"><i class="fa-solid fa-users"></i></div>
+                                                <p style="margin-top: 15px;"><span><a href="people">Люди</a> :</span> Актори та інші особи, що створили відеовміст</p>
+                                            </div>
+                                            <div class="col-6 d-flex align-items-center justify-content-end">
+                                                @DashboardInfo.PeopleCount осіб
+                                            </div>
+                                        </div>
                                     </li>
                                     <li>
-                                        <div class="icon"><i class="fa-solid fa-film"></i></div>
-                                        <p><span><a href="movies">Відео</a> :</span> Безпосередньо відеовміст</p>
+                                        <div class="row w-100">
+                                            <div class="col-6 d-flex justify-content-start">
+                                                <div class="icon"><i class="fa-solid fa-film"></i></div>
+                                                <p style="margin-top: 15px;"><span><a href="movies">Відео</a> :</span> Безпосередньо відеовміст</p>
+                                            </div>
+                                            <div class="col-6 d-flex align-items-center justify-content-end">
+                                                @DashboardInfo.MoviesCount фільмів
+                                            </div>
+                                        </div>
                                     </li>
                                 </ul>
                             </div>
@@ -67,11 +125,12 @@
                 </div>
             </div>
         </div>
-</section>
-<!-- contact-area-end -->
+    </section>
+}
 
 @code {
     OpenGraphModel allMeta = new OpenGraphModel();
+    private DashboardDTO DashboardInfo;
 
     protected async override Task OnInitializedAsync()
     {
@@ -96,5 +155,14 @@
         allMeta.ImageWidth2 = 750;
         allMeta.ImageHeight2 = 750;
         allMeta.ImageType2 = "image/png";
+
+        try
+        {
+            DashboardInfo = await dashboardRepository.GetDashboardDTO();
+        }
+        catch (Exception ex)
+        {
+            
+        }
     }
 }
