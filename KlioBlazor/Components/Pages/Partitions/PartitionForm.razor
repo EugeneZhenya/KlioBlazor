@@ -33,7 +33,7 @@
 
     protected override void OnInitialized()
     {
-        if (Partition != null)
+        if (Partition.Name != null)
         {
             pictureUrl = appState.KlioContentUrl + "partitions/" + Partition.PictureUrl;
             Partition.Picture = null;

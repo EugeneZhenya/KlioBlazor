@@ -29,6 +29,7 @@
 </EditForm>
 
 @code {
+    [CascadingParameter] public AppState appState { get; set; }
     [Parameter] public Country Country { get; set; }
     [Parameter] public EventCallback OnValidSubmit { get; set; }
     private string flagUrl;
@@ -37,21 +38,15 @@
 
     protected override void OnInitialized()
     {
-        if (!string.IsNullOrEmpty(Country.Flag))
+        if (!string.IsNullOrEmpty(Country.Name))
         {
-            flagUrl = Country.Flag;
+            flagUrl = appState.KlioContentUrl + "countries/" + Country.FlagUrl;
             Country.Flag = null;
-        }
 
-        if (!string.IsNullOrEmpty(Country.Emblem))
-        {
-            emblemUrl = Country.Emblem;
+            emblemUrl = appState.KlioContentUrl + "countries/" + Country.EmblemUrl;
             Country.Emblem = null;
-        }
 
-        if (!string.IsNullOrEmpty(Country.Background))
-        {
-            backUrl = Country.Background;
+            backUrl = appState.KlioContentUrl + "countries/" + Country.BackgroundUrl;
             Country.Background = null;
         }
     }

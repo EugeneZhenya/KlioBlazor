@@ -17,11 +17,11 @@ namespace KlioBlazor.Shared.Entities
         public string? Description { get; set; }
         public DateTime? IndependenceDay { get; set; }
         [NotMapped]
-        public string Flag { get; set; }
+        public string? Flag { get; set; }
         [NotMapped]
-        public string Emblem { get; set; }
+        public string? Emblem { get; set; }
         [NotMapped]
-        public string Background { get; set; }
+        public string? Background { get; set; }
         public List<MoviesCountries> MoviesCountries { get; set; } = new List<MoviesCountries>();
         public string FlagUrl
         {

@@ -6,7 +6,10 @@
 
 <MetaContent MetaData="allMeta" />
 
-<BannerArea />
+@if (lastMovie != null)
+{
+    <BannerArea ShowMovie="lastMovie" ShowMovieCountries="lastMovieCountries" />
+}
 
 <section class="ucm-area ucm-bg" style="background-image: url('img/ucm_bg_shape.png')">
     <div class="layer">
@@ -33,10 +36,10 @@
                                                     <div class="row" style="align-items: stretch; width: 100%; float: left;">
                                                         <div style="width: 65%; align-self: center;">
                                                             <img src="@(appState.KlioContentUrl + "countries/" + item.FlagUrl)" alt="@item.Name" style="width: 50px;" />
-                                                            <a href="country/@item.Id">@item.Name</a> <span style="transform: translate(0,50%);">12</span>
+                                                            <a href="country/@item.Id/@StringUtilities.Translit(item.Name)">@item.Name</a> <span style="transform: translate(0,50%);">@item.MoviesCountries.Count() фільмів</span>
                                                         </div>
                                                         <div style="width: 35%; text-align: right;">
-                                                            <a class="btn" onmouseover="this.style.color='#1e1b29';" onmouseout="this.style.color='#c8c8c8';">Редагувати</a>
+                                                            <a class="btn" onmouseover="this.style.color='#1e1b29';" onmouseout="this.style.color='#c8c8c8';" href="country/edit/@item.Id">Редагувати</a>
                                                             <button class="btn">Видалити</button>
                                                         </div>
                                                     </div>
@@ -69,7 +72,9 @@
 @code {
     [CascadingParameter] public AppState appState { get; set; }
     OpenGraphModel allMeta = new OpenGraphModel();
-    List<Country> Countries;
+    private Movie lastMovie;
+    private List<Country> lastMovieCountries;
+    private List<Country> Countries;
 
     protected async override Task OnInitializedAsync()
     {
@@ -97,7 +102,10 @@
 
         try
         {
-            Countries = await countryRepository.GetCountries();
+            var response = await countryRepository.GetIndexCountriesDTO();
+            lastMovie = response.LastMovie;
+            lastMovieCountries = response.LastMovieCountries;
+            Countries = response.AllCountries;
         }
         catch (Exception ex)
         {

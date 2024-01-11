@@ -71,9 +71,9 @@
         category = await categoryRepository.GetCategory(CategoryId);
     }
 
-    private void Edit()
+    private async Task Edit()
     {
-        categoryRepository.UpdateCategory(category);
+        await categoryRepository.UpdateCategory(category);
         NavManager.NavigateTo("Home");
     }
 }

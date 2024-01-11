@@ -74,9 +74,9 @@
         allCategories = await categoryRepository.GetAllCategories();
     }
 
-    private void Edit()
+    private async Task Edit()
     {
-        partitionRepository.UpdatePartition(partition);
+        await partitionRepository.UpdatePartition(partition);
         NavManager.NavigateTo("Partitions");
     }
 }

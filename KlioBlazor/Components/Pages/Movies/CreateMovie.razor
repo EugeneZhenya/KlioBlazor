@@ -79,7 +79,7 @@
 
         try
         {
-            NotSelectedCountries = await countryRepository.GetCountries();
+            NotSelectedCountries = await countryRepository.GetAllCountries();
             NotSelectedGenres = await genreRepository.GetGenres();
             AllPartitions = await partitionRepository.GetAllPartitions();
             CategoryList = await categoryRepository.GetAllCategories();
