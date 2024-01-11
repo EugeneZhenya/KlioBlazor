@@ -60,6 +60,7 @@ namespace KlioBlazor.Controllers
                 .Include(x => x.MoviesActors).ThenInclude(x => x.Person)
                 .Include(x => x.MoviesCountries).ThenInclude(x => x.Country)
                 .Include(x => x.MoviesCreators).ThenInclude(x => x.Creator)
+                .Include(x => x.MoviesKeywords).ThenInclude(x => x.Keyword)
                 .Include(x => x.MovieInfos)
                 .FirstOrDefaultAsync();
 
@@ -69,12 +70,14 @@ namespace KlioBlazor.Controllers
             movie.MoviesGenres = movie.MoviesGenres.OrderBy(x => x.Order).ToList();
             movie.MoviesCreators = movie.MoviesCreators.OrderBy(x => x.Order).ToList();
             movie.MoviesCountries = movie.MoviesCountries.OrderBy(x => x.Order).ToList();
+            movie.MoviesKeywords = movie.MoviesKeywords.OrderBy(x => x.Order).ToList();
 
             var model = new DetailsMovieDTO();
             model.Movie = movie;
             model.Genres = movie.MoviesGenres.Select(x => x.Genre).ToList();
             model.Creators = movie.MoviesCreators.Select(x => x.Creator).ToList();
             model.Countries = movie.MoviesCountries.Select(x => x.Country).ToList();
+            model.Keywords = movie.MoviesKeywords.Select(x => x.Keyword).ToList();
             model.Actors = movie.MoviesActors.Select(x =>
                 new Person
                 {

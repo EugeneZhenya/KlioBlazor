@@ -14,5 +14,6 @@ namespace KlioBlazor.Shared.DTOs
         public List<Country> Countries { get; set; }
         public List<Person> Actors { get; set; }
         public List<Creator> Creators { get; set; }
+        public List<Keyword> Keywords { get; set; }
     }
 }

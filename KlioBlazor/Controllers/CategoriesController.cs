@@ -61,7 +61,6 @@ namespace KlioBlazor.Controllers
             return category;
         }
 
-
         [HttpPost]
         public async Task<ActionResult<int>> Post(Category category)
         {

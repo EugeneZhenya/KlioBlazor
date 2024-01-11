@@ -169,40 +169,64 @@ else
     <section class="episode-area episode-bg" style="background-image: url('img/episode_bg.jpg');">
         <div class="container">
             <div class="row">
-                <div class="col-lg-12">
-                    <div class="movie-episode-wrap">
-                        <div class="episode-top-wrap">
-                            <div class="section-title">
-                                <span class="sub-title">Додаткова інформація</span>
-                                <h2 class="title">Про фільм</h2>
+                <div class="col-lg-8">
+                    <div class="row w-100">
+                        <div class="movie-episode-wrap">
+                            <div class="episode-top-wrap">
+                                <div class="section-title">
+                                    <span class="sub-title">Додаткова інформація</span>
+                                    <h2 class="title">Про фільм</h2>
+                                </div>
+                                <div class="total-views-count">
+                                    <p>@model.Movie.ViewCounter <i class="fa-regular fa-eye"></i></p>
+                                </div>
                             </div>
-                            <div class="total-views-count">
-                                <p>@model.Movie.ViewCounter <i class="fa-regular fa-eye"></i></p>
-                            </div>
-                        </div>
-                        <div class="row episode-watch-wrap">
-                            @foreach (var inf in model.Movie.MovieInfos)
-                            {
-                                switch (inf.Info)
+                            <div class="row episode-watch-wrap">
+                                @foreach (var inf in model.Movie.MovieInfos)
                                 {
-                                    case "OriginalLanguage":
-                                        switch (inf.Text)
-                                        {
-                                            case "uk":
-                                                @infoOrigLangUA(inf);
-                                                break;
-                                        }
-                                        break;
-                                    case "Youtube":
-                                        @infoYoutubeUrl(inf);
-                                        break;
-                                    case "KlioYoutube":
-                                        @infoKlioYoutube(inf);
-                                        break;
+                                    switch (inf.Info)
+                                    {
+                                        case "OriginalLanguage":
+                                            switch (inf.Text)
+                                            {
+                                                case "uk":
+                                                    @infoOrigLangUA(inf)
+                                                    ;
+                                                    break;
+                                            }
+                                            break;
+                                        case "Youtube":
+                                            @infoYoutubeUrl(inf)
+                                            ;
+                                            break;
+                                        case "KlioYoutube":
+                                            @infoKlioYoutube(inf)
+                                            ;
+                                            break;
+                                    }
                                 }
-                            }
+                            </div>
                         </div>
                     </div>
+                </div>
+                <div class="col-lg-4">
+                    <aside class="blog-sidebar">
+                        <div class="widget blog-widget">
+                            <div class="widget-title mb-30">
+                                <h5 class="title">Ключові слова</h5>
+                            </div>
+                            <div class="tag-list">
+                                <ul>
+                                    @foreach (var item in model.Keywords)
+                                    {
+                                        <li>
+                                            <a href="keyword/@item.Id/@StringUtilities.Translit(item.Word)">@item.Word</a>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </aside>
                 </div>
             </div>
         </div>

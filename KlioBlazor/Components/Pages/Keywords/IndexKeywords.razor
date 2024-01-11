@@ -6,7 +6,10 @@
 
 <MetaContent MetaData="allMeta" />
 
-<BannerArea />
+@if (lastMovie != null)
+{
+    <BannerArea ShowMovie="lastMovie" ShowMovieCountries="lastMovieCountries" />
+}
 
 <section class="ucm-area ucm-bg" style="background-image: url('img/ucm_bg_shape.png')">
     <div class="layer">
@@ -28,7 +31,13 @@
                                     <ul>
                                         @foreach (var item in Keywords)
                                         {
-                                            <li><a href="keyword/@item.Id">@item.Word</a></li>
+                                            <li>
+                                                <a href="keyword/@item.Id/@StringUtilities.Translit(item.Word)">
+                                                    <a href="keyword/edit/@item.Id" style="display: inline"><i class="fa-regular fa-pen-to-square"></i></a>
+                                                    <a style="display: inline"><i class="fa-solid fa-trash"></i></a>
+                                                    @item.Word
+                                                </a>
+                                            </li>
                                         }
                                     </ul>
                                 </div>
@@ -55,7 +64,9 @@
 
 @code {
     OpenGraphModel allMeta = new OpenGraphModel();
-    List<Keyword> Keywords;
+    private Movie lastMovie;
+    private List<Country> lastMovieCountries;
+    private List<Keyword> Keywords;
 
     protected async override Task OnInitializedAsync()
     {
@@ -83,7 +94,10 @@
 
         try
         {
-            Keywords = await keywordRepository.GetKeywords();
+            var response = await keywordRepository.GetIndexKeywordsDTO();
+            lastMovie = response.LastMovie;
+            lastMovieCountries = response.LastMovieCountries;
+            Keywords = response.AllKeywords;
         }
         catch (Exception ex)
         {
