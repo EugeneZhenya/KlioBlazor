@@ -1,5 +1,6 @@
 ﻿using KlioBlazor.Data;
 using KlioBlazor.Helpers;
+using KlioBlazor.Shared.DTOs;
 using KlioBlazor.Shared.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -20,10 +21,44 @@ namespace KlioBlazor.Controllers
             this.fileStorageService = fileStorageService;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<List<Creator>>> Get()
+        [HttpGet("all")]
+        public async Task<ActionResult<List<Creator>>> GetAllCreators()
         {
             return await context.Creators.ToListAsync();
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IndexCreatorsDTO>> Get()
+        {
+            var movieLast = await context.Movies
+                .OrderByDescending(x => x.PublicDate)
+                .Include(x => x.Partition).ThenInclude(x => x.Category)
+                .Include(x => x.MoviesGenres).ThenInclude(x => x.Genre)
+                .Include(x => x.MoviesCountries).ThenInclude(x => x.Country)
+                .FirstOrDefaultAsync();
+
+            movieLast.MoviesGenres = movieLast.MoviesGenres.OrderBy(x => x.Order).ToList();
+            movieLast.MoviesCountries = movieLast.MoviesCountries.OrderBy(x => x.Order).ToList();
+            var Countries = movieLast.MoviesCountries.Select(x => x.Country).ToList();
+
+            var allCreators = await context.Creators
+                .Include(x => x.MoviesCreators)
+                .ToListAsync();
+
+            var response = new IndexCreatorsDTO();
+            response.LastMovie = movieLast;
+            response.LastMovieCountries = Countries;
+            response.AllCreators = allCreators;
+
+            return response;
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Creator>> Get(int id)
+        {
+            var creator = await context.Creators.FirstOrDefaultAsync(x => x.Id == id);
+            if (creator == null) { return NotFound(); }
+            return creator;
         }
 
         [HttpGet("search/{searchText}")]
@@ -49,6 +84,14 @@ namespace KlioBlazor.Controllers
             }
 
             return creator.Id;
+        }
+
+        [HttpPut]
+        public async Task<ActionResult> Put(Creator creator)
+        {
+            context.Attach(creator).State = EntityState.Modified;
+            await context.SaveChangesAsync();
+            return NoContent();
         }
     }
 }

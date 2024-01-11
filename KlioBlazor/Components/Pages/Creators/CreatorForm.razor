@@ -33,6 +33,7 @@
 </EditForm>
 
 @code {
+    [CascadingParameter] public AppState appState { get; set; }
     [Parameter] public Creator Creator { get; set; }
     [Parameter] public List<Country> CountryList { get; set; }
     [Parameter] public EventCallback OnValidSubmit { get; set; }
@@ -40,9 +41,9 @@
 
     protected override void OnInitialized()
     {
-        if (!string.IsNullOrEmpty(Creator.Logo))
+        if (!string.IsNullOrEmpty(Creator.Title))
         {
-            logoUrl = Creator.Logo;
+            logoUrl = appState.KlioContentUrl + "creators/" + Creator.LogoUrl;
             Creator.Logo = null;
         }
     }

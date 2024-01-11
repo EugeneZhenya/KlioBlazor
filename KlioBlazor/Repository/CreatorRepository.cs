@@ -1,4 +1,5 @@
 ﻿using KlioBlazor.Helpers;
+using KlioBlazor.Shared.DTOs;
 using KlioBlazor.Shared.Entities;
 using Microsoft.AspNetCore.Components;
 
@@ -17,9 +18,24 @@ namespace KlioBlazor.Repository
             this.url = this.navigationManager.BaseUri + this.url;
         }
 
-        public async Task<List<Creator>> GetCreators()
+        public async Task<List<Creator>> GetAllCreators()
         {
-            var response = await httpService.Get<List<Creator>>(url);
+            return await Get<List<Creator>>($"{url}/all");
+        }
+
+        public async Task<IndexCreatorsDTO> GetIndexCreatorsDTO()
+        {
+            return await Get<IndexCreatorsDTO>(url);
+        }
+
+        public async Task<Creator> GetCreator(int Id)
+        {
+            return await Get<Creator>($"{url}/{Id}");
+        }
+
+        private async Task<T> Get<T>(string url)
+        {
+            var response = await httpService.Get<T>(url);
             if (!response.Success)
             {
                 throw new ApplicationException(await response.GetBody());
@@ -29,17 +45,21 @@ namespace KlioBlazor.Repository
 
         public async Task<List<Creator>> GetCreatorByTitle(string name)
         {
-            var response = await httpService.Get<List<Creator>>($"{url}/search/{name}");
-            if (!response.Success)
-            {
-                throw new ApplicationException(await response.GetBody());
-            }
-            return response.Response;
+            return await Get<List<Creator>>($"{url}/search/{name}");
         }
 
         public async Task CreateCreator(Creator creator)
         {
             var response = await httpService.Post(url, creator);
+            if (!response.Success)
+            {
+                throw new ApplicationException(await response.GetBody());
+            }
+        }
+
+        public async Task UpdateCreator(Creator creator)
+        {
+            var response = await httpService.Put(url, creator);
             if (!response.Success)
             {
                 throw new ApplicationException(await response.GetBody());

@@ -6,7 +6,10 @@
 
 <MetaContent MetaData="allMeta" />
 
-<BannerArea />
+@if (lastMovie != null)
+{
+    <BannerArea ShowMovie="lastMovie" ShowMovieCountries="lastMovieCountries" />
+}
 
 <section class="ucm-area ucm-bg" style="background-image: url('img/ucm_bg_shape.png')">
     <div class="layer">
@@ -33,10 +36,10 @@
                                                     <div class="row" style="align-items: stretch; width: 100%; float: left;">
                                                         <div style="width: 65%; align-self: center;">
                                                             <img src="@(appState.KlioContentUrl + "creators/" + item.LogoUrl)" alt="@item.Title" style="width: 50px;" />
-                                                            <a href="creator/@item.Id">@item.Title</a> <span style="transform: translate(0,50%); line-height: 2;">12</span>
+                                                            <a href="creator/@item.Id/@StringUtilities.Translit(item.Title)">@item.Title</a> <span style="transform: translate(0,50%); line-height: 2;">@item.MoviesCreators.Count() фільмів</span>
                                                         </div>
                                                         <div style="width: 35%; text-align: right;">
-                                                            <a class="btn" onmouseover="this.style.color='#1e1b29';" onmouseout="this.style.color='#c8c8c8';">Редагувати</a>
+                                                            <a class="btn" onmouseover="this.style.color='#1e1b29';" onmouseout="this.style.color='#c8c8c8';" href="creator/edit/@item.Id">Редагувати</a>
                                                             <button class="btn">Видалити</button>
                                                         </div>
                                                     </div>
@@ -69,7 +72,9 @@
 @code {
     [CascadingParameter] public AppState appState { get; set; }
     OpenGraphModel allMeta = new OpenGraphModel();
-    List<Creator> Creators;
+    private Movie lastMovie;
+    private List<Country> lastMovieCountries;
+    private List<Creator> Creators;
 
     protected async override Task OnInitializedAsync()
     {
@@ -97,7 +102,10 @@
 
         try
         {
-            Creators = await creatorRepository.GetCreators();
+            var response = await creatorRepository.GetIndexCreatorsDTO();
+            lastMovie = response.LastMovie;
+            lastMovieCountries = response.LastMovieCountries;
+            Creators = response.AllCreators;
         }
         catch (Exception ex)
         {
