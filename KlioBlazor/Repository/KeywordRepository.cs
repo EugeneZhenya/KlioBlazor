@@ -20,32 +20,22 @@ namespace KlioBlazor.Repository
 
         public async Task<List<Keyword>> GetAllKeywords()
         {
-            return await Get<List<Keyword>>($"{url}/all");
+            return await httpService.GetHelper<List<Keyword>>($"{url}/all");
         }
 
         public async Task<List<Keyword>> GetKeywordByWord(string word)
         {
-            return await Get<List<Keyword>>($"{url}/search/{word}");
+            return await httpService.GetHelper<List<Keyword>>($"{url}/search/{word}");
         }
 
         public async Task<IndexKeywordsDTO> GetIndexKeywordsDTO()
         {
-            return await Get<IndexKeywordsDTO>(url);
+            return await httpService.GetHelper<IndexKeywordsDTO>(url);
         }
 
         public async Task<Keyword> GetKeyword(int Id)
         {
-            return await Get<Keyword>($"{url}/{Id}");
-        }
-
-        private async Task<T> Get<T>(string url)
-        {
-            var response = await httpService.Get<T>(url);
-            if (!response.Success)
-            {
-                throw new ApplicationException(await response.GetBody());
-            }
-            return response.Response;
+            return await httpService.GetHelper<Keyword>($"{url}/{Id}");
         }
 
         public async Task CreateKeyword(Keyword keyword)

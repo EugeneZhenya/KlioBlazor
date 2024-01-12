@@ -1,5 +1,6 @@
 ﻿@page "/person/edit/{PersonId:int}"
 @inject NavigationManager NavManager
+@inject IPersonRepository personRepository
 
 <PageTitle>@allMeta.Title</PageTitle>
 
@@ -11,7 +12,7 @@
     </TitleContent>
     <ChildContent>
         <li class="breadcrumb-item"><a href="">Домівка</a></li>
-        <li class="breadcrumb-item"><a href="Home/films">Особи</a></li>
+        <li class="breadcrumb-item"><a href="people">Особи</a></li>
         <li class="breadcrumb-item active" aria-current="page">Редагувати</li>
     </ChildContent>
 </BreadcrumbArea>
@@ -68,11 +69,12 @@
         allMeta.ImageHeight2 = 750;
         allMeta.ImageType2 = "image/png";
 
-        Person = new Person() { Name = "Євген", DateOfBirth = DateTime.Today, DateOfBirthExact = true, Biography = "something...", Picture = "/Content/People/Iryna_Farion.png" };
+        Person = await personRepository.GetPersonById(PersonId);
     }
 
-    private void Edit()
+    private async Task Edit()
     {
-        Console.WriteLine("edit the person...");
+        await personRepository.UpdatePerson(Person);
+        NavManager.NavigateTo("people");
     }
 }

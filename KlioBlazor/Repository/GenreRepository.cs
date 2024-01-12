@@ -20,27 +20,17 @@ namespace KlioBlazor.Repository
 
         public async Task<List<Genre>> GetAllGenres()
         {
-            return await Get<List<Genre>>($"{url}/all");
+            return await httpService.GetHelper<List<Genre>>($"{url}/all");
         }
 
         public async Task<IndexGenresDTO> GetIndexGenresDTO()
         {
-            return await Get<IndexGenresDTO>(url);
+            return await httpService.GetHelper<IndexGenresDTO>(url);
         }
 
         public async Task<Genre> GetGenre(int Id)
         {
-            return await Get<Genre>($"{url}/{Id}");
-        }
-
-        private async Task<T> Get<T>(string url)
-        {
-            var response = await httpService.Get<T>(url);
-            if (!response.Success)
-            {
-                throw new ApplicationException(await response.GetBody());
-            }
-            return response.Response;
+            return await httpService.GetHelper<Genre>($"{url}/{Id}");
         }
 
         public async Task CreateGenre(Genre genre)

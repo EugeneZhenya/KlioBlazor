@@ -4,6 +4,7 @@ using KlioBlazor.Shared.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Concurrent;
 
 namespace KlioBlazor.Controllers
 {
@@ -26,6 +27,14 @@ namespace KlioBlazor.Controllers
             return await context.People.ToListAsync();
         }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Person>> Get(int id)
+        {
+            var person = await context.People.FirstOrDefaultAsync(x => x.Id == id);
+            if (person == null) { return NotFound(); }
+            return person;
+        }
+
         [HttpGet("search/{searchText}")]
         public async Task<ActionResult<List<Person>>> FilterByName(string searchText)
         {
@@ -36,9 +45,6 @@ namespace KlioBlazor.Controllers
         [HttpPost]
         public async Task<ActionResult<int>> Post(Person person)
         {
-            context.Add(person);
-            await context.SaveChangesAsync();
-
             if (!string.IsNullOrWhiteSpace(person.Picture))
             {
                 var personPicture = Convert.FromBase64String(person.Picture);
@@ -46,7 +52,18 @@ namespace KlioBlazor.Controllers
                 person.HasPicture = true;
             }
 
+            context.Add(person);
+            await context.SaveChangesAsync();
+
             return person.Id;
+        }
+
+        [HttpPut]
+        public async Task<ActionResult> Put(Person person)
+        {
+            context.Attach(person).State = EntityState.Modified;
+            await context.SaveChangesAsync();
+            return NoContent();
         }
     }
 }

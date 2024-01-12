@@ -39,16 +39,16 @@
                                             <li class="rc-post-item" style="min-width: 320px; margin-right: 2rem; border: 1px solid #ccc;">
                                                 <div class="thumb">
                                                     <a href="person/@item.Id/@StringUtilities.Translit(item.Name)">
-                                                        <img src="@CheckPicture(item)" alt="@item.Name" style="max-width: 100px; margin-left: .5rem; margin-right: .5rem;" />
+                                                        <img src="@(appState.KlioContentUrl + "people/" + item.PictureUrl)" alt="@item.Name" style="max-width: 100px; margin-left: .5rem; margin-right: .5rem;" />
                                                     </a>
                                                 </div>
                                                 <div class="content">
-                                                    <h5 class="title"><a href="person/@item.Id/@StringUtilities.Translit(item.Name)">@item.Name</a></h5>
+                                                    <h5 class="title"><a href="person/@item.Id/@StringUtilities.Translit(item.Name)">@item.NameBrief</a></h5>
                                                     <span class="date"><i class="fa-solid fa-cake-candles"></i> @StringUtilities.DateToString(item.DateOfBirth, "dd MMMM yyyy")</span>
                                                     <div>
                                                         <p>
                                                             <br />
-                                                            <a href="#">Редагувати</a> <a style="cursor: pointer;">Видалити</a>
+                                                            <a href="person/edit/@item.Id">Редагувати</a> <a style="cursor: pointer;">Видалити</a>
                                                         </p>
                                                     </div>
                                                 </div>
@@ -114,23 +114,5 @@
         {
 
         }
-    }
-
-    private string CheckPicture(Person person)
-    {
-        string url = appState.KlioContentUrl + "people/" + person.PictureUrl;
-        if (!person.HasPicture)
-        {
-            if (person.IsFemale)
-            {
-                url = appState.KlioContentUrl + "people/female.png";
-            }
-            else
-            {
-                url = appState.KlioContentUrl + "people/male.png";
-            }
-        }
-
-        return url;
     }
 }

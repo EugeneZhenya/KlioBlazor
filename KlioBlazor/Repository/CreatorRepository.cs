@@ -20,32 +20,22 @@ namespace KlioBlazor.Repository
 
         public async Task<List<Creator>> GetAllCreators()
         {
-            return await Get<List<Creator>>($"{url}/all");
+            return await httpService.GetHelper<List<Creator>>($"{url}/all");
         }
 
         public async Task<IndexCreatorsDTO> GetIndexCreatorsDTO()
         {
-            return await Get<IndexCreatorsDTO>(url);
+            return await httpService.GetHelper<IndexCreatorsDTO>(url);
         }
 
         public async Task<Creator> GetCreator(int Id)
         {
-            return await Get<Creator>($"{url}/{Id}");
-        }
-
-        private async Task<T> Get<T>(string url)
-        {
-            var response = await httpService.Get<T>(url);
-            if (!response.Success)
-            {
-                throw new ApplicationException(await response.GetBody());
-            }
-            return response.Response;
+            return await httpService.GetHelper<Creator>($"{url}/{Id}");
         }
 
         public async Task<List<Creator>> GetCreatorByTitle(string name)
         {
-            return await Get<List<Creator>>($"{url}/search/{name}");
+            return await httpService.GetHelper<List<Creator>>($"{url}/search/{name}");
         }
 
         public async Task CreateCreator(Creator creator)

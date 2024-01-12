@@ -32,15 +32,16 @@
 </EditForm>
 
 @code {
+    [CascadingParameter] public AppState appState { get; set; }
     [Parameter] public Person Person { get; set; }
     [Parameter] public EventCallback OnValidSubmit { get; set; }
     string imageUrl;
 
     protected override void OnInitialized()
     {
-        if (!string.IsNullOrEmpty(Person.Picture))
+        if (!string.IsNullOrEmpty(Person.Name))
         {
-            imageUrl = Person.Picture;
+            imageUrl = appState.KlioContentUrl + "people/" + Person.PictureUrl;
             Person.Picture = null;
         }
     }

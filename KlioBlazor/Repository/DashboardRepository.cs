@@ -20,17 +20,7 @@ namespace KlioBlazor.Repository
 
         public async Task<DashboardDTO> GetDashboardDTO()
         {
-            return await Get<DashboardDTO>(url);
-        }
-
-        private async Task<T> Get<T>(string url)
-        {
-            var response = await httpService.Get<T>(url);
-            if (!response.Success)
-            {
-                throw new ApplicationException(await response.GetBody());
-            }
-            return response.Response;
+            return await httpService.GetHelper<DashboardDTO>(url);
         }
     }
 }

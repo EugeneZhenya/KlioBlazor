@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -24,13 +25,45 @@ namespace KlioBlazor.Shared.Entities
         public bool IsFemale { get; set; }
         public bool HasPicture { get; set; }
         [NotMapped]
-        public string Character { get; set; }
+        public string? Character { get; set; }
         public List<MoviesActors> MoviesActors { get; set; } = new List<MoviesActors>();
         public string PictureUrl
         {
             get
             {
-                return Id + "-" + StringUtilities.Translit(Name) + ".png"; ;
+                string url = Id + "-" + StringUtilities.Translit(Name) + ".png";
+                if (!HasPicture)
+                {
+                    if (IsFemale)
+                    {
+                        url = "female.png";
+                    }
+                    else
+                    {
+                        url = "male.png";
+                    }
+                }
+                return url;
+            }
+        }
+
+        public string NameBrief
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(Name))
+                {
+                    return null;
+                }
+
+                if (Name.Length > 17)
+                {
+                    return Name.Substring(0, 17) + "…";
+                }
+                else
+                {
+                    return Name;
+                }
             }
         }
     }

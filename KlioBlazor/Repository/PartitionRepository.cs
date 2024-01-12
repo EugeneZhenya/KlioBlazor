@@ -21,27 +21,17 @@ namespace KlioBlazor.Repository
 
         public async Task<List<Partition>> GetAllPartitions()
         {
-            return await Get<List<Partition>>($"{url}/all");
+            return await httpService.GetHelper<List<Partition>>($"{url}/all");
         }
 
         public async Task<IndexPartitionsDTO> GetIndexPartitionsDTO()
         {
-            return await Get<IndexPartitionsDTO>(url);
+            return await httpService.GetHelper<IndexPartitionsDTO>(url);
         }
 
         public async Task<Partition> GetPartition(int Id)
         {
-            return await Get<Partition>($"{url}/{Id}");
-        }
-
-        private async Task<T> Get<T>(string url)
-        {
-            var response = await httpService.Get<T>(url);
-            if (!response.Success)
-            {
-                throw new ApplicationException(await response.GetBody());
-            }
-            return response.Response;
+            return await httpService.GetHelper<Partition>($"{url}/{Id}");
         }
 
         public async Task CreatePartition(Partition partition)

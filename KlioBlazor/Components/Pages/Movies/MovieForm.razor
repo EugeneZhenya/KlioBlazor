@@ -92,7 +92,7 @@
                 <label>Знімальна група:</label>
                 <MultipleSelectorTypeahead Context="person" SearchMethod="SearchPerson" SelectedElements="SelectedActors">
                     <MyResultTemplate>
-                        <img style="width: 50px;" src="@CheckPicture(person)" alt="@person.Name" />
+                        <img style="width: 50px;" src="@(appState.KlioContentUrl + "people/" + person.PictureUrl)" alt="@person.Name" />
                         @person.Name
                     </MyResultTemplate>
                     <MyListTemplate>
@@ -231,24 +231,6 @@
 
             await OnValidSubmit.InvokeAsync(null);
         }
-    }
-
-    private string CheckPicture(Person person)
-    {
-        string url = appState.KlioContentUrl + "people/" + person.PictureUrl;
-        if (!person.HasPicture)
-        {
-            if (person.IsFemale)
-            {
-                url = appState.KlioContentUrl + "people/female.png";
-            }
-            else
-            {
-                url = appState.KlioContentUrl + "people/male.png";
-            }
-        }
-
-        return url;
     }
 
     private void CategorySelect(int value)

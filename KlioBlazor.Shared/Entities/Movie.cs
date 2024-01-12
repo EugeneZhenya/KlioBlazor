@@ -43,7 +43,7 @@ namespace KlioBlazor.Shared.Entities
 
                 if (Title.Length > 60)
                 {
-                    return Title.Substring(0, 60) + "...";
+                    return Title.Substring(0, 60) + "…";
                 }
                 else
                 {

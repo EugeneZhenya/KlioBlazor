@@ -21,27 +21,17 @@ namespace KlioBlazor.Repository
 
         public async Task<List<Category>> GetAllCategories()
         {
-            return await Get<List<Category>>($"{url}/all");
+            return await httpService.GetHelper<List<Category>>($"{url}/all");
         }
 
         public async Task<IndexCategoriesDTO> GetIndexCategoriesDTO()
         {
-            return await Get<IndexCategoriesDTO>(url);
+            return await httpService.GetHelper<IndexCategoriesDTO>(url);
         }
 
         public async Task<Category> GetCategory(int Id)
         {
-            return await Get<Category>($"{url}/{Id}");
-        }
-
-        private async Task<T> Get<T>(string url)
-        {
-            var response = await httpService.Get<T>(url);
-            if (!response.Success)
-            {
-                throw new ApplicationException(await response.GetBody());
-            }
-            return response.Response;
+            return await httpService.GetHelper<Category>($"{url}/{Id}");
         }
 
         public async Task CreateCategory(Category category)

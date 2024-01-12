@@ -20,27 +20,17 @@ namespace KlioBlazor.Repository
 
         public async Task<List<Country>> GetAllCountries()
         {
-            return await Get<List<Country>>($"{url}/all");
+            return await httpService.GetHelper<List<Country>>($"{url}/all");
         }
 
         public async Task<IndexCountriesDTO> GetIndexCountriesDTO()
         {
-            return await Get<IndexCountriesDTO>(url);
+            return await httpService.GetHelper<IndexCountriesDTO>(url);
         }
 
         public async Task<Country> GetCountry(int Id)
         {
-            return await Get<Country>($"{url}/{Id}");
-        }
-
-        private async Task<T> Get<T>(string url)
-        {
-            var response = await httpService.Get<T>(url);
-            if (!response.Success)
-            {
-                throw new ApplicationException(await response.GetBody());
-            }
-            return response.Response;
+            return await httpService.GetHelper<Country>($"{url}/{Id}");
         }
 
         public async Task CreateCountry(Country country)
