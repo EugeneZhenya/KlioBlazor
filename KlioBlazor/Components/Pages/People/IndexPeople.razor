@@ -48,7 +48,7 @@
                                                     <div>
                                                         <p>
                                                             <br />
-                                                            <a href="person/edit/@item.Id">Редагувати</a> <a style="cursor: pointer;">Видалити</a>
+                                                            <a href="person/edit/@item.Id">Редагувати</a> <a style="cursor: pointer;" @onclick="@(() => DeletePerson(item))">Видалити</a>
                                                         </p>
                                                     </div>
                                                 </div>
@@ -66,7 +66,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-xl-12 col-lg-11">
-                    <div class="contact-form-wrap">
+                    <div class="contact-form-wrap mt-5">
                         <div class="contact-form" style="text-align: right;">
                             <a class="btn" href="person/create">Додати</a>
                         </div>
@@ -77,10 +77,16 @@
     </div>
 </section>
 
+<Confirmation @ref="confirmation" OnCancel="OnCancel" OnConfirm="OnConfirm">
+    <div>Ви впевнені, що хочете видалити людину з ім'ям @personToBeDeleted.Name?</div>
+</Confirmation>
+
 @code {
     [CascadingParameter] public AppState appState { get; set; }
     OpenGraphModel allMeta = new OpenGraphModel();
     List<Person> People;
+    Confirmation confirmation;
+    Person personToBeDeleted;
 
     protected async override Task OnInitializedAsync()
     {
@@ -114,5 +120,25 @@
         {
 
         }
+    }
+
+    private async Task DeletePerson(Person person)
+    {
+        personToBeDeleted = person;
+        confirmation.Show();
+    }
+
+    private async Task OnConfirm()
+    {
+        await personRepository.DeletePerson(personToBeDeleted.Id);
+        People = await personRepository.GetPeople();
+        confirmation.Hide();
+        personToBeDeleted = null;
+    }
+
+    void OnCancel()
+    {
+        confirmation.Hide();
+        personToBeDeleted = null;
     }
 }

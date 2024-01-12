@@ -132,5 +132,19 @@ namespace KlioBlazor.Controllers
             await context.SaveChangesAsync();
             return NoContent();
         }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var country = await context.Countries.FirstOrDefaultAsync(x => x.Id == id);
+            if (country == null)
+            {
+                return NotFound();
+            }
+
+            context.Remove(country);
+            await context.SaveChangesAsync();
+            return NoContent();
+        }
     }
 }

@@ -6,6 +6,7 @@ namespace KlioBlazor.Repository
     public interface IGenreRepository
     {
         Task CreateGenre(Genre genre);
+        Task DeleteGenre(int Id);
         Task<List<Genre>> GetAllGenres();
         Task<Genre> GetGenre(int Id);
         Task<IndexGenresDTO> GetIndexGenresDTO();

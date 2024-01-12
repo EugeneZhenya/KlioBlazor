@@ -6,6 +6,7 @@ namespace KlioBlazor.Repository
     public interface IKeywordRepository
     {
         Task CreateKeyword(Keyword keyword);
+        Task DeleteKeyword(int Id);
         Task<List<Keyword>> GetAllKeywords();
         Task<IndexKeywordsDTO> GetIndexKeywordsDTO();
         Task<Keyword> GetKeyword(int Id);

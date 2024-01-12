@@ -34,7 +34,7 @@
                                             <li>
                                                 <a href="keyword/@item.Id/@StringUtilities.Translit(item.Word)">
                                                     <a href="keyword/edit/@item.Id" style="display: inline"><i class="fa-regular fa-pen-to-square"></i></a>
-                                                    <a style="display: inline"><i class="fa-solid fa-trash"></i></a>
+                                                    <a style="display: inline" href="" @onclick="@(() => DeleteKeyword(item))" @onclick:preventDefault><i class="fa-solid fa-trash"></i></a>
                                                     @item.Word
                                                 </a>
                                             </li>
@@ -62,11 +62,17 @@
     </div>
  </section>
 
+<Confirmation @ref="confirmation" OnCancel="OnCancel" OnConfirm="OnConfirm">
+    <div>Ви впевнені, що хочете видалити ключове слово: "@keywordToBeDeleted.Word"?</div>
+</Confirmation>
+
 @code {
     OpenGraphModel allMeta = new OpenGraphModel();
     private Movie lastMovie;
     private List<Country> lastMovieCountries;
     private List<Keyword> Keywords;
+    Confirmation confirmation;
+    Keyword keywordToBeDeleted;
 
     protected async override Task OnInitializedAsync()
     {
@@ -103,5 +109,25 @@
         {
 
         }
+    }
+
+    private async Task DeleteKeyword(Keyword keyword)
+    {
+        keywordToBeDeleted = keyword;
+        confirmation.Show();
+    }
+
+    private async Task OnConfirm()
+    {
+        await keywordRepository.DeleteKeyword(keywordToBeDeleted.Id);
+        Keywords = await keywordRepository.GetAllKeywords();
+        confirmation.Hide();
+        keywordToBeDeleted = null;
+    }
+
+    void OnCancel()
+    {
+        confirmation.Hide();
+        keywordToBeDeleted = null;
     }
 }

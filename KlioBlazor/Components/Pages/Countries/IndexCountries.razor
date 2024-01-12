@@ -40,7 +40,7 @@
                                                         </div>
                                                         <div style="width: 35%; text-align: right;">
                                                             <a class="btn" onmouseover="this.style.color='#1e1b29';" onmouseout="this.style.color='#c8c8c8';" href="country/edit/@item.Id">Редагувати</a>
-                                                            <button class="btn">Видалити</button>
+                                                            <button class="btn" @onclick="@(() => DeleteCountry(item))">Видалити</button>
                                                         </div>
                                                     </div>
                                                 </li>
@@ -58,7 +58,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-xl-12 col-lg-11">
-                    <div class="contact-form-wrap">
+                    <div class="contact-form-wrap mt-5">
                         <div class="contact-form" style="text-align: right;">
                             <a class="btn" href="country/create">Додати</a>
                         </div>
@@ -69,12 +69,18 @@
     </div>
  </section>
 
+<Confirmation @ref="confirmation" OnCancel="OnCancel" OnConfirm="OnConfirm">
+    <div>Ви впевнені, що хочете видалити країну з назвою "@countryToBeDeleted.Name"?</div>
+</Confirmation>
+
 @code {
     [CascadingParameter] public AppState appState { get; set; }
     OpenGraphModel allMeta = new OpenGraphModel();
     private Movie lastMovie;
     private List<Country> lastMovieCountries;
     private List<Country> Countries;
+    Confirmation confirmation;
+    Country countryToBeDeleted;
 
     protected async override Task OnInitializedAsync()
     {
@@ -111,5 +117,25 @@
         {
 
         }
+    }
+
+    private async Task DeleteCountry(Country country)
+    {
+        countryToBeDeleted = country;
+        confirmation.Show();
+    }
+
+    private async Task OnConfirm()
+    {
+        await countryRepository.DeleteCountry(countryToBeDeleted.Id);
+        Countries = await countryRepository.GetAllCountries();
+        confirmation.Hide();
+        countryToBeDeleted = null;
+    }
+
+    void OnCancel()
+    {
+        confirmation.Hide();
+        countryToBeDeleted = null;
     }
 }

@@ -51,5 +51,8 @@ namespace KlioBlazor.Shared.Entities
                 }
             }
         }
+
+        [NotMapped]
+        public double Rating { get; set; }
     }
 }

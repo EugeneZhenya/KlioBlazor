@@ -10,5 +10,6 @@ namespace KlioBlazor.Repository
         Task<Category> GetCategory(int Id);
         Task<IndexCategoriesDTO> GetIndexCategoriesDTO();
         Task UpdateCategory(Category category);
+        Task DeleteCategory(int Id);
     }
 }

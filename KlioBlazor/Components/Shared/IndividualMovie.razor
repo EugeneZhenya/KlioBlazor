@@ -9,7 +9,7 @@
     </div>
     <div class="movie-content">
         <div class="top">
-            <h5 class="title"><a href="@movieUrl">@Movie.TitleBrief</a></h5>
+            <h5 class="title ellipse"><a href="@movieUrl">@Movie.TitleBrief</a></h5>
             <span class="date">@Movie.ReleaseDate.Value.Year</span>
         </div>
         <div class="bottom">
@@ -22,7 +22,7 @@
                         <i class="fa-solid fa-clock"></i> @StringUtilities.SecondsToMinutes(Movie.Duration)
                     </span>
                     <span class="rating">
-                        <i class="fa-solid fa-thumbs-up"></i> @Movie.ViewCounter
+                        <i class="fa-solid fa-thumbs-up"></i> @Movie.Rating
                     </span>
                 </li>
             </ul>

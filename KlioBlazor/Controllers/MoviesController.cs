@@ -26,6 +26,7 @@ namespace KlioBlazor.Controllers
         public async Task<ActionResult<HomePageDTO>> Get()
         {
             var limit = 6;
+            double maxViews = (double)context.Movies.Max(p => p.ViewCounter);
 
             var movieLast = await context.Movies
                 .OrderByDescending(x => x.PublicDate)
@@ -43,6 +44,11 @@ namespace KlioBlazor.Controllers
                 .Include(x => x.Partition)
                 .Take(limit)
                 .ToListAsync();
+
+            foreach (var film in moviesPopular)
+            {
+                film.Rating = Math.Truncate((double)film.ViewCounter / (double)maxViews * 10000) / 100;
+            }
 
             var response = new HomePageDTO();
             response.LastMovie = movieLast;
@@ -86,6 +92,8 @@ namespace KlioBlazor.Controllers
                     HasPicture = x.Person.HasPicture,
                     IsFemale = x.Person.IsFemale,
                     Character = x.Character,
+                    IsActor = x.IsActor,
+                    IsTranslator = x.IsTranslator,
                     Id = x.PersonId
 
                 }).ToList();
@@ -246,6 +254,20 @@ namespace KlioBlazor.Controllers
             }
 
             context.Attach(movie).State = EntityState.Modified;
+            await context.SaveChangesAsync();
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var movie = await context.Movies.FirstOrDefaultAsync(x => x.Id == id);
+            if (movie == null)
+            {
+                return NotFound();
+            }
+
+            context.Remove(movie);
             await context.SaveChangesAsync();
             return NoContent();
         }

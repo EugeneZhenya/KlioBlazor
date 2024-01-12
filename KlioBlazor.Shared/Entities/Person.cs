@@ -26,6 +26,10 @@ namespace KlioBlazor.Shared.Entities
         public bool HasPicture { get; set; }
         [NotMapped]
         public string? Character { get; set; }
+        [NotMapped]
+        public bool IsActor { get; set; }
+        [NotMapped]
+        public bool IsTranslator { get; set; }
         public List<MoviesActors> MoviesActors { get; set; } = new List<MoviesActors>();
         public string PictureUrl
         {

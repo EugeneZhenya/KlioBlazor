@@ -1,4 +1,5 @@
 ﻿@inject IJSRuntime js
+@inject IMoviesRepository moviesRepository
 @attribute [StreamRendering]
 
 <div class="ucm-active" style="display: -webkit-flex; -webkit-flex-direction: column; -webkit-flex-wrap: wrap; -webkit-flex-direction: row;">
@@ -33,8 +34,9 @@
         // }
     }
 
-    void OnConfirm()
+    async void OnConfirm()
     {
+        await moviesRepository.DeleteMovie(movieToBeDeleted.Id);
         Movies.Remove(movieToBeDeleted);
         confirmation.Hide();
         movieToBeDeleted = null;

@@ -99,8 +99,14 @@
                         <div class="row" style="align-items: stretch; width: 100%; float: left;">
                             <p style="width: 37%; margin-bottom: 0;">@person.NameBrief</p>
                             <p style="width: 3%; margin-bottom: 0;">&nbsp;/&nbsp;</p>
-                            <div style="width: 50%;">
+                            <div style="width: 40%;">
                                 <input type="text" placeholder="Роль" @bind="person.Character" style="padding: inherit; margin-bottom: auto;" />
+                            </div>
+                            <div style="width: 5%;">
+                                <InputCheckbox style="width: auto; margin-bottom: 0;" @bind-Value="person.IsActor" />
+                            </div>
+                            <div style="width: 5%;">
+                                <InputCheckbox style="width: auto; margin-bottom: 0;" @bind-Value="person.IsTranslator" />
                             </div>
                         </div>
                     </MyListTemplate>
@@ -221,7 +227,7 @@
             Movie.MoviesCountries = countriesSelected.Select(x => new MoviesCountries { CountryId = int.Parse(x.Key) }).ToList();
             Movie.MoviesGenres = genresSelected.Select(x => new MoviesGenres { GenreId = int.Parse(x.Key) }).ToList();
 
-            Movie.MoviesActors = SelectedActors.Select(x => new MoviesActors { PersonId = x.Id, Character = x.Character }).ToList();
+            Movie.MoviesActors = SelectedActors.Select(x => new MoviesActors { PersonId = x.Id, Character = x.Character, IsActor = x.IsActor, IsTranslator = x.IsTranslator }).ToList();
             Movie.MoviesCreators = SelectedCreators.Select(x => new MoviesCreators { CreatorID = x.Id }).ToList();
             Movie.MoviesKeywords = SelectedKeywords.Select(x => new MoviesKeywords { KeywordId = x.Id }).ToList();
 
