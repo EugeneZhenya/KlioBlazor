@@ -1,4 +1,5 @@
 ﻿using KlioBlazor.Helpers;
+using KlioBlazor.Shared.DTOs;
 using KlioBlazor.Shared.Entities;
 using Microsoft.AspNetCore.Components;
 
@@ -17,9 +18,24 @@ namespace KlioBlazor.Repository
             this.url = this.navigationManager.BaseUri + this.url;
         }
 
-        public async Task<List<Genre>> GetGenres()
+        public async Task<List<Genre>> GetAllGenres()
         {
-            var response = await httpService.Get<List<Genre>>(url);
+            return await Get<List<Genre>>($"{url}/all");
+        }
+
+        public async Task<IndexGenresDTO> GetIndexGenresDTO()
+        {
+            return await Get<IndexGenresDTO>(url);
+        }
+
+        public async Task<Genre> GetGenre(int Id)
+        {
+            return await Get<Genre>($"{url}/{Id}");
+        }
+
+        private async Task<T> Get<T>(string url)
+        {
+            var response = await httpService.Get<T>(url);
             if (!response.Success)
             {
                 throw new ApplicationException(await response.GetBody());
@@ -30,6 +46,15 @@ namespace KlioBlazor.Repository
         public async Task CreateGenre(Genre genre)
         {
             var response = await httpService.Post(url, genre);
+            if (!response.Success)
+            {
+                throw new ApplicationException(await response.GetBody());
+            }
+        }
+
+        public async Task UpdateGenre(Genre genre)
+        {
+            var response = await httpService.Put(url, genre);
             if (!response.Success)
             {
                 throw new ApplicationException(await response.GetBody());
