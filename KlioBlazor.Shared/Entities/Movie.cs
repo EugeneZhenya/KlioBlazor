@@ -12,9 +12,9 @@ namespace KlioBlazor.Shared.Entities
         public string Title { get; set; }
         public string Summary { get; set; }
         [NotMapped]
-        public string Poster { get; set; }
+        public string? Poster { get; set; }
         [NotMapped]
-        public string Background { get; set; }
+        public string? Background { get; set; }
         [Required(ErrorMessage = "Поле \"Дата виходу\" не може бути порожнім.")]
         public DateTime? ReleaseDate { get; set; }
         public bool ReleaseDateExact { get; set; }

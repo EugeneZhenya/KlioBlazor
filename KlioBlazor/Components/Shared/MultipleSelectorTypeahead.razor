@@ -9,9 +9,9 @@
 <ul class="list-group mb-4">
     @foreach (var item in SelectedElements)
     {
-        <li draggable="true" @ondragstart="@(() => HandleDragStart(item))" @ondragover="@(() => HandleDragOver(item))" class="list-group-item list-group-item-action">
+        <li draggable="true" @ondragstart="@(() => HandleDragStart(item))" @ondragover="@(() => HandleDragOver(item))" class="list-group-item list-group-item-action" style="display: flex; flex-direction: row; align-items: end;">
             @MyListTemplate(item)
-            <span @onclick="@(() => SelectedElements.Remove(item))" class="badge" style="cursor: pointer;"><i class="fa-solid fa-xmark"></i></span>
+            <span @onclick="@(() => SelectedElements.Remove(item))" class="badge" style="cursor: pointer; flex: 1; text-align: end; align-self: center;"><i class="fa-solid fa-xmark"></i></span>
         </li>
     }
 </ul>

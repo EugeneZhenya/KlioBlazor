@@ -8,5 +8,7 @@ namespace KlioBlazor.Repository
         Task<int> CreateMovie(Movie movie);
         Task<DetailsMovieDTO> GetDetailsMovieDTO(int id);
         Task<HomePageDTO> GetHomePageDTO();
+        Task<MovieUpdateDTO> GetMovieForUpdate(int id);
+        Task UpdateMovie(Movie movie);
     }
 }

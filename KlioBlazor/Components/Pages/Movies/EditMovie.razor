@@ -1,5 +1,6 @@
 ﻿@page "/movies/edit/{MovieId:int}"
 @inject NavigationManager NavManager
+@inject IMoviesRepository moviesRepository
 
 <PageTitle>@allMeta.Title</PageTitle>
 
@@ -16,7 +17,8 @@
     </ChildContent>
 </BreadcrumbArea>
 
-<!-- contact-area -->
+@if (Movie != null)
+{
     <section class="contact-area contact-bg" style="background-image: url('img/contact_bg.jpg')">
         <div class="container">
             <div class="row">
@@ -28,7 +30,11 @@
                         <div class="contact-form">
                             @if (Movie != null)
                             {
-                                <MovieForm Movie="Movie" OnValidSubmit="Edit" NotSelectedGenres="NotSelectedGenres" SelectedGenres="SelectedGenres" />
+                                <MovieForm Movie="Movie" OnValidSubmit="Edit"
+                                           NotSelectedGenres="NotSelectedGenres" SelectedGenres="SelectedGenres"
+                                           NotSelectedCountries="NotSelectedCountries" SelectedCountries="SelectedCountries"
+                                           AllPartitions="allPartitions" CategoryList="allCategories" MovieInfos="SelectedInfos"
+                                           SelectedActors="SelectedActors" SelectedCreators="SelectedCreators" SelectedKeywords="SelectedKeywords" />
                             }
                         </div>
                     </div>
@@ -36,23 +42,22 @@
             </div>
         </div>
     </section>
-<!-- contact-area-end -->
-
+}
 
 @code {
     [Parameter] public int MovieId { get; set; }
     OpenGraphModel allMeta = new OpenGraphModel();
     private Movie Movie;
-    private List<Genre> NotSelectedGenres = new List<Genre>()
-    {
-        new Genre() {Id = 1, Name = "Бойовик"},
-        new Genre() {Id = 1, Name = "Комедія"},
-        new Genre() {Id = 1, Name = "Драма"}
-    };
-    private List<Genre> SelectedGenres = new List<Genre>()
-    {
-        new Genre() {Id = 1, Name = "Бойовик"}
-    };
+    private List<Genre> NotSelectedGenres;
+    private List<Genre> SelectedGenres;
+    private List<Person> SelectedActors;
+    private List<Creator> SelectedCreators;
+    private List<Keyword> SelectedKeywords;
+    private List<MovieInfo> SelectedInfos;
+    private List<Category> allCategories;
+    private List<Partition> allPartitions;
+    private List<Country> NotSelectedCountries;
+    private List<Country> SelectedCountries;
 
     protected async override Task OnInitializedAsync()
     {
@@ -78,19 +83,23 @@
         allMeta.ImageHeight2 = 750;
         allMeta.ImageType2 = "image/png";
 
-        Movie = new Movie()
-        {
-            Id = MovieId,
-            Title = "My Movie",
-            Background = "/Content/Movies/1/background.jpg",
-            Poster = "/Content/Movies/1/cover.jpg",
-            PublicDate = DateTime.Now,
-            ReleaseDate = new DateTime(2024, 01, 01)
-        };
+        var model = await moviesRepository.GetMovieForUpdate(MovieId);
+        SelectedActors = model.Actors;
+        SelectedCreators = model.Creators;
+        SelectedKeywords = model.Keywords;
+        SelectedInfos = model.MovieInfos;
+        allCategories = model.AllCategories;
+        allPartitions = model.AllPartitions;
+        SelectedGenres = model.SelectedGenres;
+        NotSelectedGenres = model.NotSelectedGenres;
+        SelectedCountries = model.SelectedCountries;
+        NotSelectedCountries = model.NotSelectedCountries;
+        Movie = model.Movie;
     }
 
-    private void Edit()
+    private async Task Edit()
     {
-        Console.WriteLine("editiong the movie...");
+        await moviesRepository.UpdateMovie(Movie);
+        NavManager.NavigateTo($"movie/{Movie.Id}/{StringUtilities.Translit(Movie.Title)}");
     }
 }

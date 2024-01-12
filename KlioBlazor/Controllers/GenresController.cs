@@ -14,6 +14,7 @@ namespace KlioBlazor.Controllers
     {
         private readonly ApplicationDbContext context;
         private readonly IFileStorageService fileStorageService;
+        private string containerName = "genres";
 
         public GenresController(ApplicationDbContext context, IFileStorageService fileStorageService)
         {
@@ -70,7 +71,7 @@ namespace KlioBlazor.Controllers
             if (!string.IsNullOrWhiteSpace(genre.Icon))
             {
                 var genreIcon = Convert.FromBase64String(genre.Icon);
-                var filePath = await fileStorageService.SaveFile(genreIcon, genre.IconUrl, "genres");
+                var filePath = await fileStorageService.SaveFile(genreIcon, genre.IconUrl, containerName);
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine(filePath);
                 Console.ForegroundColor = ConsoleColor.White;
@@ -82,6 +83,15 @@ namespace KlioBlazor.Controllers
         [HttpPut]
         public async Task<ActionResult> Put(Genre genre)
         {
+            if (!string.IsNullOrWhiteSpace(genre.Icon))
+            {
+                var genreIcon = Convert.FromBase64String(genre.Icon);
+                var filePath = await fileStorageService.SaveFile(genreIcon, genre.IconUrl, containerName);
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine(filePath);
+                Console.ForegroundColor = ConsoleColor.White;
+            }
+
             context.Attach(genre).State = EntityState.Modified;
             await context.SaveChangesAsync();
             return NoContent();

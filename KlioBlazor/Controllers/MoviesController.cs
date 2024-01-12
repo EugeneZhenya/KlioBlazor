@@ -14,6 +14,7 @@ namespace KlioBlazor.Controllers
     {
         private readonly ApplicationDbContext context;
         private readonly IFileStorageService fileStorageService;
+        private string containerName = "Movies";
 
         public MoviesController(ApplicationDbContext context, IFileStorageService fileStorageService)
         {
@@ -93,6 +94,39 @@ namespace KlioBlazor.Controllers
             return model;
         }
 
+        [HttpGet("update/{id}")]
+        public async Task<ActionResult<MovieUpdateDTO>> PutGet(int id)
+        {
+            var movieActionResult = await Get(id);
+            if (movieActionResult.Result is NotFoundResult) { return NotFound(); }
+
+            var movieDetailDTO = movieActionResult.Value;
+            var selectedGenresIds = movieDetailDTO.Genres.Select(x => x.Id).ToList();
+            var notSelectedGenres = await context.Genres
+                .Where(x => !selectedGenresIds.Contains(x.Id))
+                .ToListAsync();
+            var allPartitions = context.Partitions.ToList();
+            var allCategories = context.Categories.ToList();
+            var selectedCountriesIds = movieDetailDTO.Countries.Select(x => x.Id).ToList();
+            var notSelectedCountries = await context.Countries
+                .Where(x => !selectedCountriesIds.Contains(x.Id))
+                .ToListAsync();
+
+            var model = new MovieUpdateDTO();
+            model.Movie = movieDetailDTO.Movie;
+            model.SelectedGenres = movieDetailDTO.Genres;
+            model.NotSelectedGenres = notSelectedGenres;
+            model.Actors = movieDetailDTO.Actors;
+            model.AllPartitions = allPartitions;
+            model.AllCategories = allCategories;
+            model.MovieInfos = movieDetailDTO.Movie.MovieInfos.ToList();
+            model.SelectedCountries = movieDetailDTO.Countries;
+            model.NotSelectedCountries = notSelectedCountries;
+            model.Keywords = movieDetailDTO.Keywords;
+            model.Creators = movieDetailDTO.Creators;
+            return model;
+        }
+
         [HttpPost]
         public async Task<ActionResult<int>> Post(Movie movie)
         {
@@ -144,15 +178,76 @@ namespace KlioBlazor.Controllers
             if (!string.IsNullOrWhiteSpace(movie.Poster))
             {
                 var cover = Convert.FromBase64String(movie.Poster);
-                var filePath = await fileStorageService.SaveFile(cover, "cover.jpg", "Movies/" + movie.Id.ToString());
+                var filePath = await fileStorageService.SaveFile(cover, "cover.jpg", $"{containerName}/{movie.Id}");
             }
             if (!string.IsNullOrWhiteSpace(movie.Background))
             {
                 var background = Convert.FromBase64String(movie.Background);
-                var filePath = await fileStorageService.SaveFile(background, "background.jpg", "Movies/" + movie.Id.ToString());
+                var filePath = await fileStorageService.SaveFile(background, "background.jpg", $"{containerName}/{movie.Id}");
             }
 
             return movie.Id;
+        }
+
+        [HttpPut]
+        public async Task<ActionResult> Put(Movie movie)
+        {
+            if (!string.IsNullOrWhiteSpace(movie.Poster))
+            {
+                var cover = Convert.FromBase64String(movie.Poster);
+                var filePath = await fileStorageService.SaveFile(cover, "cover.jpg", $"{containerName}/{movie.Id}");
+            }
+            if (!string.IsNullOrWhiteSpace(movie.Background))
+            {
+                var background = Convert.FromBase64String(movie.Background);
+                var filePath = await fileStorageService.SaveFile(background, "background.jpg", $"{containerName}/{movie.Id}");
+            }
+
+            await context.Database.ExecuteSqlInterpolatedAsync($"delete from MovieInfos where MovieId = {movie.Id}; delete from MoviesActors where MovieId = {movie.Id}; delete from MoviesCountries where MovieId = {movie.Id}; delete from MoviesCreators where MovieId = {movie.Id}; delete from MoviesGenres where MovieId = {movie.Id}; delete from MoviesKeywords where MovieId = {movie.Id};");
+
+            if (movie.MoviesActors != null)
+            {
+                for (int i = 0; i < movie.MoviesActors.Count; i++)
+                {
+                    movie.MoviesActors[i].Order = i + 1;
+                }
+            }
+
+            if (movie.MoviesKeywords != null)
+            {
+                for (int i = 0; i < movie.MoviesKeywords.Count; i++)
+                {
+                    movie.MoviesKeywords[i].Order = i + 1;
+                }
+            }
+
+            if (movie.MoviesCreators != null)
+            {
+                for (int i = 0; i < movie.MoviesCreators.Count; i++)
+                {
+                    movie.MoviesCreators[i].Order = i + 1;
+                }
+            }
+
+            if (movie.MoviesCountries != null)
+            {
+                for (int i = 0; i < movie.MoviesCountries.Count; i++)
+                {
+                    movie.MoviesCountries[i].Order = i + 1;
+                }
+            }
+
+            if (movie.MoviesGenres != null)
+            {
+                for (int i = 0; i < movie.MoviesGenres.Count; i++)
+                {
+                    movie.MoviesGenres[i].Order = i + 1;
+                }
+            }
+
+            context.Attach(movie).State = EntityState.Modified;
+            await context.SaveChangesAsync();
+            return NoContent();
         }
     }
 }

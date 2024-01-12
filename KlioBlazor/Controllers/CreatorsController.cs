@@ -14,6 +14,7 @@ namespace KlioBlazor.Controllers
     {
         private readonly ApplicationDbContext context;
         private readonly IFileStorageService fileStorageService;
+        private string containerName = "creators";
 
         public CreatorsController(ApplicationDbContext context, IFileStorageService fileStorageService)
         {
@@ -77,7 +78,7 @@ namespace KlioBlazor.Controllers
             if (!string.IsNullOrWhiteSpace(creator.Logo))
             {
                 var creatorLogo = Convert.FromBase64String(creator.Logo);
-                var filePath = await fileStorageService.SaveFile(creatorLogo, creator.LogoUrl, "creators");
+                var filePath = await fileStorageService.SaveFile(creatorLogo, creator.LogoUrl, containerName);
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine(filePath);
                 Console.ForegroundColor = ConsoleColor.White;
@@ -89,6 +90,15 @@ namespace KlioBlazor.Controllers
         [HttpPut]
         public async Task<ActionResult> Put(Creator creator)
         {
+            if (!string.IsNullOrWhiteSpace(creator.Logo))
+            {
+                var creatorLogo = Convert.FromBase64String(creator.Logo);
+                var filePath = await fileStorageService.SaveFile(creatorLogo, creator.LogoUrl, containerName);
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine(filePath);
+                Console.ForegroundColor = ConsoleColor.White;
+            }
+
             context.Attach(creator).State = EntityState.Modified;
             await context.SaveChangesAsync();
             return NoContent();

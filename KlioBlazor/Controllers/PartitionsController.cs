@@ -14,6 +14,7 @@ namespace KlioBlazor.Controllers
     {
         private readonly ApplicationDbContext context;
         private readonly IFileStorageService fileStorageService;
+        private string containerName = "partitions";
 
         public PartitionsController(ApplicationDbContext context, IFileStorageService fileStorageService)
         {
@@ -71,7 +72,7 @@ namespace KlioBlazor.Controllers
             if (!string.IsNullOrWhiteSpace(partition.Picture))
             {
                 var partitionPicture = Convert.FromBase64String(partition.Picture);
-                var filePath = await fileStorageService.SaveFile(partitionPicture, partition.PictureUrl, "partitions");
+                var filePath = await fileStorageService.SaveFile(partitionPicture, partition.PictureUrl, containerName);
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine(filePath);
                 Console.ForegroundColor = ConsoleColor.White;
@@ -83,6 +84,15 @@ namespace KlioBlazor.Controllers
         [HttpPut]
         public async Task<ActionResult> Put(Partition partition)
         {
+            if (!string.IsNullOrWhiteSpace(partition.Picture))
+            {
+                var partitionPicture = Convert.FromBase64String(partition.Picture);
+                var filePath = await fileStorageService.SaveFile(partitionPicture, partition.PictureUrl, containerName);
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine(filePath);
+                Console.ForegroundColor = ConsoleColor.White;
+            }
+
             context.Attach(partition).State = EntityState.Modified;
             await context.SaveChangesAsync();
             return NoContent();

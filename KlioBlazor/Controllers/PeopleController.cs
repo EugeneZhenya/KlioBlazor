@@ -14,6 +14,7 @@ namespace KlioBlazor.Controllers
     {
         private readonly ApplicationDbContext context;
         private readonly IFileStorageService fileStorageService;
+        private string containerName = "people";
 
         public PeopleController(ApplicationDbContext context, IFileStorageService fileStorageService)
         {
@@ -48,7 +49,7 @@ namespace KlioBlazor.Controllers
             if (!string.IsNullOrWhiteSpace(person.Picture))
             {
                 var personPicture = Convert.FromBase64String(person.Picture);
-                var filePath = await fileStorageService.SaveFile(personPicture, person.PictureUrl, "people");
+                var filePath = await fileStorageService.SaveFile(personPicture, person.PictureUrl, containerName);
                 person.HasPicture = true;
             }
 
@@ -61,6 +62,13 @@ namespace KlioBlazor.Controllers
         [HttpPut]
         public async Task<ActionResult> Put(Person person)
         {
+            if (!string.IsNullOrWhiteSpace(person.Picture))
+            {
+                var personPicture = Convert.FromBase64String(person.Picture);
+                var filePath = await fileStorageService.SaveFile(personPicture, person.PictureUrl, containerName);
+                person.HasPicture = true;
+            }
+
             context.Attach(person).State = EntityState.Modified;
             await context.SaveChangesAsync();
             return NoContent();

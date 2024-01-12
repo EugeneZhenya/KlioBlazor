@@ -14,6 +14,7 @@ namespace KlioBlazor.Controllers
     {
         private readonly ApplicationDbContext context;
         private readonly IFileStorageService fileStorageService;
+        private string containerName = "countries";
 
         public CountriesController(ApplicationDbContext context, IFileStorageService fileStorageService)
         {
@@ -70,7 +71,7 @@ namespace KlioBlazor.Controllers
             if (!string.IsNullOrWhiteSpace(country.Flag))
             {
                 var countryFlag = Convert.FromBase64String(country.Flag);
-                var filePath = await fileStorageService.SaveFile(countryFlag, country.FlagUrl, "countries");
+                var filePath = await fileStorageService.SaveFile(countryFlag, country.FlagUrl, containerName);
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine(filePath);
                 Console.ForegroundColor = ConsoleColor.White;
@@ -79,7 +80,7 @@ namespace KlioBlazor.Controllers
             if (!string.IsNullOrWhiteSpace(country.Emblem))
             {
                 var countryEmblem = Convert.FromBase64String(country.Emblem);
-                var filePath = await fileStorageService.SaveFile(countryEmblem, country.EmblemUrl, "countries");
+                var filePath = await fileStorageService.SaveFile(countryEmblem, country.EmblemUrl, containerName);
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine(filePath);
                 Console.ForegroundColor = ConsoleColor.White;
@@ -88,7 +89,7 @@ namespace KlioBlazor.Controllers
             if (!string.IsNullOrWhiteSpace(country.Background))
             {
                 var countryBackground = Convert.FromBase64String(country.Background);
-                var filePath = await fileStorageService.SaveFile(countryBackground, country.BackgroundUrl, "countries");
+                var filePath = await fileStorageService.SaveFile(countryBackground, country.BackgroundUrl, containerName);
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine(filePath);
                 Console.ForegroundColor = ConsoleColor.White;
@@ -100,6 +101,33 @@ namespace KlioBlazor.Controllers
         [HttpPut]
         public async Task<ActionResult> Put(Country country)
         {
+            if (!string.IsNullOrWhiteSpace(country.Flag))
+            {
+                var countryFlag = Convert.FromBase64String(country.Flag);
+                var filePath = await fileStorageService.SaveFile(countryFlag, country.FlagUrl, containerName);
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine(filePath);
+                Console.ForegroundColor = ConsoleColor.White;
+            }
+
+            if (!string.IsNullOrWhiteSpace(country.Emblem))
+            {
+                var countryEmblem = Convert.FromBase64String(country.Emblem);
+                var filePath = await fileStorageService.SaveFile(countryEmblem, country.EmblemUrl, containerName);
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine(filePath);
+                Console.ForegroundColor = ConsoleColor.White;
+            }
+
+            if (!string.IsNullOrWhiteSpace(country.Background))
+            {
+                var countryBackground = Convert.FromBase64String(country.Background);
+                var filePath = await fileStorageService.SaveFile(countryBackground, country.BackgroundUrl, containerName);
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine(filePath);
+                Console.ForegroundColor = ConsoleColor.White;
+            }
+
             context.Attach(country).State = EntityState.Modified;
             await context.SaveChangesAsync();
             return NoContent();
