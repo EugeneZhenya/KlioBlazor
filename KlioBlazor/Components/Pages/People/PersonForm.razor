@@ -49,6 +49,7 @@
     private void OnSelectedImage(string imageBase64)
     {
         Person.Picture = imageBase64;
+        Person.HasPicture = true;
         imageUrl = null;
     }
 }

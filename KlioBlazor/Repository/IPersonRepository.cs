@@ -1,4 +1,5 @@
-﻿using KlioBlazor.Shared.Entities;
+﻿using KlioBlazor.Shared.DTOs;
+using KlioBlazor.Shared.Entities;
 
 namespace KlioBlazor.Repository
 {
@@ -6,7 +7,7 @@ namespace KlioBlazor.Repository
     {
         Task CreatePerson(Person person);
         Task DeletePerson(int Id);
-        Task<List<Person>> GetPeople();
+        Task<PaginatedResponse<List<Person>>> GetPeople(PaginationDTO paginationDTO);
         Task<List<Person>> GetPeopleByName(string name);
         Task<Person> GetPersonById(int id);
         Task UpdatePerson(Person person);

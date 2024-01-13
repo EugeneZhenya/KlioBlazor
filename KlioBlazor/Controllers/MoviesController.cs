@@ -253,6 +253,16 @@ namespace KlioBlazor.Controllers
                 }
             }
 
+            if (movie.MovieInfos != null)
+            {
+                foreach (var movieInfo in movie.MovieInfos)
+                {
+                    var addInfo = new MovieInfo { MovieId = movie.Id, Info = movieInfo.Info, Remark = movieInfo.Remark, Text = movieInfo.Text };
+                    context.Add(addInfo);
+                }
+                movie.MovieInfos = null;
+            }
+
             context.Attach(movie).State = EntityState.Modified;
             await context.SaveChangesAsync();
             return NoContent();

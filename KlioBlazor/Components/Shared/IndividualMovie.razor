@@ -15,7 +15,7 @@
         <div class="bottom">
             <ul>
                 <li>
-                    <span class="quality" style="color: lightgreen; border-color: lightgreen;">0+</span>
+                    <span class="quality" style="@AgeLimitColor(Movie.AgeLimit)">@Movie.AgeLimit+</span>
                 </li>
                 <li>
                     <span class="duration">
@@ -43,5 +43,30 @@
     protected override void OnInitialized()
     {
         movieUrl = $"movie/{Movie.Id}/{StringUtilities.Translit(Movie.Title)}";
+    }
+
+    string AgeLimitColor(int age)
+    {
+        string style = "color: lightgreen; border-color: lightgreen;";
+        switch (age)
+        {
+            case 12:
+                style = "color: sandybrown; border-color: sandybrown;";
+                break;
+
+            case 16:
+                style = "color: orange; border-color: orange;";
+                break;
+
+            case 18:
+                style = "color: maroon; border-color: maroon;";
+                break;
+
+            default:
+                style = "color: lightgreen; border-color: lightgreen;";
+                break;
+        }
+
+        return style;
     }
 }

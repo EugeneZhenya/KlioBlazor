@@ -51,7 +51,7 @@
                                 <li class="category">
                                     @foreach (var country in ShowMovieCountries)
                                     {
-                                        <img src="@($"{appState.KlioContentUrl}countries/{country.FlagUrl}")" alt="@country.Name" style="width: 25px; padding-right: 5px;" />
+                                        <img src="@($"{appState.KlioContentUrl}countries/{country.FlagUrl}")" alt="@country.Name" style="width: 25px; margin: 0 5px 0 10px;" />
                                         <a href="country/@country.Id/@StringUtilities.Translit(@country.Name)">@country.Name</a>
                                     }
                                 </li>

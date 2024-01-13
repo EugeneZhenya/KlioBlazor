@@ -74,7 +74,7 @@ else
                                     <li class="category">
                                         @foreach (var country in model.Countries)
                                         {
-                                            <img src="@($"{appState.KlioContentUrl}countries/{country.FlagUrl}")" alt="@country.Name" style="width: 25px; padding-right: 5px;" />
+                                            <img src="@($"{appState.KlioContentUrl}countries/{country.FlagUrl}")" alt="@country.Name" style="width: 25px; margin: 0 5px 0 10px;" />
                                             <a href="country/@country.Id/@StringUtilities.Translit(@country.Name)">@country.Name</a>
                                         }
                                     </li>
@@ -193,6 +193,10 @@ else
                                                     @infoOrigLangUA(inf)
                                                     ;
                                                     break;
+                                                case "en":
+                                                    @infoOrigLangEN(inf)
+                                                    ;
+                                                    break;
                                             }
                                             break;
                                         case "Youtube":
@@ -201,6 +205,10 @@ else
                                             break;
                                         case "KlioYoutube":
                                             @infoKlioYoutube(inf)
+                                            ;
+                                            break;
+                                        case "InstagramVideo":
+                                            @infoInstagramVideoUrl(inf)
                                             ;
                                             break;
                                     }
@@ -243,8 +251,10 @@ else
     private RenderFragment<Genre> linkGenre = (genre) => @<a href="genre/@genre.Id/@StringUtilities.Translit(genre.Name)">@genre.Name</a>;
     
     private RenderFragment<MovieInfo> infoOrigLangUA = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><img src="inf/Flag_of_Ukraine.png" class="info-img" alt="Мова оригіналу: @info.Remark" title="Мова оригіналу: @info.Remark" /><div><div class="info-content">Мова оригіналу</div><div class="info-ingredients">@info.Remark</div></div></div>;
+    private RenderFragment<MovieInfo> infoOrigLangEN = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><img src="inf/Flag_of_the_United_Kingdom.png" class="info-img" alt="Мова оригіналу: @info.Remark" title="Мова оригіналу: @info.Remark" /><div><div class="info-content">Мова оригіналу</div><div class="info-ingredients">@info.Remark</div></div></div>;
     private RenderFragment<MovieInfo> infoYoutubeUrl = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><img src="inf/YouTube.png" class="info-img" alt="YouTube" title="YouTube" /><div><div class="info-content"><a href="https://www.youtube.com/watch?v=@info.Text" target="_blank">Дивитися на YouTube</a></div><div class="info-ingredients">YouTube-канал: @info.Remark</div></div></div>;
     private RenderFragment<MovieInfo> infoKlioYoutube = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><img src="inf/KlioYouTube.png" class="info-img" alt="YouTube KlioDpUa" title="YouTube KlioDpUa" /><div><div class="info-content"><a href="https://www.youtube.com/watch?v=@info.Text" target="_blank">Дивитися на нашому YouTube-каналі</a></div></div></div>;
+    private RenderFragment<MovieInfo> infoInstagramVideoUrl = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><img src="inf/Instagram-Logo.png" class="info-img" alt="Instagram" title="Instagram" /><div><div class="info-content"><a href="https://www.instagram.com/p/@info.Text/" target="_blank">Дивитися на Instagram</a></div><div class="info-ingredients">Користувач: @info.Remark</div></div></div>;
 
     protected async override Task OnInitializedAsync()
     {

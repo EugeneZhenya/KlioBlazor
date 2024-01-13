@@ -87,6 +87,7 @@
     List<Person> People;
     Confirmation confirmation;
     Person personToBeDeleted;
+    PaginationDTO paginationDTO = new PaginationDTO() { RecordsPerPage = 3 };
 
     protected async override Task OnInitializedAsync()
     {
@@ -114,7 +115,9 @@
 
         try
         {
-            People = await personRepository.GetPeople();
+            var paginatedResponse = await personRepository.GetPeople(paginationDTO);
+            People = paginatedResponse.Response;
+            Console.WriteLine("TotalAmountPages: " + paginatedResponse.TotalAmountPages);
         }
         catch (Exception ex)
         {
@@ -131,7 +134,8 @@
     private async Task OnConfirm()
     {
         await personRepository.DeletePerson(personToBeDeleted.Id);
-        People = await personRepository.GetPeople();
+        var paginatedResponse = await personRepository.GetPeople(paginationDTO);
+        People = paginatedResponse.Response;
         confirmation.Hide();
         personToBeDeleted = null;
     }

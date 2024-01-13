@@ -1,4 +1,5 @@
 ﻿using KlioBlazor.Helpers;
+using KlioBlazor.Shared.DTOs;
 using KlioBlazor.Shared.Entities;
 using Microsoft.AspNetCore.Components;
 
@@ -17,9 +18,9 @@ namespace KlioBlazor.Repository
             this.url = this.navigationManager.BaseUri + this.url;
         }
 
-        public async Task<List<Person>> GetPeople()
+        public async Task<PaginatedResponse<List<Person>>> GetPeople(PaginationDTO paginationDTO)
         {
-            return await httpService.GetHelper<List<Person>>(url);
+            return await httpService.GetHelper<List<Person>>(url, paginationDTO);
         }
 
         public async Task<List<Person>> GetPeopleByName(string name)

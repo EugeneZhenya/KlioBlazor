@@ -1,4 +1,6 @@
-﻿namespace KlioBlazor.Helpers
+﻿using KlioBlazor.Shared.DTOs;
+
+namespace KlioBlazor.Helpers
 {
     public static class IHttpServiceExtensionMethods
     {
@@ -10,6 +12,28 @@
                 throw new ApplicationException(await response.GetBody());
             }
             return response.Response;
+        }
+
+        public static async Task<PaginatedResponse<T>> GetHelper<T>(this IHttpService httpService, string url, PaginationDTO paginationDTO)
+        {
+            string newURL = "";
+            if (url.Contains("?"))
+            {
+                newURL = $"{url}&page={paginationDTO.Page}&recordsPerPage={paginationDTO.RecordsPerPage}";
+            }
+            else
+            {
+                newURL = $"{url}?page={paginationDTO.Page}&recordsPerPage={paginationDTO.RecordsPerPage}";
+            }
+
+            var httpResponse = await httpService.Get<T>(newURL);
+            var totalAmountPages = int.Parse(httpResponse.HttpResponseMessage.Headers.GetValues("totalAmountPages").FirstOrDefault());
+            var paginatedResponse = new PaginatedResponse<T>
+            {
+                Response = httpResponse.Response,
+                TotalAmountPages = totalAmountPages
+            };
+            return paginatedResponse;
         }
     }
 }

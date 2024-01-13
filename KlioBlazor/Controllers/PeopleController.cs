@@ -1,5 +1,6 @@
 ﻿using KlioBlazor.Data;
 using KlioBlazor.Helpers;
+using KlioBlazor.Shared.DTOs;
 using KlioBlazor.Shared.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -23,9 +24,11 @@ namespace KlioBlazor.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Person>>> Get()
+        public async Task<ActionResult<List<Person>>> Get([FromQuery] PaginationDTO paginationDTO)
         {
-            return await context.People.ToListAsync();
+            var queryable = context.People.AsQueryable();
+            await HttpContext.InsertPaginationParametersInResponse(queryable, paginationDTO.RecordsPerPage);
+            return await queryable.Paginate(paginationDTO).ToListAsync();
         }
 
         [HttpGet("{id}")]
@@ -46,15 +49,14 @@ namespace KlioBlazor.Controllers
         [HttpPost]
         public async Task<ActionResult<int>> Post(Person person)
         {
-            if (!string.IsNullOrWhiteSpace(person.Picture))
+            context.Add(person);
+            await context.SaveChangesAsync();
+
+            if (person.HasPicture)
             {
                 var personPicture = Convert.FromBase64String(person.Picture);
                 var filePath = await fileStorageService.SaveFile(personPicture, person.PictureUrl, containerName);
-                person.HasPicture = true;
             }
-
-            context.Add(person);
-            await context.SaveChangesAsync();
 
             return person.Id;
         }
