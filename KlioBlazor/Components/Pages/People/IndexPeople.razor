@@ -33,6 +33,7 @@
                         <GenericList List="People">
                             <WholeListTemplate>
                                 <div class="rc-post" style="width: 100%;">
+                                    <Pagination CurrentPage="@paginationDTO.Page" TotalAmountPages="totalAmountPages" SelectedPage="SelectedPage" />
                                         <ul style="display: flex; align-items: flex-start; flex-direction: row; flex-wrap: wrap;">
                                         @foreach (var item in People)
                                         {
@@ -88,6 +89,7 @@
     Confirmation confirmation;
     Person personToBeDeleted;
     PaginationDTO paginationDTO = new PaginationDTO() { RecordsPerPage = 3 };
+    private int totalAmountPages;
 
     protected async override Task OnInitializedAsync()
     {
@@ -115,14 +117,25 @@
 
         try
         {
-            var paginatedResponse = await personRepository.GetPeople(paginationDTO);
-            People = paginatedResponse.Response;
-            Console.WriteLine("TotalAmountPages: " + paginatedResponse.TotalAmountPages);
+            await LoadPeople();
         }
         catch (Exception ex)
         {
 
         }
+    }
+
+    private async Task LoadPeople()
+    {
+        var paginatedResponse = await personRepository.GetPeople(paginationDTO);
+        People = paginatedResponse.Response;
+        totalAmountPages = paginatedResponse.TotalAmountPages;
+    }
+
+    private async Task SelectedPage(int page)
+    {
+        paginationDTO.Page = page;
+        await LoadPeople();
     }
 
     private async Task DeletePerson(Person person)
@@ -134,8 +147,7 @@
     private async Task OnConfirm()
     {
         await personRepository.DeletePerson(personToBeDeleted.Id);
-        var paginatedResponse = await personRepository.GetPeople(paginationDTO);
-        People = paginatedResponse.Response;
+        await LoadPeople();
         confirmation.Hide();
         personToBeDeleted = null;
     }

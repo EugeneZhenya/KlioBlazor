@@ -3857,3 +3857,15 @@ input::file-selector-button {
     text-overflow: ellipsis;
     overflow: hidden;
 }
+
+.page-link {
+    color: #fd0e30;
+}
+.page-link:hover {
+    color: #aaa;
+}
+
+.active > .page-link, .page-link.active {
+    background-color: #fd0e30;
+    border-color: #fd0e30;
+}
