@@ -1,7 +1,8 @@
 ﻿@page "/movies/search"
 @attribute [StreamRendering]
 @inject NavigationManager NavManager
-@inject IRepository repository
+@inject IMoviesRepository moviesRepository
+@inject IGenreRepository genreRepository
 
 <PageTitle>@allMeta.Title</PageTitle>
 
@@ -26,22 +27,23 @@
                         <div class="widget-title mb-50">
                             <h5 class="title">Пошук фільмів</h5>
                         </div>
-                        <div class="contact-form">
-                            <div class="col-md-12">
-                                <input type="text" placeholder="Назва фільму..." id="title" @bind-value="title" @bind-value:event="oninput"
-                                       @onkeypress="@((KeyboardEventArgs e) => TitleKeyPress(e))">
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <select @bind="selectedGenre">
-                                        <option value="0">
-                                            -- Виберіть жанр
-                                        </option>
-                                        @foreach (var genre in Genres)
+                        <EditForm Model="filterMoviesDTO">
+                            <div class="contact-form">
+                                <div class="col-md-12">
+                                    <input type="text" placeholder="Назва фільму..." id="title" @bind-value="filterMoviesDTO.Title" @bind-value:event="oninput"
+                                           @onkeypress="@((KeyboardEventArgs e) => TitleKeyPress(e))">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <select @bind="filterMoviesDTO.GenreId">
+                                            <option value="0">
+                                                -- Виберіть жанр
+                                            </option>
+                                            @foreach (var genre in Genres)
                                         {
                                             <option value="@genre.Id">@genre.Name</option>
                                         }
-                                </select>
+                                    </select>
                                 </div>
                                 <div class="col-md-6" style="text-align: end;">
                                     <button type="button" class="btn" @onclick="Clear">Очистити</button>
@@ -49,6 +51,7 @@
                                 </div>
                             </div>
                         </div>
+                        </EditForm>
                     </div>
                 </div>
             </div>
@@ -56,18 +59,16 @@
 </section>
 <!-- contact-area-end -->
 
-<UpComingMovieArea Movies="Movies" Title="@titleDiplay" Subtitle="Результати пошуку" NoRecords="Нічого не знайдено" />
+<UpComingMovieArea Movies="Movies" Title="@titleDisplay" Subtitle="Результати пошуку" NoRecords="Нічого не знайдено" />
+
+<Pagination CurrentPage="filterMoviesDTO.Page" TotalAmountPages="totalAmountPages" SelectedPage="SelectedPage" />
 
 @code {
     OpenGraphModel allMeta = new OpenGraphModel();
-    string title = "";
-    string titleDiplay = "";
-    string selectedGenre = "0";
-    private List<Genre> Genres = new List<Genre>()
-    {
-        new Genre() { Id = 1, Name = "Документальний"},
-        new Genre() { Id = 2, Name = "Дитячий"},
-    };
+    private FilterMoviesDTO filterMoviesDTO = new FilterMoviesDTO();
+    string titleDisplay = "";
+    private int totalAmountPages;
+    private List<Genre> Genres = new List<Genre>();
     private List<Movie> Movies;
 
     protected async override Task OnInitializedAsync()
@@ -94,30 +95,91 @@
         allMeta.ImageHeight2 = 750;
         allMeta.ImageType2 = "image/png";
 
-        Movies = repository.GetMovies();
+        filterMoviesDTO.Title = "";
+        var queryString = NavManager.GetQueryStrings(NavManager.Uri);
+        Genres = await genreRepository.GetAllGenres();
+        Genres = Genres.OrderBy(x => x.Name).ToList();
+        if (queryString != null)
+        {
+            FillFilterWithQueryStrings(queryString);
+        }
+        await LoadMovies();
     }
 
-    private void TitleKeyPress(KeyboardEventArgs e)
+    private void FillFilterWithQueryStrings(Dictionary<string, string> queryStrings)
     {
-        if (e.Key == "Enter")
+        if (queryStrings.ContainsKey("genreId"))
         {
-            SearchForMovies();
+            filterMoviesDTO.GenreId = int.Parse(queryStrings["genreId"]);
+        }
+
+        if (queryStrings.ContainsKey("title"))
+        {
+            filterMoviesDTO.Title = queryStrings["title"];
+        }
+
+        if (queryStrings.ContainsKey("page"))
+        {
+            filterMoviesDTO.Page = int.Parse(queryStrings["page"]);
         }
     }
 
-    private void SearchForMovies()
+    private async Task SelectedPage(int page)
     {
-        titleDiplay = title;
-        Movies = Movies.Where(x => x.Title.Contains(title)).ToList();
-        Console.WriteLine($"title: {title}");
-        Console.WriteLine($"selectedGenre: {selectedGenre}");
+        filterMoviesDTO.Page = page;
+        await LoadMovies();
     }
 
-    private void Clear()
+    private async Task LoadMovies()
     {
-        Movies = repository.GetMovies();
-        title = "";
-        selectedGenre = "0";
-        titleDiplay = title;
+        var quesryString = GenerateQueryString();
+        if (!string.IsNullOrWhiteSpace(quesryString))
+        {
+            quesryString = $"?{quesryString}";
+            if (NavManager.ToBaseRelativePath(NavManager.Uri) != ("movies/search" + quesryString))
+            {
+                NavManager.NavigateTo("movies/search" + quesryString);
+            }
+        }
+        Movies = null;
+        var pagenatedResponse = await moviesRepository.GetMoviesFiltered(filterMoviesDTO);
+        Movies = pagenatedResponse.Response;
+        totalAmountPages = pagenatedResponse.TotalAmountPages;
+        StateHasChanged();
+    }
+
+    private string GenerateQueryString()
+    {
+        var queryStringDict = new Dictionary<string, string>();
+        queryStringDict["genreId"] = filterMoviesDTO.GenreId.ToString();
+        queryStringDict["title"] = filterMoviesDTO.Title ?? "";
+        queryStringDict["page"] = filterMoviesDTO.Page.ToString();
+
+        var defaultValues = new List<string>() { "", "0" };
+
+        return string.Join("&", queryStringDict
+            .Where(x => !defaultValues.Contains(x.Value.ToLower()))
+            .Select(x => $"{x.Key}={System.Web.HttpUtility.UrlEncode(x.Value)}").ToArray());
+    }
+
+    private async Task TitleKeyPress(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            await SearchForMovies();
+        }
+    }
+
+    private async Task SearchForMovies()
+    {
+        await LoadMovies();
+    }
+
+    private async Task Clear()
+    {
+        filterMoviesDTO.Title = "";
+        filterMoviesDTO.GenreId = 0;
+        titleDisplay = filterMoviesDTO.Title;
+        await LoadMovies();
     }
 }

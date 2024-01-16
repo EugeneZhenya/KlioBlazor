@@ -28,7 +28,7 @@ namespace KlioBlazor.Controllers
         {
             var queryable = context.People.AsQueryable();
             await HttpContext.InsertPaginationParametersInResponse(queryable, paginationDTO.RecordsPerPage);
-            return await queryable.Paginate(paginationDTO).ToListAsync();
+            return await queryable.OrderBy(q => q.Name).Paginate(paginationDTO).ToListAsync();
         }
 
         [HttpGet("{id}")]

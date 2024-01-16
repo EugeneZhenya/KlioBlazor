@@ -22,6 +22,22 @@
                                 }
                             }
                         </h2>
+                        @if (!string.IsNullOrEmpty(OriginalTitle))
+                        {
+                            <h3 style="margin-bottom: 20px;">
+                                @for (int i = 0; i < SeparateTitle(OriginalTitle).Length; i++)
+                                {
+                                    if (i % 2 == 0)
+                                    {
+                                        <span style="color: #fd0e30;">@SeparateTitle(OriginalTitle)[i]</span>
+                                    }
+                                    else
+                                    {
+                                        <span style="color: #e4e2e2;">@SeparateTitle(OriginalTitle)[i]</span>
+                                    }
+                                }
+                            </h3>
+                        }
                         <div class="banner-meta">
                             <ul>
                                 <li class="quality">
@@ -66,7 +82,7 @@
                     </div>
                 </div>
                 <div class="col-xl-6 col-lg-4 d-flex align-items-center justify-content-center position-relative">
-                    <a href="@($"movie/{ShowMovie.Id}/{StringUtilities.Translit(ShowMovie.Title)}");" class="glightbox play-btn"></a>
+                    <a href="@($"movie/{ShowMovie.Id}/{StringUtilities.Translit(ShowMovie.Title)}")" class="glightbox play-btn"></a>
                 </div>
             </div>
         </div>
@@ -78,10 +94,24 @@
     [CascadingParameter] public AppState appState { get; set; }
     [Parameter] public Movie ShowMovie { get; set; }
     [Parameter] public List<Country> ShowMovieCountries { get; set; }
+    private string OriginalTitle = string.Empty;
 
     string[] SeparateTitle(string title)
     {
         return StringUtilities.SeparateString(title);
+    }
+
+    protected override Task OnParametersSetAsync()
+    {
+        try
+        {
+            OriginalTitle = ShowMovie.MovieInfos.FirstOrDefault(x => x.Info == "OriginalTitle").Text;
+        }
+        catch (Exception ex)
+        {
+            
+        }
+        return base.OnParametersSetAsync(); 
     }
 
     string AgeLimitColor(int age)

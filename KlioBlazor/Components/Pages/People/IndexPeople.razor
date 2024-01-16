@@ -43,15 +43,19 @@
                                                         <img src="@(appState.KlioContentUrl + "people/" + item.PictureUrl)" alt="@item.Name" style="max-width: 100px; margin-left: .5rem; margin-right: .5rem;" />
                                                     </a>
                                                 </div>
-                                                <div class="content">
+                                                <div class="content" style="height: 125px; position: relative;">
                                                     <h5 class="title"><a href="person/@item.Id/@StringUtilities.Translit(item.Name)">@item.NameBrief</a></h5>
-                                                    <span class="date"><i class="fa-solid fa-cake-candles"></i> @StringUtilities.DateToString(item.DateOfBirth, "dd MMMM yyyy")</span>
-                                                    <div>
-                                                        <p>
-                                                            <br />
-                                                            <a href="person/edit/@item.Id">Редагувати</a> <a style="cursor: pointer;" @onclick="@(() => DeletePerson(item))">Видалити</a>
-                                                        </p>
-                                                    </div>
+                                                    @if (item.DateOfBirth != null)
+                                                    {
+                                                        <span class="date"><i class="fa-solid fa-cake-candles"></i> @StringUtilities.DateToString(item.DateOfBirth, "dd MMMM yyyy")</span>
+                                                    }
+                                                    @if (item.DateOfDeath != null)
+                                                    {
+                                                        <span class="date"><i class="fa-solid fa-cross"></i> @StringUtilities.DateToString(item.DateOfDeath, "dd MMMM yyyy")</span>
+                                                    }
+                                                    <p style="position: absolute; bottom: 0;">
+                                                        <a href="person/edit/@item.Id">Редагувати</a> <a style="cursor: pointer;" @onclick="@(() => DeletePerson(item))">Видалити</a>
+                                                    </p>
                                                 </div>
                                             </li>
                                         }
@@ -88,7 +92,7 @@
     List<Person> People;
     Confirmation confirmation;
     Person personToBeDeleted;
-    PaginationDTO paginationDTO = new PaginationDTO() { RecordsPerPage = 3 };
+    PaginationDTO paginationDTO = new PaginationDTO() { RecordsPerPage = 15 };
     private int totalAmountPages;
 
     protected async override Task OnInitializedAsync()

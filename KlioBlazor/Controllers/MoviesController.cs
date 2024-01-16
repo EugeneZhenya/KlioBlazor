@@ -33,6 +33,7 @@ namespace KlioBlazor.Controllers
                 .Include(x => x.Partition).ThenInclude(x => x.Category)
                 .Include(x => x.MoviesGenres).ThenInclude(x => x.Genre)
                 .Include(x => x.MoviesCountries).ThenInclude(x => x.Country)
+                .Include(x => x.MovieInfos)
                 .FirstOrDefaultAsync();
 
             movieLast.MoviesGenres = movieLast.MoviesGenres.OrderBy(x => x.Order).ToList();
@@ -100,6 +101,37 @@ namespace KlioBlazor.Controllers
 
 
             return model;
+        }
+
+        [HttpPost("filter")]
+        public async Task<ActionResult<List<Movie>>> Filter(FilterMoviesDTO filterMovieDTO)
+        {
+            double maxViews = (double)context.Movies.Max(p => p.ViewCounter);
+            var moviesQueryable = context.Movies.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(filterMovieDTO.Title))
+            {
+                moviesQueryable = moviesQueryable.Where(x => x.Title.Contains(filterMovieDTO.Title));
+            }
+
+            if (filterMovieDTO.GenreId != 0)
+            {
+                moviesQueryable = moviesQueryable.Where(x => x.MoviesGenres.Select(y => y.GenreId).Contains(filterMovieDTO.GenreId));
+            }
+
+            await HttpContext.InsertPaginationParametersInResponse(moviesQueryable, filterMovieDTO.RecordsPerPage);
+
+            var movies = await moviesQueryable
+                .Paginate(filterMovieDTO.Pagination)
+                .Include(x => x.Partition)
+                .ToListAsync();
+
+            foreach (var film in movies)
+            {
+                film.Rating = Math.Truncate((double)film.ViewCounter / (double)maxViews * 10000) / 100;
+            }
+
+            return movies;
         }
 
         [HttpGet("update/{id}")]

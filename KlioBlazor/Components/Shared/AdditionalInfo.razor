@@ -49,7 +49,7 @@
     [Parameter] public EventCallback<MovieInfo> DelInfo { get; set; }
     [Parameter] public EventCallback<MovieInfo> EditInfo { get; set; }
     public MovieInfo NewInfo { get; set; } = new MovieInfo();
-    public string[] movieProperties = ["OriginalLanguage", "Youtube", "KlioYoutube", "InstagramVideo", "DownloadUrl"];
+    public string[] movieProperties = ["OriginalTitle", "OriginalLanguage", "TranslateLanguage", "Youtube", "KlioYoutube", "InstagramVideo", "TmdbMovieId", "ImdbId", "DownloadUrl", "Award"];
     private bool IsDiabled = true;
 
     private async Task InfoComplete(MovieInfo movieInfo)

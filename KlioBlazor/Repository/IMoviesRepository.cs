@@ -10,6 +10,7 @@ namespace KlioBlazor.Repository
         Task<DetailsMovieDTO> GetDetailsMovieDTO(int id);
         Task<HomePageDTO> GetHomePageDTO();
         Task<MovieUpdateDTO> GetMovieForUpdate(int id);
+        Task<PaginatedResponse<List<Movie>>> GetMoviesFiltered(FilterMoviesDTO filterMoviesDTO);
         Task UpdateMovie(Movie movie);
     }
 }

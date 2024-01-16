@@ -2,6 +2,7 @@
 using KlioBlazor.Shared.DTOs;
 using KlioBlazor.Shared.Entities;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Http;
 
 namespace KlioBlazor.Repository
 {
@@ -26,6 +27,19 @@ namespace KlioBlazor.Repository
         public async Task<DetailsMovieDTO> GetDetailsMovieDTO(int id)
         {
             return await httpService.GetHelper<DetailsMovieDTO>($"{url}/{id}");
+        }
+
+        public async Task<PaginatedResponse<List<Movie>>> GetMoviesFiltered(FilterMoviesDTO filterMoviesDTO)
+        {
+            var responseHTTP = await httpService.Post<FilterMoviesDTO, List<Movie>>($"{url}/filter", filterMoviesDTO);
+            var totalAmountPages = int.Parse(responseHTTP.HttpResponseMessage.Headers.GetValues("totalAmountPages").FirstOrDefault());
+            var paginatedResponse = new PaginatedResponse<List<Movie>>()
+            {
+                Response = responseHTTP.Response,
+                TotalAmountPages = totalAmountPages
+            };
+
+            return paginatedResponse;
         }
 
         public async Task<MovieUpdateDTO> GetMovieForUpdate(int id)

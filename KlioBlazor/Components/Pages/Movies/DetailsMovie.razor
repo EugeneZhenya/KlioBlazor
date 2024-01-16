@@ -45,6 +45,22 @@ else
                                     }
                                 }
                             </h2>
+                            @if (!string.IsNullOrEmpty(OriginalTitle))
+                            {
+                                <h3 style="margin-bottom: 20px;">
+                                    @for (int i = 0; i < SeparateTitle(OriginalTitle).Length; i++)
+                                    {
+                                        if (i % 2 == 0)
+                                        {
+                                            <span style="color: #fd0e30;">@SeparateTitle(OriginalTitle)[i]</span>
+                                        }
+                                        else
+                                        {
+                                            <span style="color: #e4e2e2;">@SeparateTitle(OriginalTitle)[i]</span>
+                                        }
+                                    }
+                                </h3>
+                            }
                             <div class="banner-meta">
                                 <ul>
                                     <li class="quality">
@@ -85,13 +101,11 @@ else
                                 <ul style="min-width: 100%;">
                                     <li class="share"><a href="#"><i class="fa-solid fa-share-nodes"></i> Поширити</a></li>
                                     <li class="streaming">
-                                        <!--
-                                        <h6>Prime Video</h6>
-                                        <span>Streaming Channels</span>
-                                        -->
                                         @foreach (var creator in model.Creators)
                                         {
-                                            <img src="@($"{appState.KlioContentUrl}creators/{creator.LogoUrl}")" alt="@creator.Title" style="width: 50px;" title="@creator.Title" />
+                                            <a href="creator/@creator.Id/@StringUtilities.Translit(creator.Title)">
+                                                <img src="@($"{appState.KlioContentUrl}creators/{creator.LogoUrl}")" alt="@creator.Title" style="width: 50px;" title="@creator.Title" />
+                                            </a>
                                         }
                                     </li>
                                     @if (model.Movie.HasTrailer)
@@ -129,38 +143,59 @@ else
             <div class="row justify-content-center">
                 <div class="col-lg-8">
                     <div class="section-title title-style-three text-center mb-70">
-                        <h2 class="title">Знімальна група</h2>
+                        <h2 class="title">Над фільмом працювали</h2>
+                    </div>
+                    <div class="pricing-box-wrap">
+                        <div class="row justify-content-start">
+                            @for (int i = 0; i < model.Actors.Count; i++)
+                            {
+                                <div class="col-lg-4 col-md-4 actor text-center crew_align mb-5">
+                                    <div style="width: min-intrinsic; width: -webkit-min-content;width: -moz-min-content; width: min-content; margin: 0 auto;">
+                                        @model.Actors[i].Name
+                                    </div>
+                                    <a href="person/@model.Actors[i].Id/@StringUtilities.Translit(model.Actors[i].Name)">
+                                        <div class="techBox" style="@(i % 2 == 0 ? "background: linear-gradient(45deg, #e52641 25%, #444 25%, #444 50%, #e52641 50%, #e52641 75%, #444 75%, #444 100%);" : "background: linear-gradient(-45deg, #e52641 25%, #444 25%, #444 50%, #e52641 50%, #e52641 75%, #444 75%, #444 100%);")background-size: 40px 40px;">
+                                            @if (model.Actors[i].HasPicture)
+                                            {
+                                                <img src="@(appState.KlioContentUrl + "people/" + model.Actors[i].PictureUrl)" title="@model.Actors[i].Name" alt="@model.Actors[i].Name" />
+                                            }
+                                            else
+                                            {
+                                                if (model.Actors[i].IsFemale)
+                                                {
+                                                    <img src="@(appState.KlioContentUrl + "people/female.png")" title="@model.Actors[i].Name" alt="@model.Actors[i].Name" />
+                                                }
+                                                else
+                                                {
+                                                    <img src="@(appState.KlioContentUrl + "people/male.png")" title="@model.Actors[i].Name" alt="@model.Actors[i].Name" />
+                                                }
+                                            }
+                                        </div>
+                                    </a>
+                                    <div>@model.Actors[i].Character</div>
+                                </div>
+                            }
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="pricing-box-wrap">
-                <div class="row justify-content-start">
-                    @for (int i = 0; i < model.Actors.Count; i++)
-                    {
-                        <div class="col-lg-3 col-md-4 actor text-center crew_align mb-5">
-                            <div>@model.Actors[i].Name</div>
-                            <a href="person/@model.Actors[i].Id/@StringUtilities.Translit(model.Actors[i].Name)">
-                                <div class="techBox" style="@(i % 2 == 0 ? "background: linear-gradient(45deg, #e52641 25%, #444 25%, #444 50%, #e52641 50%, #e52641 75%, #444 75%, #444 100%);" : "background: linear-gradient(-45deg, #e52641 25%, #444 25%, #444 50%, #e52641 50%, #e52641 75%, #444 75%, #444 100%);")background-size: 40px 40px;">
-                                    @if (model.Actors[i].HasPicture)
+                <div class="col-lg-4">
+                    <aside class="blog-sidebar">
+                        <div class="widget blog-widget">
+                            <div class="widget-title mb-30">
+                                <h5 class="title">Ключові слова</h5>
+                            </div>
+                            <div class="tag-list">
+                                <ul>
+                                    @foreach (var item in model.Keywords)
                                     {
-                                        <img src="@(appState.KlioContentUrl + "people/" + model.Actors[i].PictureUrl)" title="@model.Actors[i].Name)" alt="@model.Actors[i].Name" />
+                                        <li>
+                                            <a href="keyword/@item.Id/@StringUtilities.Translit(item.Word)">@item.Word</a>
+                                        </li>
                                     }
-                                    else
-                                    {
-                                        if (model.Actors[i].IsFemale)
-                                        {
-                                            <img src="@(appState.KlioContentUrl + "people/female.png")" title="@model.Actors[i].Name" alt="@model.Actors[i].Name" />
-                                        }
-                                        else
-                                        {
-                                            <img src="@(appState.KlioContentUrl + "people/male.png")" title="@model.Actors[i].Name" alt="@model.Actors[i].Name" />
-                                        }
-                                    }
-                                </div>
-                            </a>
-                            <div>@model.Actors[i].Character</div>
+                                </ul>
+                            </div>
                         </div>
-                    }
+                    </aside>
                 </div>
             </div>
         </div>
@@ -169,7 +204,7 @@ else
     <section class="episode-area episode-bg" style="background-image: url('img/episode_bg.jpg');">
         <div class="container">
             <div class="row">
-                <div class="col-lg-8">
+                <div class="col-lg-12">
                     <div class="row w-100">
                         <div class="movie-episode-wrap">
                             <div class="episode-top-wrap">
@@ -197,6 +232,19 @@ else
                                                     @infoOrigLangEN(inf)
                                                     ;
                                                     break;
+                                                case "pl":
+                                                    @infoOrigLangPL(inf)
+                                                    ;
+                                                    break;
+                                            }
+                                            break;
+                                        case "TranslateLanguage":
+                                            switch (inf.Text)
+                                            {
+                                                case "uk":
+                                                    @infoTransLangUA(inf)
+                                                    ;
+                                                    break;
                                             }
                                             break;
                                         case "Youtube":
@@ -211,30 +259,23 @@ else
                                             @infoInstagramVideoUrl(inf)
                                             ;
                                             break;
+                                        case "TmdbMovieId":
+                                            @infoTmdbMovie(inf)
+                                            ;
+                                            break;
+                                        case "ImdbId":
+                                            @infoImdbMovie(inf)
+                                            ;
+                                            break;
+                                        case "Award":
+                                            @infoAward(inf)
+                                            ;
+                                            break;
                                     }
                                 }
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-4">
-                    <aside class="blog-sidebar">
-                        <div class="widget blog-widget">
-                            <div class="widget-title mb-30">
-                                <h5 class="title">Ключові слова</h5>
-                            </div>
-                            <div class="tag-list">
-                                <ul>
-                                    @foreach (var item in model.Keywords)
-                                    {
-                                        <li>
-                                            <a href="keyword/@item.Id/@StringUtilities.Translit(item.Word)">@item.Word</a>
-                                        </li>
-                                    }
-                                </ul>
-                            </div>
-                        </div>
-                    </aside>
                 </div>
             </div>
         </div>
@@ -248,13 +289,24 @@ else
     OpenGraphModel allMeta = new OpenGraphModel();
     DetailsMovieDTO model;
     private string downloadUrl = string.Empty;
+    private string OriginalTitle = string.Empty;
     private RenderFragment<Genre> linkGenre = (genre) => @<a href="genre/@genre.Id/@StringUtilities.Translit(genre.Name)">@genre.Name</a>;
     
     private RenderFragment<MovieInfo> infoOrigLangUA = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><img src="inf/Flag_of_Ukraine.png" class="info-img" alt="Мова оригіналу: @info.Remark" title="Мова оригіналу: @info.Remark" /><div><div class="info-content">Мова оригіналу</div><div class="info-ingredients">@info.Remark</div></div></div>;
     private RenderFragment<MovieInfo> infoOrigLangEN = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><img src="inf/Flag_of_the_United_Kingdom.png" class="info-img" alt="Мова оригіналу: @info.Remark" title="Мова оригіналу: @info.Remark" /><div><div class="info-content">Мова оригіналу</div><div class="info-ingredients">@info.Remark</div></div></div>;
+    private RenderFragment<MovieInfo> infoOrigLangPL = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><img src="inf/Flag_of_Poland.png" class="info-img" alt="Мова оригіналу: @info.Remark" title="Мова оригіналу: @info.Remark" /><div><div class="info-content">Мова оригіналу</div><div class="info-ingredients">@info.Remark</div></div></div>;
     private RenderFragment<MovieInfo> infoYoutubeUrl = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><img src="inf/YouTube.png" class="info-img" alt="YouTube" title="YouTube" /><div><div class="info-content"><a href="https://www.youtube.com/watch?v=@info.Text" target="_blank">Дивитися на YouTube</a></div><div class="info-ingredients">YouTube-канал: @info.Remark</div></div></div>;
     private RenderFragment<MovieInfo> infoKlioYoutube = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><img src="inf/KlioYouTube.png" class="info-img" alt="YouTube KlioDpUa" title="YouTube KlioDpUa" /><div><div class="info-content"><a href="https://www.youtube.com/watch?v=@info.Text" target="_blank">Дивитися на нашому YouTube-каналі</a></div></div></div>;
     private RenderFragment<MovieInfo> infoInstagramVideoUrl = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><img src="inf/Instagram-Logo.png" class="info-img" alt="Instagram" title="Instagram" /><div><div class="info-content"><a href="https://www.instagram.com/p/@info.Text/" target="_blank">Дивитися на Instagram</a></div><div class="info-ingredients">Користувач: @info.Remark</div></div></div>;
+    private RenderFragment<MovieInfo> infoTransLangUA = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><img src="inf/Flag_of_Ukraine.png" class="info-img" alt="Спосіб перекладу: @info.Remark" title="Спосіб перекладу: @info.Remark" /><div><div class="info-content">Спосіб перекладу</div><div class="info-ingredients">@info.Remark</div></div></div>;
+    private RenderFragment<MovieInfo> infoTmdbMovie = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><img src="inf/TMDB.png" class="info-img" alt="TMDB" title="The Movie Database" /><div><div class="info-content"><a href="https://www.themoviedb.org/movie/@info.Text" target="_blank">The Movie Database</a></div></div></div>;
+    private RenderFragment<MovieInfo> infoImdbMovie = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><img src="inf/IMDB.png" class="info-img" alt="IMDB" title="Internet Movie Database" /><div><div class="info-content"><a href="https://www.imdb.com/title/@info.Text" target="_blank">Internet Movie Database</a></div></div></div>;
+    private RenderFragment<MovieInfo> infoAward = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><img src="inf/award.png" class="info-img" alt="Нагорода" title="Нагорода" /><div><div class="info-content">@info.Text</div><div class="info-ingredients">@_infoAward(info.Remark)</div></div></div>;
+
+    private static RenderFragment _infoAward(string Mark) => builder =>
+    {
+        builder.AddMarkupContent(0, Mark);
+    };
 
     protected async override Task OnInitializedAsync()
     {
@@ -285,6 +337,11 @@ else
         if (model.Movie.MovieInfos.Where(x => x.Info == "DownloadUrl").FirstOrDefault() != null)
         {
             downloadUrl = model.Movie.MovieInfos.Where(x => x.Info == "DownloadUrl").FirstOrDefault().Text;
+        };
+
+        if (model.Movie.MovieInfos.Where(x => x.Info == "OriginalTitle").FirstOrDefault() != null)
+        {
+            OriginalTitle = model.Movie.MovieInfos.Where(x => x.Info == "OriginalTitle").FirstOrDefault().Text;
         };
 
         Console.WriteLine($"The Id of the movie is {MovieId}");
