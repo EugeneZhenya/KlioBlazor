@@ -30,3 +30,9 @@ function playerInit(id, file, poster, title, autoplay) {
     console.log('player: ' + file );
     var player = new Playerjs({ id: id, file: file, poster: poster, title: title, autoplay: autoplay });
 }
+
+function playerStop(id, file, poster, title, autoplay) {
+    console.log('player: ' + id + ' stop...');
+    var player = new Playerjs({ id: id, file: file, poster: poster, title: title, autoplay: autoplay });
+    player.api("stop");
+}

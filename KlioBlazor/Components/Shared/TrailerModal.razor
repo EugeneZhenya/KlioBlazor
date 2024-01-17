@@ -1,0 +1,56 @@
+﻿@inject IJSRuntime js
+
+<!-- Modal Trailer -->
+<div class="modal @ModalClass" id="search_modal" tabindex="-1" role="dialog" style="display:@ModalDisplay">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div id="trailer"></div>
+        </div>
+    </div>
+    <button data-dismiss="modal" @onclick="() => Close()">
+        <i class="fa-regular fa-circle-xmark"></i>
+    </button>
+</div>
+<!-- Modal Trailer-end -->
+
+@if (ShowBackdrop)
+{
+    <div class="modal-backdrop fade show"></div>
+}
+
+@code {
+    [Parameter] public string TrailerUrl { get; set; }
+    [Parameter] public string TrailerCover { get; set; }
+    public Guid Guid = Guid.NewGuid();
+    public string ModalDisplay = "none;";
+    public string ModalClass = "";
+    public bool ShowBackdrop = false;
+
+    protected override async void OnAfterRender(bool firstRender)
+    {
+        await InitPlayer();
+    }
+
+    async Task InitPlayer()
+    {
+        await js.InvokeVoidAsync("playerInit", "trailer", TrailerUrl, TrailerCover, "", 0);
+    }
+
+    public void Open()
+    {
+        ModalDisplay = "block;";
+        ModalClass = "Show";
+        ShowBackdrop = true;
+        StateHasChanged();
+    }
+
+    public async Task Close()
+    {
+        await js.InvokeVoidAsync("playerStop", "trailer", TrailerUrl, TrailerCover, "", 0);
+
+        ModalDisplay = "none";
+        ModalClass = "";
+        ShowBackdrop = false;
+        StateHasChanged();
+    }
+}

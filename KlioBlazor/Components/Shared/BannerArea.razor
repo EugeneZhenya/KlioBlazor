@@ -29,11 +29,11 @@
                                 {
                                     if (i % 2 == 0)
                                     {
-                                        <span style="color: #fd0e30;">@SeparateTitle(OriginalTitle)[i]</span>
+                                        <span style="color: #e4e2e2;">@SeparateTitle(OriginalTitle)[i]</span>
                                     }
                                     else
                                     {
-                                        <span style="color: #e4e2e2;">@SeparateTitle(OriginalTitle)[i]</span>
+                                        <span style="color: #fd0e30;">@SeparateTitle(OriginalTitle)[i]</span>
                                     }
                                 }
                             </h3>
@@ -75,7 +75,7 @@
                         </div>
                         @if (ShowMovie.HasTrailer)
                         {
-                            <a href="" class="banner-btn btn popup-video">
+                            <a class="banner-btn btn popup-video" style="cursor: pointer" @onclick="() => TrailerModal.Open()">
                                 <i class="fa-solid fa-play"></i> Вістовик
                             </a>
                         }
@@ -85,6 +85,11 @@
                     <a href="@($"movie/{ShowMovie.Id}/{StringUtilities.Translit(ShowMovie.Title)}")" class="glightbox play-btn"></a>
                 </div>
             </div>
+
+            @if (ShowMovie.HasTrailer)
+            {
+                <TrailerModal TrailerUrl="@($"{appState.KlioContentUrl}movies/{ShowMovie.Id}/Trailer/index.m3u8")" TrailerCover="@($"{appState.KlioContentUrl}movies/{ShowMovie.Id}/Trailer/cover.jpg")" @ref=TrailerModal />
+            }
         </div>
     </div>
 </section>
@@ -95,6 +100,7 @@
     [Parameter] public Movie ShowMovie { get; set; }
     [Parameter] public List<Country> ShowMovieCountries { get; set; }
     private string OriginalTitle = string.Empty;
+    private TrailerModal TrailerModal { get; set; }
 
     string[] SeparateTitle(string title)
     {
@@ -103,13 +109,9 @@
 
     protected override Task OnParametersSetAsync()
     {
-        try
+        if (ShowMovie.MovieInfos.FirstOrDefault(x => x.Info == "OriginalTitle") != null)
         {
             OriginalTitle = ShowMovie.MovieInfos.FirstOrDefault(x => x.Info == "OriginalTitle").Text;
-        }
-        catch (Exception ex)
-        {
-            
         }
         return base.OnParametersSetAsync(); 
     }

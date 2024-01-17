@@ -52,11 +52,11 @@ else
                                     {
                                         if (i % 2 == 0)
                                         {
-                                            <span style="color: #fd0e30;">@SeparateTitle(OriginalTitle)[i]</span>
+                                            <span style="color: #e4e2e2;">@SeparateTitle(OriginalTitle)[i]</span>
                                         }
                                         else
                                         {
-                                            <span style="color: #e4e2e2;">@SeparateTitle(OriginalTitle)[i]</span>
+                                            <span style="color: #fd0e30;">@SeparateTitle(OriginalTitle)[i]</span>
                                         }
                                     }
                                 </h3>
@@ -111,7 +111,9 @@ else
                                     @if (model.Movie.HasTrailer)
                                     {
                                         <li class="watch">
-                                            <a href="https://www.youtube.com/watch?v=R2gbPxeNk2E" class="btn popup-video"><i class="fa-solid fa-play"></i> Вістовик</a>
+                                            <a class="btn popup-video" style="cursor: pointer" @onclick="() => TrailerModal.Open()">
+                                                <i class="fa-solid fa-play"></i> Вістовик
+                                            </a>
                                         </li>
                                     }
                                 </ul>
@@ -134,6 +136,11 @@ else
                     }
                 </div>
             </div>
+
+            @if (model.Movie.HasTrailer)
+            {
+                <TrailerModal TrailerUrl="@($"{appState.KlioContentUrl}movies/{MovieId}/Trailer/index.m3u8")" TrailerCover="@($"{appState.KlioContentUrl}movies/{MovieId}/Trailer/cover.jpg")" @ref=TrailerModal />
+            }
         </div>
     </section>
     <!-- movie-details-area-end -->
@@ -291,6 +298,7 @@ else
     private string downloadUrl = string.Empty;
     private string OriginalTitle = string.Empty;
     private RenderFragment<Genre> linkGenre = (genre) => @<a href="genre/@genre.Id/@StringUtilities.Translit(genre.Name)">@genre.Name</a>;
+    private TrailerModal TrailerModal { get; set; }
     
     private RenderFragment<MovieInfo> infoOrigLangUA = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><img src="inf/Flag_of_Ukraine.png" class="info-img" alt="Мова оригіналу: @info.Remark" title="Мова оригіналу: @info.Remark" /><div><div class="info-content">Мова оригіналу</div><div class="info-ingredients">@info.Remark</div></div></div>;
     private RenderFragment<MovieInfo> infoOrigLangEN = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><img src="inf/Flag_of_the_United_Kingdom.png" class="info-img" alt="Мова оригіналу: @info.Remark" title="Мова оригіналу: @info.Remark" /><div><div class="info-content">Мова оригіналу</div><div class="info-ingredients">@info.Remark</div></div></div>;
