@@ -12,5 +12,6 @@ namespace KlioBlazor.Shared.DTOs
         public Movie LastMovie { get; set; }
         public List<Country> LastMovieCountries { get; set; }
         public List<Movie> MoviesPopular { get; set; }
+        public List<Partition> PartitionsPopular { get; set; }
     }
 }

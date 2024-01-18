@@ -228,20 +228,20 @@ else
                                 {
                                     switch (inf.Info)
                                     {
+                                        case "FullDescription":
+                                            @infoFullDescr(inf);
+                                            break;
                                         case "OriginalLanguage":
                                             switch (inf.Text)
                                             {
                                                 case "uk":
-                                                    @infoOrigLangUA(inf)
-                                                    ;
+                                                    @infoOrigLangUA(inf);
                                                     break;
                                                 case "en":
-                                                    @infoOrigLangEN(inf)
-                                                    ;
+                                                    @infoOrigLangEN(inf);
                                                     break;
                                                 case "pl":
-                                                    @infoOrigLangPL(inf)
-                                                    ;
+                                                    @infoOrigLangPL(inf);
                                                     break;
                                             }
                                             break;
@@ -249,34 +249,27 @@ else
                                             switch (inf.Text)
                                             {
                                                 case "uk":
-                                                    @infoTransLangUA(inf)
-                                                    ;
+                                                    @infoTransLangUA(inf);
                                                     break;
                                             }
                                             break;
                                         case "Youtube":
-                                            @infoYoutubeUrl(inf)
-                                            ;
+                                            @infoYoutubeUrl(inf);
                                             break;
                                         case "KlioYoutube":
-                                            @infoKlioYoutube(inf)
-                                            ;
+                                            @infoKlioYoutube(inf);
                                             break;
                                         case "InstagramVideo":
-                                            @infoInstagramVideoUrl(inf)
-                                            ;
+                                            @infoInstagramVideoUrl(inf);
                                             break;
                                         case "TmdbMovieId":
-                                            @infoTmdbMovie(inf)
-                                            ;
+                                            @infoTmdbMovie(inf);
                                             break;
                                         case "ImdbId":
-                                            @infoImdbMovie(inf)
-                                            ;
+                                            @infoImdbMovie(inf);
                                             break;
                                         case "Award":
-                                            @infoAward(inf)
-                                            ;
+                                            @infoAward(inf);
                                             break;
                                     }
                                 }
@@ -310,6 +303,7 @@ else
     private RenderFragment<MovieInfo> infoTmdbMovie = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><img src="inf/TMDB.png" class="info-img" alt="TMDB" title="The Movie Database" /><div><div class="info-content"><a href="https://www.themoviedb.org/movie/@info.Text" target="_blank">The Movie Database</a></div></div></div>;
     private RenderFragment<MovieInfo> infoImdbMovie = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><img src="inf/IMDB.png" class="info-img" alt="IMDB" title="Internet Movie Database" /><div><div class="info-content"><a href="https://www.imdb.com/title/@info.Text" target="_blank">Internet Movie Database</a></div></div></div>;
     private RenderFragment<MovieInfo> infoAward = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><img src="inf/award.png" class="info-img" alt="Нагорода" title="Нагорода" /><div><div class="info-content">@info.Text</div><div class="info-ingredients">@_infoAward(info.Remark)</div></div></div>;
+    private RenderFragment<MovieInfo> infoFullDescr = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><img src="inf/Plot.png" class="info-img" alt="Сюжет" title="Сюжет" /><div><div class="info-content">Сюжет:</div><div class="info-ingredients">@info.Text</div></div></div>;
 
     private static RenderFragment _infoAward(string Mark) => builder =>
     {

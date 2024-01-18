@@ -25,7 +25,8 @@ namespace KlioBlazor.Controllers
         [HttpGet]
         public async Task<ActionResult<HomePageDTO>> Get()
         {
-            var limit = 6;
+            var limitPopular = 6;
+            var limitPartition = 3;
             double maxViews = (double)context.Movies.Max(p => p.ViewCounter);
 
             var movieLast = await context.Movies
@@ -40,11 +41,24 @@ namespace KlioBlazor.Controllers
             movieLast.MoviesCountries = movieLast.MoviesCountries.OrderBy(x => x.Order).ToList();
             var Countries = movieLast.MoviesCountries.Select(x => x.Country).ToList();
 
-            var moviesPopular = await context.Movies
+            var allMoviesPopular = await context.Movies
                 .OrderByDescending(x => x.ViewCounter)
                 .Include(x => x.Partition)
-                .Take(limit)
                 .ToListAsync();
+
+            var allPartitionsPopular = allMoviesPopular.GroupBy(x => x.Partition).Take(limitPartition).ToList();
+
+            List<Partition> partitionsPopular = new List<Partition>();
+            foreach (var part in allPartitionsPopular)
+            {
+                var newPart = context.Partitions
+                    .Include(x => x.Category)
+                    .Include(x => x.Movies)
+                    .FirstOrDefault(x => x.Id == part.Key.Id);
+                partitionsPopular.Add(newPart);
+            }
+
+            var moviesPopular = allMoviesPopular.Take(limitPopular).ToList();
 
             foreach (var film in moviesPopular)
             {
@@ -55,6 +69,7 @@ namespace KlioBlazor.Controllers
             response.LastMovie = movieLast;
             response.MoviesPopular = moviesPopular;
             response.LastMovieCountries = Countries;
+            response.PartitionsPopular = partitionsPopular;
 
             return response;
         }
@@ -118,6 +133,8 @@ namespace KlioBlazor.Controllers
             {
                 moviesQueryable = moviesQueryable.Where(x => x.MoviesGenres.Select(y => y.GenreId).Contains(filterMovieDTO.GenreId));
             }
+
+            moviesQueryable = moviesQueryable.OrderByDescending(x => x.PublicDate);
 
             await HttpContext.InsertPaginationParametersInResponse(moviesQueryable, filterMovieDTO.RecordsPerPage);
 

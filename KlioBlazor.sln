@@ -5,8 +5,6 @@ VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KlioBlazor", "KlioBlazor\KlioBlazor.csproj", "{4515E530-CE29-4E98-8436-EB10F8325A9A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KlioBlazor.Client", "KlioBlazor.Client\KlioBlazor.Client.csproj", "{F0D4E0B3-31E3-4E19-9817-FD9654E6E1A7}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KlioBlazor.Shared", "KlioBlazor.Shared\KlioBlazor.Shared.csproj", "{1F727FBC-D2A9-405A-B51C-C3B2EFBEE816}"
 EndProject
 Global
@@ -19,10 +17,6 @@ Global
 		{4515E530-CE29-4E98-8436-EB10F8325A9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4515E530-CE29-4E98-8436-EB10F8325A9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4515E530-CE29-4E98-8436-EB10F8325A9A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F0D4E0B3-31E3-4E19-9817-FD9654E6E1A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F0D4E0B3-31E3-4E19-9817-FD9654E6E1A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F0D4E0B3-31E3-4E19-9817-FD9654E6E1A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F0D4E0B3-31E3-4E19-9817-FD9654E6E1A7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1F727FBC-D2A9-405A-B51C-C3B2EFBEE816}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1F727FBC-D2A9-405A-B51C-C3B2EFBEE816}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1F727FBC-D2A9-405A-B51C-C3B2EFBEE816}.Release|Any CPU.ActiveCfg = Release|Any CPU

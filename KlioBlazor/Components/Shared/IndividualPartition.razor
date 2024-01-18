@@ -1,0 +1,34 @@
+﻿<div class="movie-item mb-50" style="width: 380px; margin-right: 30px;">
+    <div class="section-title text-center text-lg-start">
+        <span class="sub-title">@Partition.Category.Name</span>
+    </div>
+    <div class="movie-poster">
+        <a href="@partitionUrl">
+            <img src="@($"{appState.KlioContentUrl}partitions/{Partition.PictureUrl}")" alt="@Partition.Name" />
+        </a>
+    </div>
+    <div class="movie-content">
+        <div class="top">
+            <h5 class="title ellipse"><a href="@partitionUrl">@Partition.Name</a></h5>
+            <span class="date">@Partition.Movies.Count фільмів</span>
+        </div>
+        <div class="bottom">
+            <div class="mt-3 text-center">
+                <a class="btn" href="partitions/edit/@Partition.Id">Редагувати</a>
+                <button type="button" class="btn" @onclick="@(() => DeletePartition.InvokeAsync(Partition))">Видалити</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [CascadingParameter] public AppState appState { get; set; }
+    [Parameter] public Partition Partition { get; set; }
+    [Parameter] public EventCallback<Partition> DeletePartition { get; set; }
+    private string partitionUrl = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        partitionUrl = $"partition/{Partition.Id}/{StringUtilities.Translit(Partition.Name)}";
+    }
+}

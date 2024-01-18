@@ -1,4 +1,3 @@
-using KlioBlazor.Client;
 using KlioBlazor.Data;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -91,11 +90,11 @@ namespace KlioBlazor.Components.Account
 
                 if (userId != null && email != null)
                 {
-                    state.PersistAsJson(nameof(UserInfo), new UserInfo
-                    {
-                        UserId = userId,
-                        Email = email,
-                    });
+                    // state.PersistAsJson(nameof(UserInfo), new UserInfo
+                    // {
+                    //     UserId = userId,
+                    //     Email = email,
+                    // });
                 }
             }
         }

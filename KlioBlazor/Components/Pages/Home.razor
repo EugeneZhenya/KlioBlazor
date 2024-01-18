@@ -12,13 +12,76 @@
     <BannerArea ShowMovie="lastMovie" ShowMovieCountries="lastMovieCountries" />
 }
 
-<UpComingMovieArea Movies="moviesPopular" Title="Найпопулярніші фільми" Subtitle="Дивіться зараз" />
+<PartitionsArea Partitions="partitionsPopular" Title="Найпопулярніші розділи" Subtitle="Дивіться зараз" />
+
+<section class="services-area services-bg" style="background-image: url('img/services_bg.jpg');">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <div class="services-img-wrap">
+                    <video width="100%" autoplay muted loop oncanplay="this.muted=true">
+                        <source src="@GetLogo()" type="video/mp4">
+                        Ваш переглядач не підтримує відтворення відео взагалі, або відтворення відео у форматах mp4/ogg.
+                    </video>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="services-content-wrap">
+                    <div class="section-title title-style-two mb-20">
+                        <span class="sub-title">До ваших послуг</span>
+                        <h2 class="title">Дивіться відеофільми нашого архіву.</h2>
+                    </div>
+                    <p>
+                        На нашому сайті ви можете безоплатно подивитися або завантажити відеофайли:
+                    </p>
+                    <div class="services-list">
+                        <ul>
+                            <li>
+                                <div class="icon">
+                                    <a href="live">
+                                        <i class="flaticon-television"></i>
+                                    </a>
+                                </div>
+                                <div class="content">
+                                    <h5><a href="live">В режимі прямої трансляцій</a></h5>
+                                    <p>Відеофайли нашого архіву трасляются наживо згідно з програмою трансляції.</p>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="icon">
+                                    <a href="movies/search">
+                                        <i class="flaticon-video-camera"></i>
+                                    </a>
+                                </div>
+                                <div class="content">
+                                    <h5><a href="movies/search">Відео на вимогу</a></h5>
+                                    <p>Шукайте та дивіться відео, які вам до вподоби. Ви можете також завантажити відео, яке вас зацікавило, для подальшого перегляду без підключення до інтернету.</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<MoviesArea Movies="moviesPopular" Title="Найпопулярніші фільми" Subtitle="Дивіться зараз" />
 
 @code {
     private List<Movie> moviesPopular;
+    private List<Partition> partitionsPopular;
     private Movie lastMovie;
     private List<Country> lastMovieCountries;
     OpenGraphModel allMeta = new OpenGraphModel();
+    List<string> videoLogos = new List<string>()
+    {
+        "https://raw.githubusercontent.com/EugeneZhenya/KlioMoviesContent/main/vlogos/AutumnLogo.mp4",
+        "https://raw.githubusercontent.com/EugeneZhenya/KlioMoviesContent/main/vlogos/BreakingWtoneWallLogo.mp4",
+        "https://raw.githubusercontent.com/EugeneZhenya/KlioMoviesContent/main/vlogos/GoldLogo.mp4",
+        "https://raw.githubusercontent.com/EugeneZhenya/KlioMoviesContent/main/vlogos/LaserLogo.mp4",
+        "https://raw.githubusercontent.com/EugeneZhenya/KlioMoviesContent/main/vlogos/White%20Logo.mp4",
+    };
 
     protected async override Task OnInitializedAsync()
     {
@@ -49,11 +112,29 @@
             var response = await moviesRepository.GetHomePageDTO();
             lastMovie = response.LastMovie;
             moviesPopular = response.MoviesPopular;
+            partitionsPopular = response.PartitionsPopular;
             lastMovieCountries = response.LastMovieCountries;
         }
         catch (Exception ex)
         {
             
         }
+    }
+
+    string GetLogo()
+    {
+        Random rnd = new Random();
+        int i = 0;
+        int _rnd = rnd.Next(videoLogos.Count);
+        foreach (string logo in videoLogos)
+        {
+            if (i == _rnd)
+            {
+                return logo;
+            }
+            i++;
+        }
+
+        return "";
     }
 }

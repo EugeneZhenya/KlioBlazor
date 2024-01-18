@@ -1680,6 +1680,10 @@ label {
             opacity: 0;
         }
 
+    .services-list ul li a {
+        color: #fff !important;
+    }
+
     .services-list ul li:hover .icon::before {
         opacity: 1;
     }

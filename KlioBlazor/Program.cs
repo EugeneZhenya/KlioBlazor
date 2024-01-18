@@ -1,5 +1,4 @@
 using KlioBlazor;
-using KlioBlazor.Client.Pages;
 using KlioBlazor.Components;
 using KlioBlazor.Components.Account;
 using KlioBlazor.Data;
@@ -37,6 +36,9 @@ builder.Services.AddScoped<IPartitionRepository, PartitionRepository>();
 builder.Services.AddScoped<IPersonRepository, PersonRepository>();
 builder.Services.AddScoped<IMoviesRepository, MoviesRepository>();
 builder.Services.AddScoped<IDashboardRepository, DashboardRepository>();
+builder.Services.AddAuthenticationCore();
+
+builder.Services.AddScoped<AuthenticationStateProvider, DummyAuthenticationStateProvider>();
 
 builder.Services.AddAuthentication(options =>
     {
@@ -88,8 +90,8 @@ app.UseStatusCodePagesWithRedirects("/StatusCode/{0}");
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode()
-    .AddInteractiveWebAssemblyRenderMode()
-    .AddAdditionalAssemblies(typeof(Counter).Assembly);
+    .AddInteractiveWebAssemblyRenderMode();
+    // .AddAdditionalAssemblies(typeof(Counter).Assembly);
 
 // Add additional endpoints required by the Identity /Account Razor components.
 app.MapAdditionalIdentityEndpoints();
