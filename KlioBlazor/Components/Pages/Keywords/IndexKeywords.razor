@@ -34,8 +34,12 @@
                                         {
                                             <li>
                                                 <a href="keyword/@item.Id/@StringUtilities.Translit(item.Word)">
-                                                    <a href="keyword/edit/@item.Id" style="display: inline"><i class="fa-regular fa-pen-to-square"></i></a>
-                                                    <a style="display: inline" href="" @onclick="@(() => DeleteKeyword(item))" @onclick:preventDefault><i class="fa-solid fa-trash"></i></a>
+                                                    <AuthorizeView Roles="Admin">
+                                                        <Authorized>
+                                                            <a href="keyword/edit/@item.Id" style="display: inline"><i class="fa-regular fa-pen-to-square"></i></a>
+                                                            <a style="display: inline" href="" @onclick="@(() => DeleteKeyword(item))" @onclick:preventDefault><i class="fa-solid fa-trash"></i></a>
+                                                        </Authorized>
+                                                    </AuthorizeView>
                                                     @item.Word
                                                 </a>
                                             </li>
@@ -49,17 +53,21 @@
             </div>
         </div>
 
-        <div class="container">
-            <div class="row">
-                <div class="col-xl-12 col-lg-11">
-                    <div class="contact-form-wrap">
-                        <div class="contact-form" style="text-align: right;">
-                            <a class="btn" href="keyword/create">Додати</a>
+        <AuthorizeView Roles="Admin">
+            <Authorized>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-11">
+                            <div class="contact-form-wrap">
+                                <div class="contact-form" style="text-align: right;">
+                                    <a class="btn" href="keyword/create">Додати</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
+            </Authorized>
+        </AuthorizeView>
     </div>
  </section>
 

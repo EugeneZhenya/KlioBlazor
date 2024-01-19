@@ -26,10 +26,14 @@
                     </span>
                 </li>
             </ul>
-            <div class="mt-3 text-center">
-                <a class="btn" href="movies/edit/@Movie.Id">Редагувати</a>
-                <button type="button" class="btn" @onclick="@(() => DeleteMovie.InvokeAsync(Movie))">Видалити</button>
-            </div>
+            <AuthorizeView Roles="Admin">
+                <Authorized>
+                    <div class="mt-3 text-center">
+                        <a class="btn" href="movies/edit/@Movie.Id">Редагувати</a>
+                        <button type="button" class="btn" @onclick="@(() => DeleteMovie.InvokeAsync(Movie))">Видалити</button>
+                    </div>
+                </Authorized>
+            </AuthorizeView>
         </div>
     </div>
 </div>

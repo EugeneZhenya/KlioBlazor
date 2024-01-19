@@ -12,12 +12,16 @@
             <h5 class="title ellipse"><a href="@partitionUrl">@Partition.Name</a></h5>
             <span class="date">@Partition.Movies.Count фільмів</span>
         </div>
-        <div class="bottom">
-            <div class="mt-3 text-center">
-                <a class="btn" href="partitions/edit/@Partition.Id">Редагувати</a>
-                <button type="button" class="btn" @onclick="@(() => DeletePartition.InvokeAsync(Partition))">Видалити</button>
-            </div>
-        </div>
+        <AuthorizeView Roles="Admin">
+            <Authorized>
+                <div class="bottom">
+                    <div class="mt-3 text-center">
+                        <a class="btn" href="partitions/edit/@Partition.Id">Редагувати</a>
+                        <button type="button" class="btn" @onclick="@(() => DeletePartition.InvokeAsync(Partition))">Видалити</button>
+                    </div>
+                </div>
+            </Authorized>
+        </AuthorizeView>
     </div>
 </div>
 

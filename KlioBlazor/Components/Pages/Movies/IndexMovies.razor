@@ -33,9 +33,13 @@
                                 <Pagination CurrentPage="filterMoviesDTO.Page" TotalAmountPages="totalAmountPages" SelectedPage="SelectedPage" />
                             </div>
                         </div>
-                        <div class="contact-form">
-                            <a class="btn" href="movies/create">Додати</a>
-                        </div>
+                        <AuthorizeView Roles="Admin">
+                            <Authorized>
+                                <div class="contact-form">
+                                    <a class="btn" href="movies/create">Додати</a>
+                                </div>
+                            </Authorized>
+                        </AuthorizeView>
                     </div>
                 </div>
             </div>

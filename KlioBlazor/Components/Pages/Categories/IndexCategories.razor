@@ -42,10 +42,14 @@
                                                             <div style="width: 65%; align-self: center;">
                                                                 <a href="@GetCatUrl(item)">@item.Name</a> <span>@item.Partitions.Count() розд.</span>
                                                             </div>
-                                                            <div style="width: 35%; text-align: right;">
-                                                                <a class="btn" onmouseover="this.style.color='#1e1b29';" onmouseout="this.style.color='#c8c8c8';" href="category/edit/@item.Id">Редагувати</a>
-                                                                <button class="btn" @onclick="@(() => DeletCategory(item))">Видалити</button>
-                                                            </div>
+                                                            <AuthorizeView Roles="Admin">
+                                                                <Authorized>
+                                                                    <div style="width: 35%; text-align: right;">
+                                                                        <a class="btn" onmouseover="this.style.color='#1e1b29';" onmouseout="this.style.color='#c8c8c8';" href="category/edit/@item.Id">Редагувати</a>
+                                                                        <button class="btn" @onclick="@(() => DeletCategory(item))">Видалити</button>
+                                                                    </div>
+                                                                </Authorized>
+                                                            </AuthorizeView>
                                                         </div>
                                                     </li>
                                                 }
@@ -59,17 +63,21 @@
                 </div>
             </div>
 
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-12 col-lg-11">
-                        <div class="contact-form-wrap mt-5">
-                            <div class="contact-form" style="text-align: right;">
-                                <a class="btn" href="category/create">Додати</a>
+            <AuthorizeView Roles="Admin">
+                <Authorized>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-11">
+                                <div class="contact-form-wrap mt-5">
+                                    <div class="contact-form" style="text-align: right;">
+                                        <a class="btn" href="category/create">Додати</a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
+                </Authorized>
+            </AuthorizeView>
         </div>
     </section>
 }
