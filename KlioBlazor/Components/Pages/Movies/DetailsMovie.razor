@@ -3,6 +3,7 @@
 @page "/Home/View/{MovieId:int}"
 @inject NavigationManager NavManager
 @inject IMoviesRepository moviesRepository
+@inject CurrentCategory currentCategory
 @inject IJSRuntime js
 
 <PageTitle>@allMeta.Title</PageTitle>
@@ -346,8 +347,7 @@ else
             OriginalTitle = model.Movie.MovieInfos.Where(x => x.Info == "OriginalTitle").FirstOrDefault().Text;
         };
 
-        Console.WriteLine($"The Id of the movie is {MovieId}");
-        Console.WriteLine($"The Name of the movie is {MovieName}");
+        currentCategory.SetCurrentCategory(model.Movie.Partition.CategoryId);
     }
 
     protected override async void OnAfterRender(bool firstRender)

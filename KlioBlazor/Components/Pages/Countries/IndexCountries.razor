@@ -1,6 +1,7 @@
 ﻿@page "/Countries"
 @inject NavigationManager NavManager
 @inject ICountryRepository countryRepository
+@inject CurrentCategory currentCategory
 
 <PageTitle>@allMeta.Title</PageTitle>
 
@@ -84,6 +85,8 @@
 
     protected async override Task OnInitializedAsync()
     {
+        currentCategory.SetCurrentCategory(0);
+
         allMeta.Title = "Країни :: Український медійний архів 'KLIO'";
         allMeta.Description = "Медійний архів 'KLIO': Музика, література, історія, фільми, мультфільми, серіали, мультсеріали, наживо, пряма трансляція, дивитися он-лайн";
         allMeta.Robots = "all";

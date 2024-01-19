@@ -2,6 +2,7 @@
 @inject NavigationManager NavManager
 @inject IPartitionRepository partitionRepository
 @inject ICategoryRepository categoryRepository
+@inject CurrentCategory currentCategory
 
 <PageTitle>@allMeta.Title</PageTitle>
 
@@ -72,6 +73,7 @@
 
         partition = await partitionRepository.GetPartition(PartitionId);
         allCategories = await categoryRepository.GetAllCategories();
+        currentCategory.SetCurrentCategory(partition.CategoryId);
     }
 
     private async Task Edit()

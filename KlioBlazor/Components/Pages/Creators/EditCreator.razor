@@ -2,6 +2,7 @@
 @inject NavigationManager NavManager
 @inject ICountryRepository countryRepository
 @inject ICreatorRepository creatorRepository
+@inject CurrentCategory currentCategory
 
 <PageTitle>@allMeta.Title</PageTitle>
 
@@ -48,6 +49,8 @@
 
     protected async override Task OnInitializedAsync()
     {
+        currentCategory.SetCurrentCategory(0);
+
         allMeta.Title = "Редагувати виробника :: Український медійний архів 'KLIO'";
         allMeta.Description = "Медійний архів 'KLIO': Музика, література, історія, фільми, мультфільми, серіали, мультсеріали, наживо, пряма трансляція, дивитися он-лайн";
         allMeta.Robots = "all";

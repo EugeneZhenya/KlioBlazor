@@ -2,6 +2,7 @@
 @page "/movies"
 @inject NavigationManager NavManager
 @inject IMoviesRepository moviesRepository
+@inject CurrentCategory currentCategory
 
 <PageTitle>@allMeta.Title</PageTitle>
 
@@ -29,6 +30,7 @@
                         <div class="tab-content">
                             <div class="tab-pane fade show active">
                                 <MoviesList Movies="Movies" />
+                                <Pagination CurrentPage="filterMoviesDTO.Page" TotalAmountPages="totalAmountPages" SelectedPage="SelectedPage" />
                             </div>
                         </div>
                         <div class="contact-form">
@@ -44,9 +46,13 @@
 @code {
     OpenGraphModel allMeta = new OpenGraphModel();
     private List<Movie> Movies;
+    private FilterMoviesDTO filterMoviesDTO = new FilterMoviesDTO();
+    private int totalAmountPages;
 
     protected async override Task OnInitializedAsync()
     {
+        currentCategory.SetCurrentCategory(0);
+
         allMeta.Title = "Список відео :: Український медійний архів 'KLIO'";
         allMeta.Description = "Медійний архів 'KLIO': Музика, література, історія, фільми, мультфільми, серіали, мультсеріали, наживо, пряма трансляція, дивитися он-лайн";
         allMeta.Robots = "all";
@@ -71,12 +77,27 @@
 
         try
         {
-            var response = await moviesRepository.GetHomePageDTO();
-            Movies = response.MoviesPopular;
+            filterMoviesDTO.Title = "";
+            await LoadMovies();
         }
         catch (Exception ex)
         {
 
         }
+    }
+
+    private async Task SelectedPage(int page)
+    {
+        filterMoviesDTO.Page = page;
+        await LoadMovies();
+    }
+
+    private async Task LoadMovies()
+    {
+        Movies = null;
+        var pagenatedResponse = await moviesRepository.GetMoviesFiltered(filterMoviesDTO);
+        Movies = pagenatedResponse.Response;
+        totalAmountPages = pagenatedResponse.TotalAmountPages;
+        StateHasChanged();
     }
 }

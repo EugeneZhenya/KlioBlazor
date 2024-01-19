@@ -1,6 +1,7 @@
 ﻿@page "/people"
 @inject NavigationManager NavManager
 @inject IPersonRepository personRepository
+@inject CurrentCategory currentCategory
 
 <PageTitle>@allMeta.Title</PageTitle>
 
@@ -37,7 +38,7 @@
                                         <ul style="display: flex; align-items: flex-start; flex-direction: row; flex-wrap: wrap;">
                                         @foreach (var item in People)
                                         {
-                                            <li class="rc-post-item" style="min-width: 320px; margin-right: 2rem; border: 1px solid #ccc;">
+                                            <li class="rc-post-item" style="min-width: 320px; margin-right: 2rem; @(item.IsFemale ? "border: 1px solid #FFCCFF;" : "border: 1px solid #ccc;")">
                                                 <div class="thumb">
                                                     <a href="person/@item.Id/@StringUtilities.Translit(item.Name)">
                                                         <img src="@(appState.KlioContentUrl + "people/" + item.PictureUrl)" alt="@item.Name" style="max-width: 100px; margin-left: .5rem; margin-right: .5rem;" />
@@ -97,6 +98,8 @@
 
     protected async override Task OnInitializedAsync()
     {
+        currentCategory.SetCurrentCategory(0);
+
         allMeta.Title = "Особи :: Український медійний архів 'KLIO'";
         allMeta.Description = "Медійний архів 'KLIO': Музика, література, історія, фільми, мультфільми, серіали, мультсеріали, наживо, пряма трансляція, дивитися он-лайн";
         allMeta.Robots = "all";

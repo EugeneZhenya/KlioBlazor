@@ -1,6 +1,7 @@
 ﻿@page "/movies/edit/{MovieId:int}"
 @inject NavigationManager NavManager
 @inject IMoviesRepository moviesRepository
+@inject CurrentCategory currentCategory
 
 <PageTitle>@allMeta.Title</PageTitle>
 
@@ -95,6 +96,8 @@
         SelectedCountries = model.SelectedCountries;
         NotSelectedCountries = model.NotSelectedCountries;
         Movie = model.Movie;
+
+        currentCategory.SetCurrentCategory(Movie.Partition.CategoryId);
     }
 
     private async Task Edit()

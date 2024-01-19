@@ -2,6 +2,7 @@
 
 @inject NavigationManager NavManager
 @inject IGenreRepository genrerRepository
+@inject CurrentCategory currentCategory
 
 <PageTitle>@allMeta.Title</PageTitle>
 
@@ -43,6 +44,8 @@
 
     protected async override Task OnInitializedAsync()
     {
+        currentCategory.SetCurrentCategory(0);
+
         allMeta.Title = "Додати жанр :: Український медійний архів 'KLIO'";
         allMeta.Description = "Медійний архів 'KLIO': Музика, література, історія, фільми, мультфільми, серіали, мультсеріали, наживо, пряма трансляція, дивитися он-лайн";
         allMeta.Robots = "all";

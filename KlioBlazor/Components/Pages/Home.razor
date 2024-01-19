@@ -2,6 +2,7 @@
 @attribute [StreamRendering]
 @inject NavigationManager NavManager
 @inject IMoviesRepository moviesRepository
+@inject CurrentCategory currentCategory
 
 <PageTitle>@allMeta.Title</PageTitle>
 
@@ -66,7 +67,7 @@
     </div>
 </section>
 
-<MoviesArea Movies="moviesPopular" Title="Найпопулярніші фільми" Subtitle="Дивіться зараз" />
+<MoviesArea Movies="moviesPopular" Title="Найпопулярніші фільми" Subtitle="Дивіться зараз" CenterHeader="true" />
 
 @code {
     private List<Movie> moviesPopular;
@@ -85,6 +86,8 @@
 
     protected async override Task OnInitializedAsync()
     {
+        currentCategory.SetCurrentCategory(0);
+
         allMeta.Title = "Український медійний архів 'KLIO'";
         allMeta.Description = "Медійний архів 'KLIO': Музика, література, історія, фільми, мультфільми, серіали, мультсеріали, наживо, пряма трансляція, дивитися он-лайн";
         allMeta.Robots = "all";

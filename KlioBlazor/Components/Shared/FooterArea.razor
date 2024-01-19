@@ -1,4 +1,5 @@
 ﻿@inject NavigationManager NavManager
+@inject CurrentCategory currentCategory
 
 <div class="footer-top-wrap">
     <div class="container">
@@ -15,13 +16,13 @@
                     <div class="footer-menu">
                         <nav>
                             <ul class="navigation">
-                                <li><NavLink class="nav-link" href="Home/history">Історія</NavLink></li>
-                                <li><NavLink class="nav-link" href="Home/literacy">Література</NavLink></li>
-                                <li><NavLink class="nav-link" href="Home/music">Музика</NavLink></li>
-                                <li><NavLink class="nav-link" href="Home/films/movies">Фільми</NavLink></li>
-                                <li><NavLink class="nav-link" href="Home/films/serials">Серіали</NavLink></li>
-                                <li><NavLink class="nav-link" href="Home/mults/animation">Мультфільми</NavLink></li>
-                                <li><NavLink class="nav-link" href="Home/mults/series">Мультсеріали</NavLink></li>
+                                <li><NavLink class="nav-link" href="Home/history" style="@CheckCategory(1)">Історія</NavLink></li>
+                                <li><NavLink class="nav-link" href="Home/literacy" style="@CheckCategory(2)">Література</NavLink></li>
+                                <li><NavLink class="nav-link" href="Home/music" style="@CheckCategory(3)">Музика</NavLink></li>
+                                <li><NavLink class="nav-link" href="Home/films/movies" style="@CheckCategory(4)">Фільми</NavLink></li>
+                                <li><NavLink class="nav-link" href="Home/films/serials" style="@CheckCategory(5)">Серіали</NavLink></li>
+                                <li><NavLink class="nav-link" href="Home/mults/animation" style="@CheckCategory(6)">Мультфільми</NavLink></li>
+                                <li><NavLink class="nav-link" href="Home/mults/series" style="@CheckCategory(7)">Мультсеріали</NavLink></li>
                             </ul>
                             <div class="footer-search">
                                 <div>
@@ -83,8 +84,18 @@
 </div>
 
 @code {
+    protected override void OnInitialized()
+    {
+        currentCategory.OnChange += () => StateHasChanged();
+    }
+
     private void SearchMovie()
     {
         NavManager.NavigateTo("movies/search");
+    }
+
+    public string CheckCategory(int id)
+    {
+        return (currentCategory.CurrentCat == id) ? "color: #fd0e30" : string.Empty;
     }
 }

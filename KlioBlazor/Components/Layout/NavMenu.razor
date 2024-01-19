@@ -1,6 +1,7 @@
 ﻿@implements IDisposable
 @inject NavigationManager NavigationManager
 @inject IJSRuntime js
+@inject CurrentCategory currentCategory
 
 <div id="sticky-header" class="menu-area transparent-header">
     <div class="container custom-container">
@@ -19,33 +20,33 @@
                         <div class="navbar-wrap main-menu d-none d-lg-flex">
                             <ul class="navigation">
                                 <li>
-                                    <NavLink class="nav-link" href="Home/history">Історія</NavLink>
+                                    <NavLink class="nav-link" href="Home/history" style="@CheckCategory(1)">Історія</NavLink>
                                 </li>
                                 <li>
-                                    <NavLink class="nav-link" href="Home/literacy">Література</NavLink>
+                                    <NavLink class="nav-link" href="Home/literacy" style="@CheckCategory(2)">Література</NavLink>
                                 </li>
                                 <li>
-                                    <NavLink class="nav-link" href="Home/music">Музика</NavLink>
+                                    <NavLink class="nav-link" href="Home/music" style="@CheckCategory(3)">Музика</NavLink>
                                 </li>
                                 <li class="menu-item-has-children">
-                                    <NavLink class="nav-link" href="Home/films" Match="NavLinkMatch.Prefix">Фільми</NavLink>
+                                    <NavLink class="nav-link" href="Home/films" style="@CheckCategory(4, 5)">Фільми</NavLink>
                                     <ul class="submenu">
                                         <li>
-                                            <NavLink class="nav-link" href="Home/films/movies">Фільми</NavLink>
+                                            <NavLink class="nav-link" href="Home/films/movies" style="@CheckCategory(4)">Фільми</NavLink>
                                         </li>
                                         <li>
-                                            <NavLink class="nav-link" href="Home/films/serials">Серіали</NavLink>
+                                            <NavLink class="nav-link" href="Home/films/serials" style="@CheckCategory(5)">Серіали</NavLink>
                                         </li>
                                     </ul>
                                 </li>
                                 <li class="menu-item-has-children">
-                                    <NavLink class="nav-link" href="Home/mults" Match="NavLinkMatch.Prefix">Мультфільми</NavLink>
+                                    <NavLink class="nav-link" href="Home/mults" style="@CheckCategory(6, 7)">Мультфільми</NavLink>
                                     <ul class="submenu">
                                         <li>
-                                            <NavLink class="nav-link" href="Home/mults/animation">Мультфільми</NavLink>
+                                            <NavLink class="nav-link" href="Home/mults/animation" style="@CheckCategory(6)">Мультфільми</NavLink>
                                         </li>
                                         <li>
-                                            <NavLink class="nav-link" href="Home/mults/series">Мультсеріали</NavLink>
+                                            <NavLink class="nav-link" href="Home/mults/series" style="@CheckCategory(7)">Мультсеріали</NavLink>
                                         </li>
                                     </ul>
                                 </li>
@@ -82,24 +83,24 @@
                         </div>
                         <div class="menu-outer">
                             <ul class="navigation">
-                                <li><NavLink class="nav-link" href="Home/history">Історія</NavLink></li>
-                                <li><NavLink class="nav-link" href="Home/literacy">Література</NavLink></li>
-                                <li><NavLink class="nav-link" href="Home/music">Музика</NavLink></li>
+                                <li><NavLink class="nav-link" href="Home/history" style="@CheckCategory(1)">Історія</NavLink></li>
+                                <li><NavLink class="nav-link" href="Home/literacy" style="@CheckCategory(2)">Література</NavLink></li>
+                                <li><NavLink class="nav-link" href="Home/music" style="@CheckCategory(3)">Музика</NavLink></li>
                                 <li class="menu-item-has-children">
-                                    <NavLink class="nav-link" href="Home/films" Match="NavLinkMatch.Prefix">Фільми</NavLink>
+                                    <NavLink class="nav-link" href="Home/films" style="@CheckCategory(4, 5)">Фільми</NavLink>
                                     <ul class="submenu" style="display: none;">
-                                        <li><NavLink class="nav-link" href="Home/films/movies">Фільми</NavLink></li>
-                                        <li><NavLink class="nav-link" href="Home/films/serials">Серіали</NavLink></li>
+                                        <li><NavLink class="nav-link" href="Home/films/movies" style="@CheckCategory(4)">Фільми</NavLink></li>
+                                        <li><NavLink class="nav-link" href="Home/films/serials" style="@CheckCategory(5)">Серіали</NavLink></li>
                                     </ul>
                                     <div class="dropdown-btn" id="mnuFilm" @onclick="@(e => DropdownToogle("mnuFilm"))">
                                         <span class="fa-solid fa-angle-down"></span>
                                     </div>
                                 </li>
                                 <li class="menu-item-has-children">
-                                    <NavLink class="nav-link" href="Home/mults" Match="NavLinkMatch.Prefix">Мультфільми</NavLink>
+                                    <NavLink class="nav-link" href="Home/mults" style="@CheckCategory(6, 7)">Мультфільми</NavLink>
                                     <ul class="submenu" style="display: none;">
-                                        <li><NavLink class="nav-link" href="Home/mults/animation">Мультфільми</NavLink></li>
-                                        <li><NavLink class="nav-link" href="Home/mults/series">Мультсеріали</NavLink></li>
+                                        <li><NavLink class="nav-link" href="Home/mults/animation" style="@CheckCategory(6)">Мультфільми</NavLink></li>
+                                        <li><NavLink class="nav-link" href="Home/mults/series" style="@CheckCategory(7)">Мультсеріали</NavLink></li>
                                     </ul>
                                     <div class="dropdown-btn" id="mnuMult" @onclick="@(e => DropdownToogle("mnuMult"))">
                                         <span class="fa-solid fa-angle-down"></span>
@@ -155,6 +156,7 @@
     {
         currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
         NavigationManager.LocationChanged += OnLocationChanged;
+        currentCategory.OnChange += () => StateHasChanged();
     }
 
     private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
@@ -184,6 +186,16 @@
     public async Task DropdownToogle(string elId)
     {
         await js.InvokeVoidAsync("mobDropdownToggle", elId);
+    }
+
+    public string CheckCategory(int id)
+    {
+        return (currentCategory.CurrentCat == id) ? "color: #fd0e30" : string.Empty;
+    }
+
+    public string CheckCategory(int id1, int id2)
+    {
+        return (currentCategory.CurrentCat == id1 || currentCategory.CurrentCat == id2) ? "color: #fd0e30" : string.Empty;
     }
 }
 

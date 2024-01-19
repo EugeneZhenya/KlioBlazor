@@ -25,6 +25,7 @@ builder.Services.AddScoped<AuthenticationStateProvider, PersistingRevalidatingAu
 builder.Services.AddHttpClient<HttpService>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddTransient<IRepository, RepositoryInMemory>();
+builder.Services.AddScoped<CurrentCategory>();
 builder.Services.AddScoped<IHttpService, HttpService>();
 builder.Services.AddScoped<IFileStorageService, InAppStorageService>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
