@@ -28,6 +28,8 @@ namespace KlioBlazor.Controllers
             var limitPopular = 6;
             var limitPartition = 3;
             double maxViews = (double)context.Movies.Max(p => p.ViewCounter);
+            Random rnd = new Random();
+            int randomID = rnd.Next(1, context.Movies.Count());
 
             var movieLast = await context.Movies
                 .OrderByDescending(x => x.PublicDate)
@@ -39,7 +41,18 @@ namespace KlioBlazor.Controllers
 
             movieLast.MoviesGenres = movieLast.MoviesGenres.OrderBy(x => x.Order).ToList();
             movieLast.MoviesCountries = movieLast.MoviesCountries.OrderBy(x => x.Order).ToList();
-            var Countries = movieLast.MoviesCountries.Select(x => x.Country).ToList();
+            var lastCountries = movieLast.MoviesCountries.Select(x => x.Country).ToList();
+
+
+            var movieRecomend = await context.Movies
+               .Include(x => x.Partition).ThenInclude(x => x.Category)
+               .Include(x => x.MoviesGenres).ThenInclude(x => x.Genre)
+               .Include(x => x.MoviesCountries).ThenInclude(x => x.Country)
+               .Include(x => x.MovieInfos)
+               .FirstOrDefaultAsync(x => x.Id == randomID);
+            movieRecomend.MoviesGenres = movieRecomend.MoviesGenres.OrderBy(x => x.Order).ToList();
+            movieRecomend.MoviesCountries = movieRecomend.MoviesCountries.OrderBy(x => x.Order).ToList();
+            var recCountries = movieRecomend.MoviesCountries.Select(x => x.Country).ToList();
 
             var allMoviesPopular = await context.Movies
                 .OrderByDescending(x => x.ViewCounter)
@@ -68,8 +81,10 @@ namespace KlioBlazor.Controllers
             var response = new HomePageDTO();
             response.LastMovie = movieLast;
             response.MoviesPopular = moviesPopular;
-            response.LastMovieCountries = Countries;
+            response.LastMovieCountries = lastCountries;
             response.PartitionsPopular = partitionsPopular;
+            response.RecomendMovie = movieRecomend;
+            response.RecomendMovieCountries = recCountries;
 
             return response;
         }

@@ -2062,7 +2062,8 @@ label {
 }
 
     .live-fact-wrap .resolution h2 {
-        font-size: 60px;
+        font-family: Arial;
+        font-size: 40px;
         text-shadow: 0px 3px 24px rgba(160, 160, 160, 0.09);
         line-height: 1;
         margin-bottom: 0;
@@ -2082,7 +2083,7 @@ label {
 }
 
     .active-customer h4 {
-        font-size: 38px;
+        font-size: 28px;
         color: #1e1b29;
         text-shadow: 0px 3px 4px rgba(30, 30, 30, 0.18);
         line-height: .8;
