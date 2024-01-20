@@ -2,6 +2,7 @@
 @inject NavigationManager NavManager
 @inject IGenreRepository genreRepository
 @inject CurrentCategory currentCategory
+@attribute [Authorize(Roles = "Admin")]
 
 <PageTitle>@allMeta.Title</PageTitle>
 

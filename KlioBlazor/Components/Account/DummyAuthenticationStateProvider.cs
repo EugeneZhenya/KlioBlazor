@@ -12,7 +12,7 @@ namespace KlioBlazor.Components.Account
             {
                 new Claim(ClaimTypes.Name, "Eugene"),
                 // new Claim(ClaimTypes.Role, "Admin")
-            }, "test");
+            });
             return await Task.FromResult(new AuthenticationState(new ClaimsPrincipal(anonymous)));
         }
     }

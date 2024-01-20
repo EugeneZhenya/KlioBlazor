@@ -1,8 +1,8 @@
 ﻿@page "/genre/create"
-
 @inject NavigationManager NavManager
 @inject IGenreRepository genrerRepository
 @inject CurrentCategory currentCategory
+@attribute [Authorize(Roles = "Admin")]
 
 <PageTitle>@allMeta.Title</PageTitle>
 

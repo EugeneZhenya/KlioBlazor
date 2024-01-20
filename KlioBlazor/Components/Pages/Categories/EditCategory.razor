@@ -1,6 +1,7 @@
 ﻿@page "/category/edit/{CategoryId:int}"
 @inject NavigationManager NavManager
 @inject ICategoryRepository categoryRepository
+@attribute [Authorize(Roles = "Admin")]
 
 <PageTitle>@allMeta.Title</PageTitle>
 

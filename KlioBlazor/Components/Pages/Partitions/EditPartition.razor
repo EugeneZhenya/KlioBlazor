@@ -3,6 +3,7 @@
 @inject IPartitionRepository partitionRepository
 @inject ICategoryRepository categoryRepository
 @inject CurrentCategory currentCategory
+@attribute [Authorize(Roles = "Admin")]
 
 <PageTitle>@allMeta.Title</PageTitle>
 

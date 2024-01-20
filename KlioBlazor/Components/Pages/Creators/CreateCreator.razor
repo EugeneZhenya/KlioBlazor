@@ -3,6 +3,7 @@
 @inject ICreatorRepository creatorRepository
 @inject ICountryRepository countryRepository
 @inject CurrentCategory currentCategory
+@attribute [Authorize(Roles = "Admin")]
 
 <PageTitle>@allMeta.Title</PageTitle>
 

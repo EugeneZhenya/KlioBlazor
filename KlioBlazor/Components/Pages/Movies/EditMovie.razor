@@ -2,6 +2,7 @@
 @inject NavigationManager NavManager
 @inject IMoviesRepository moviesRepository
 @inject CurrentCategory currentCategory
+@attribute [Authorize(Roles = "Admin")]
 
 <PageTitle>@allMeta.Title</PageTitle>
 

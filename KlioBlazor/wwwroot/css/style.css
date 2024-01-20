@@ -3857,6 +3857,10 @@ input::file-selector-button {
     color: rgba(255, 255, 255, 0.5);
 }
 
+    .info-ingredients ol li {
+        list-style: auto;
+    }
+
 .ellipse {
     white-space: nowrap;
     text-overflow: ellipsis;

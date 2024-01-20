@@ -4,6 +4,7 @@ using KlioBlazor.Components.Account;
 using KlioBlazor.Data;
 using KlioBlazor.Helpers;
 using KlioBlazor.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.ResponseCompression;
@@ -40,6 +41,8 @@ builder.Services.AddScoped<IDashboardRepository, DashboardRepository>();
 builder.Services.AddAuthenticationCore();
 
 builder.Services.AddScoped<AuthenticationStateProvider, DummyAuthenticationStateProvider>();
+builder.Services.AddSingleton<IAuthorizationMiddlewareResultHandler, AuthorizationMiddlewareResultHandler>();
+
 
 builder.Services.AddAuthentication(options =>
     {
