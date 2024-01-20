@@ -111,9 +111,12 @@
     </section>
 }
 
+<MoviesArea Movies="lastAdded" Title="Останні додані" Subtitle="не проґавте" CenterHeader="true" />
+
 @code {
     [CascadingParameter] public AppState appState { get; set; }
     private List<Movie> moviesPopular;
+    private List<Movie> lastAdded;
     private List<Partition> partitionsPopular;
     private Movie lastMovie;
     private List<Country> lastMovieCountries;
@@ -164,6 +167,7 @@
             lastMovieCountries = response.LastMovieCountries;
             recommendMovie = response.RecomendMovie;
             recommendMovieCountries = response.RecomendMovieCountries;
+            lastAdded = response.LastAdded;
         }
         catch (Exception ex)
         {

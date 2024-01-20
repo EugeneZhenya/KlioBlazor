@@ -26,7 +26,7 @@
                             </ul>
                             <div class="footer-search">
                                 <div>
-                                    <input type="text" placeholder="Знайти фільм" />
+                                    <input type="text" @bind-value="searchText" placeholder="Знайти фільм" />
                                     <button @onclick="SearchMovie">
                                         <i class="fa-solid fa-magnifying-glass"></i>
                                     </button>
@@ -84,6 +84,8 @@
 </div>
 
 @code {
+    private string searchText;
+
     protected override void OnInitialized()
     {
         currentCategory.OnChange += () => StateHasChanged();
@@ -91,7 +93,7 @@
 
     private void SearchMovie()
     {
-        NavManager.NavigateTo("movies/search");
+        NavManager.NavigateTo("movies/search?title=" + HttpUtility.UrlEncode(searchText));
     }
 
     public string CheckCategory(int id)

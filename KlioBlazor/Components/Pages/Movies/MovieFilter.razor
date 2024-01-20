@@ -118,7 +118,7 @@
 
         if (queryStrings.ContainsKey("title"))
         {
-            filterMoviesDTO.Title = queryStrings["title"];
+            filterMoviesDTO.Title = HttpUtility.UrlDecode(queryStrings["title"]);
         }
 
         if (queryStrings.ContainsKey("page"))
@@ -162,7 +162,7 @@
 
         return string.Join("&", queryStringDict
             .Where(x => !defaultValues.Contains(x.Value.ToLower()))
-            .Select(x => $"{x.Key}={System.Web.HttpUtility.UrlEncode(x.Value)}").ToArray());
+            .Select(x => $"{x.Key}={HttpUtility.UrlEncode(x.Value)}").ToArray());
     }
 
     private async Task TitleKeyPress(KeyboardEventArgs e)

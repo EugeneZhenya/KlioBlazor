@@ -27,6 +27,7 @@ namespace KlioBlazor.Controllers
         {
             var limitPopular = 6;
             var limitPartition = 3;
+            var limitLasts = 3;
             double maxViews = (double)context.Movies.Max(p => p.ViewCounter);
             Random rnd = new Random();
             int randomID = rnd.Next(1, context.Movies.Count());
@@ -78,6 +79,18 @@ namespace KlioBlazor.Controllers
                 film.Rating = Math.Truncate((double)film.ViewCounter / (double)maxViews * 10000) / 100;
             }
 
+            var allLastMovies = await context.Movies
+                .OrderByDescending(x => x.PublicDate)
+                .Include(x => x.Partition)
+                .ToListAsync();
+
+            var moviesLast = allLastMovies.Take(limitLasts).ToList();
+
+            foreach (var movie in moviesLast)
+            {
+                movie.Rating = Math.Truncate((double)movie.ViewCounter / (double)maxViews * 10000) / 100;
+            }
+
             var response = new HomePageDTO();
             response.LastMovie = movieLast;
             response.MoviesPopular = moviesPopular;
@@ -85,6 +98,7 @@ namespace KlioBlazor.Controllers
             response.PartitionsPopular = partitionsPopular;
             response.RecomendMovie = movieRecomend;
             response.RecomendMovieCountries = recCountries;
+            response.LastAdded = moviesLast;
 
             return response;
         }

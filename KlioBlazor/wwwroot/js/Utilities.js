@@ -36,3 +36,7 @@ function playerStop(id, file, poster, title, autoplay) {
     var player = new Playerjs({ id: id, file: file, poster: poster, title: title, autoplay: autoplay });
     player.api("stop");
 }
+
+function redirectToUrl(url) {
+    window.location.replace(url);
+}

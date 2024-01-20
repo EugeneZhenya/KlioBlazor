@@ -1,10 +1,13 @@
-﻿<!-- Modal Search -->
+﻿@inject IJSRuntime js
+
+<!-- Modal Search -->
 <div class="modal @ModalClass" id="search_modal" tabindex="-1" role="dialog" style="display:@ModalDisplay">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <form>
-                <input type="text" placeholder="Шукати...">
-                <button>
+                <input type="text" @bind-value="searchText" placeholder="Шукати..." @bind-value:event="oninput"
+                       @onkeypress="@((KeyboardEventArgs e) => TitleKeyPress(e))">
+                <button @onclick="SearchMovie">
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </button>
             </form>
@@ -27,6 +30,7 @@
     public string ModalDisplay = "none;";
     public string ModalClass = "";
     public bool ShowBackdrop = false;
+    private string searchText;
 
     public void Open()
     {
@@ -42,5 +46,19 @@
         ModalClass = "";
         ShowBackdrop = false;
         StateHasChanged();
+    }
+
+    [JSInvokable]
+    private async Task SearchMovie()
+    {
+        await js.InvokeVoidAsync("redirectToUrl", "movies/search?title=" + HttpUtility.UrlEncode(searchText));
+    }
+
+    private async Task TitleKeyPress(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            await SearchMovie();
+        }
     }
 }
