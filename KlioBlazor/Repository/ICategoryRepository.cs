@@ -8,8 +8,8 @@ namespace KlioBlazor.Repository
         Task CreateCategory(Category category);
         Task<List<Category>> GetAllCategories();
         Task<Category> GetCategory(int Id);
-        Task<IndexCategoriesDTO> GetIndexCategoriesDTO();
         Task UpdateCategory(Category category);
         Task DeleteCategory(int Id);
+        Task<IndexCategoriesDTO> GetCategoryByName(string name);
     }
 }

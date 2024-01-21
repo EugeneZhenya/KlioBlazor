@@ -1,9 +1,9 @@
 ﻿@page "/Home"
 @page "/Home/{CatName}"
-@page "/Home/{CatName}/{CatSubName}"
 @inject NavigationManager NavManager
 @inject ICategoryRepository categoryRepository
 @inject CurrentCategory currentCategory
+@implements IDisposable
 
 <PageTitle>@allMeta.Title</PageTitle>
 
@@ -14,7 +14,7 @@
     <BannerArea ShowMovie="lastMovie" ShowMovieCountries="lastMovieCountries" />
 }
 
-@if (string.IsNullOrWhiteSpace(CatName))
+@if (CatName == "all")
 {
     <section class="ucm-area ucm-bg" style="background-image: url('img/ucm_bg_shape.png')">
         <div class="layer">
@@ -81,6 +81,15 @@
         </div>
     </section>
 }
+else
+{
+    @if (lastMovie != null)
+    {
+        <PartitionsArea Partitions="Partitions" Title="@lastMovie.Partition.Category.Name" Subtitle="Розділи категорії" ShowCategoryName="false" />
+    }
+}
+
+<DonateArea />
 
 <Confirmation @ref="confirmation" OnCancel="OnCancel" OnConfirm="OnConfirm">
     <div>Ви впевнені, що хочете видалити категорію: "@categoryToBeDeleted.Name"?</div>
@@ -88,17 +97,22 @@
 
 @code {
     [Parameter] public string CatName { get; set; }
-    [Parameter] public string CatSubName { get; set; }
     OpenGraphModel allMeta = new OpenGraphModel();
     private Movie lastMovie;
     private List<Country> lastMovieCountries;
     private List<Category> Categories;
+    private List<Partition> Partitions;
     Confirmation confirmation;
     Category categoryToBeDeleted;
 
     protected async override Task OnInitializedAsync()
     {
-        currentCategory.SetCurrentCategory(0);
+        NavManager.LocationChanged += LocationChanged;
+
+        if (string.IsNullOrEmpty(CatName)) {
+            CatName = "all";
+        }
+        currentCategory.SetCurrentCategory(GetCatId(CatName));
 
         allMeta.Title = "Категорії :: Український медійний архів 'KLIO'";
         allMeta.Description = "Медійний архів 'KLIO': Музика, література, історія, фільми, мультфільми, серіали, мультсеріали, наживо, пряма трансляція, дивитися он-лайн";
@@ -124,10 +138,16 @@
 
         try
         {
-            var response = await categoryRepository.GetIndexCategoriesDTO();
+            var response = await categoryRepository.GetCategoryByName(CatName);
             lastMovie = response.LastMovie;
             lastMovieCountries = response.LastMovieCountries;
             Categories = response.AllCategories;
+            Partitions = response.CategoryPartitions;
+
+            if (lastMovie != null)
+            {
+                allMeta.Title = lastMovie.Partition.Category.Name + " :: Український медійний архів 'KLIO'";
+            }
         }
         catch (Exception ex)
         {
@@ -170,19 +190,62 @@
                 url += "/music";
                 break;
             case 4:
-                url += "/films/movies";
+                url += "/movies";
                 break;
             case 5:
-                url += "/films/serials";
+                url += "/serials";
                 break;
             case 6:
-                url += "/mults/animation";
+                url += "/animation";
                 break;
             case 7:
-                url += "/mults/series";
+                url += "/series";
                 break;
         }
 
         return url;
+    }
+
+    private int GetCatId(string name)
+    {
+        int catId = 0;
+
+        switch (name)
+        {
+            case "history":
+                catId = 1;
+                break;
+            case "literacy":
+                catId = 2;
+                break;
+            case "music":
+                catId = 3;
+                break;
+            case "movies":
+                catId = 4;
+                break;
+            case "serials":
+                catId = 5;
+                break;
+            case "animation":
+                catId = 6;
+                break;
+            case "series":
+                catId = 7;
+                break;
+        }
+
+        return catId;
+    }
+
+    async void LocationChanged(object sender, LocationChangedEventArgs e)
+    {
+        NavManager.NavigateTo(NavManager.Uri, true);
+        StateHasChanged();
+    }
+
+    void IDisposable.Dispose()
+    {
+        NavManager.LocationChanged -= LocationChanged;
     }
 }

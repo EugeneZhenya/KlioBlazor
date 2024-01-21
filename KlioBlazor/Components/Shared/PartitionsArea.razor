@@ -11,7 +11,7 @@
             </div>
             <div class="tab-content">
                 <div class="tab-pane fade show active">
-                    <PartitionsList Partitions="Partitions" NoRecords="@NoRecords" />
+                    <PartitionsList Partitions="Partitions" NoRecords="@NoRecords" ShowCategoryName="@ShowCategoryName" />
                 </div>
             </div>
         </div>
@@ -23,4 +23,5 @@
     [Parameter] public string Subtitle { get; set; }
     [Parameter] public String NoRecords { get; set; } = "Розділ не має записів.";
     [Parameter] public List<Partition> Partitions { get; set; }
+    [Parameter] public bool ShowCategoryName { get; set; } = true;
 }

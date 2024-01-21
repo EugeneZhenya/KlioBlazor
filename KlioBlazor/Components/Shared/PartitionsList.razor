@@ -5,7 +5,7 @@
 <div class="ucm-active" style="display: -webkit-flex; -webkit-flex-direction: column; -webkit-flex-wrap: wrap; -webkit-flex-direction: row;">
     <GenericList List="Partitions" NoRecords="@NoRecords">
         <ElementTemplate Context="partition">
-            <IndividualPartition Partition="partition" DeletePartition="DeletePartition" @key="partition.Id" />
+            <IndividualPartition Partition="partition" DeletePartition="DeletePartition" @key="partition.Id" ShowCategoryName="@ShowCategoryName" />
         </ElementTemplate>
     </GenericList>
 </div>
@@ -17,6 +17,7 @@
 @code {
     [Parameter] public List<Partition> Partitions { get; set; }
     [Parameter] public String NoRecords { get; set; }
+    [Parameter] public bool ShowCategoryName { get; set; }
     Confirmation confirmation;
     Partition partitionToBeDeleted;
 

@@ -29,24 +29,24 @@
                                     <NavLink class="nav-link" href="Home/music" style="@CheckCategory(3)">Музика</NavLink>
                                 </li>
                                 <li class="menu-item-has-children">
-                                    <NavLink class="nav-link" href="Home/films" style="@CheckCategory(4, 5)">Фільми</NavLink>
+                                    <NavLink class="nav-link" href="Home/movies" style="@CheckCategory(4, 5)">Фільми</NavLink>
                                     <ul class="submenu">
                                         <li>
-                                            <NavLink class="nav-link" href="Home/films/movies" style="@CheckCategory(4)">Фільми</NavLink>
+                                            <NavLink class="nav-link" href="Home/movies" style="@CheckCategory(4)">Фільми</NavLink>
                                         </li>
                                         <li>
-                                            <NavLink class="nav-link" href="Home/films/serials" style="@CheckCategory(5)">Серіали</NavLink>
+                                            <NavLink class="nav-link" href="Home/serials" style="@CheckCategory(5)">Серіали</NavLink>
                                         </li>
                                     </ul>
                                 </li>
                                 <li class="menu-item-has-children">
-                                    <NavLink class="nav-link" href="Home/mults" style="@CheckCategory(6, 7)">Мультфільми</NavLink>
+                                    <NavLink class="nav-link" href="Home/animation" style="@CheckCategory(6, 7)">Мультфільми</NavLink>
                                     <ul class="submenu">
                                         <li>
-                                            <NavLink class="nav-link" href="Home/mults/animation" style="@CheckCategory(6)">Мультфільми</NavLink>
+                                            <NavLink class="nav-link" href="Home/animation" style="@CheckCategory(6)">Мультфільми</NavLink>
                                         </li>
                                         <li>
-                                            <NavLink class="nav-link" href="Home/mults/series" style="@CheckCategory(7)">Мультсеріали</NavLink>
+                                            <NavLink class="nav-link" href="Home/series" style="@CheckCategory(7)">Мультсеріали</NavLink>
                                         </li>
                                     </ul>
                                 </li>
@@ -87,20 +87,20 @@
                                 <li><NavLink class="nav-link" href="Home/literacy" style="@CheckCategory(2)">Література</NavLink></li>
                                 <li><NavLink class="nav-link" href="Home/music" style="@CheckCategory(3)">Музика</NavLink></li>
                                 <li class="menu-item-has-children">
-                                    <NavLink class="nav-link" href="Home/films" style="@CheckCategory(4, 5)">Фільми</NavLink>
+                                    <NavLink class="nav-link" href="Home/movies" style="@CheckCategory(4, 5)">Фільми</NavLink>
                                     <ul class="submenu" style="display: none;">
-                                        <li><NavLink class="nav-link" href="Home/films/movies" style="@CheckCategory(4)">Фільми</NavLink></li>
-                                        <li><NavLink class="nav-link" href="Home/films/serials" style="@CheckCategory(5)">Серіали</NavLink></li>
+                                        <li><NavLink class="nav-link" href="Home/movies" style="@CheckCategory(4)">Фільми</NavLink></li>
+                                        <li><NavLink class="nav-link" href="Home/serials" style="@CheckCategory(5)">Серіали</NavLink></li>
                                     </ul>
                                     <div class="dropdown-btn" id="mnuFilm" @onclick="@(e => DropdownToogle("mnuFilm"))">
                                         <span class="fa-solid fa-angle-down"></span>
                                     </div>
                                 </li>
                                 <li class="menu-item-has-children">
-                                    <NavLink class="nav-link" href="Home/mults" style="@CheckCategory(6, 7)">Мультфільми</NavLink>
+                                    <NavLink class="nav-link" href="Home/animation" style="@CheckCategory(6, 7)">Мультфільми</NavLink>
                                     <ul class="submenu" style="display: none;">
-                                        <li><NavLink class="nav-link" href="Home/mults/animation" style="@CheckCategory(6)">Мультфільми</NavLink></li>
-                                        <li><NavLink class="nav-link" href="Home/mults/series" style="@CheckCategory(7)">Мультсеріали</NavLink></li>
+                                        <li><NavLink class="nav-link" href="Home/animation" style="@CheckCategory(6)">Мультфільми</NavLink></li>
+                                        <li><NavLink class="nav-link" href="Home/series" style="@CheckCategory(7)">Мультсеріали</NavLink></li>
                                     </ul>
                                     <div class="dropdown-btn" id="mnuMult" @onclick="@(e => DropdownToogle("mnuMult"))">
                                         <span class="fa-solid fa-angle-down"></span>
