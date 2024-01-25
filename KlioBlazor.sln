@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KlioBlazor", "KlioBlazor\Kl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KlioBlazor.Shared", "KlioBlazor.Shared\KlioBlazor.Shared.csproj", "{1F727FBC-D2A9-405A-B51C-C3B2EFBEE816}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KlioWeb", "KlioWeb\KlioWeb.csproj", "{859706EE-E72F-4899-B83D-A93F55397A34}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{1F727FBC-D2A9-405A-B51C-C3B2EFBEE816}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1F727FBC-D2A9-405A-B51C-C3B2EFBEE816}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1F727FBC-D2A9-405A-B51C-C3B2EFBEE816}.Release|Any CPU.Build.0 = Release|Any CPU
+		{859706EE-E72F-4899-B83D-A93F55397A34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{859706EE-E72F-4899-B83D-A93F55397A34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{859706EE-E72F-4899-B83D-A93F55397A34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{859706EE-E72F-4899-B83D-A93F55397A34}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
