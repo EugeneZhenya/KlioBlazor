@@ -13,7 +13,7 @@
     <div class="movie-content">
         <div class="top">
             <h5 class="title ellipse"><a href="@partitionUrl">@Partition.Name</a></h5>
-            <span class="date">@Partition.Movies.Count фільмів</span>
+            <span class="date" style="white-space: nowrap;">@Partition.Movies.Count фільмів</span>
         </div>
         <AuthorizeView Roles="Admin">
             <Authorized>

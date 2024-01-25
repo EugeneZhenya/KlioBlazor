@@ -2,6 +2,8 @@
 using KlioBlazor.Helpers;
 using KlioBlazor.Shared.DTOs;
 using KlioBlazor.Shared.Entities;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -113,7 +115,6 @@ namespace KlioBlazor.Controllers
                 .Include(x => x.MoviesCountries).ThenInclude(x => x.Country)
                 .Include(x => x.MoviesCreators).ThenInclude(x => x.Creator)
                 .Include(x => x.MoviesKeywords).ThenInclude(x => x.Keyword)
-                .Include(x => x.MovieInfos)
                 .FirstOrDefaultAsync();
 
             if (movie == null) { return NotFound(); }
@@ -126,11 +127,52 @@ namespace KlioBlazor.Controllers
 
             var model = new DetailsMovieDTO();
             model.Movie = movie;
+            model.MovieInfos = await context.MovieInfos.Where(x => x.MovieId == id).ToListAsync();
             model.Genres = movie.MoviesGenres.Select(x => x.Genre).ToList();
             model.Creators = movie.MoviesCreators.Select(x => x.Creator).ToList();
             model.Countries = movie.MoviesCountries.Select(x => x.Country).ToList();
             model.Keywords = movie.MoviesKeywords.Select(x => x.Keyword).ToList();
-            model.Actors = movie.MoviesActors.Select(x =>
+            model.Staff = movie.MoviesActors
+                .Where(x => x.IsActor == false && x.IsTranslator == false).Select(x =>
+                new Person
+                {
+                    Name = x.Person.Name,
+                    HasPicture = x.Person.HasPicture,
+                    IsFemale = x.Person.IsFemale,
+                    Character = x.Character,
+                    IsActor = x.IsActor,
+                    IsTranslator = x.IsTranslator,
+                    Id = x.PersonId
+
+                }).ToList();
+            model.Actors = movie.MoviesActors
+                .Where(x => x.IsActor == true && x.IsTranslator == false).Select(x =>
+                new Person
+                {
+                    Name = x.Person.Name,
+                    HasPicture = x.Person.HasPicture,
+                    IsFemale = x.Person.IsFemale,
+                    Character = x.Character,
+                    IsActor = x.IsActor,
+                    IsTranslator = x.IsTranslator,
+                    Id = x.PersonId
+
+                }).ToList();
+            model.TranslateStaff = movie.MoviesActors
+                .Where(x => x.IsActor == false && x.IsTranslator == true).Select(x =>
+                new Person
+                {
+                    Name = x.Person.Name,
+                    HasPicture = x.Person.HasPicture,
+                    IsFemale = x.Person.IsFemale,
+                    Character = x.Character,
+                    IsActor = x.IsActor,
+                    IsTranslator = x.IsTranslator,
+                    Id = x.PersonId
+
+                }).ToList();
+            model.TranslateActors = movie.MoviesActors
+                .Where(x => x.IsActor == true && x.IsTranslator == true).Select(x =>
                 new Person
                 {
                     Name = x.Person.Name,
@@ -202,7 +244,10 @@ namespace KlioBlazor.Controllers
             model.Movie = movieDetailDTO.Movie;
             model.SelectedGenres = movieDetailDTO.Genres;
             model.NotSelectedGenres = notSelectedGenres;
-            model.Actors = movieDetailDTO.Actors;
+            model.Actors = movieDetailDTO.Staff;
+            model.Actors.AddRange(movieDetailDTO.Actors);
+            model.Actors.AddRange(movieDetailDTO.TranslateStaff);
+            model.Actors.AddRange(movieDetailDTO.TranslateActors);
             model.AllPartitions = allPartitions;
             model.AllCategories = allCategories;
             model.MovieInfos = movieDetailDTO.Movie.MovieInfos.ToList();

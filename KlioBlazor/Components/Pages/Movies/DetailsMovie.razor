@@ -124,6 +124,12 @@ else
                     <div class="col-xl-6 col-lg-6" style="align-self: start; margin-top: 10px;">
                         <div class="movie-details-img">
                             <div id="player"></div>
+                            @if (!string.IsNullOrEmpty(Slogan))
+                            {
+                                <div style="text-align: center; margin-top: 20px;">
+                                    <h4 style="color: #e4e2e2;"><i>@Slogan</i></h4>
+                                </div>
+                            }
                             <div style="text-align: center; margin-top: 20px;">
                                 <i>Ця відеопрограма подається на цьому сайті виключно для ознайомлення. Тому якість зображення та звуку навмисно занижена. Після ознайомлення, будь ласка, придбайте цю відеопрограмму в офіційних розповсюджувачів.</i>
                             </div>
@@ -153,38 +159,166 @@ else
                     <div class="section-title title-style-three text-center mb-70">
                         <h2 class="title">Над фільмом працювали</h2>
                     </div>
-                    <div class="pricing-box-wrap">
-                        <div class="row justify-content-start">
-                            @for (int i = 0; i < model.Actors.Count; i++)
-                            {
-                                <div class="col-lg-4 col-md-4 actor text-center crew_align mb-5">
-                                    <div style="width: min-intrinsic; width: -webkit-min-content;width: -moz-min-content; width: min-content; margin: 0 auto;">
-                                        @model.Actors[i].Name
-                                    </div>
-                                    <a href="person/@model.Actors[i].Id/@StringUtilities.Translit(model.Actors[i].Name)">
-                                        <div class="techBox" style="@(i % 2 == 0 ? "background: linear-gradient(45deg, #e52641 25%, #444 25%, #444 50%, #e52641 50%, #e52641 75%, #444 75%, #444 100%);" : "background: linear-gradient(-45deg, #e52641 25%, #444 25%, #444 50%, #e52641 50%, #e52641 75%, #444 75%, #444 100%);")background-size: 40px 40px;">
-                                            @if (model.Actors[i].HasPicture)
-                                            {
-                                                <img src="@(appState.KlioContentUrl + "people/" + model.Actors[i].PictureUrl)" title="@model.Actors[i].Name" alt="@model.Actors[i].Name" />
-                                            }
-                                            else
-                                            {
-                                                if (model.Actors[i].IsFemale)
+                    @if (model.Staff.Count > 0)
+                    {
+                        <div class="pricing-box-wrap">
+                            <div class="section-title mb-5">
+                                <h5 class="title">Знімальна група (@model.Staff.Count)</h5>
+                            </div>
+                            <div class="row justify-content-start staff-carousel">
+                                @for (int i = 0; i < model.Staff.Count; i++)
+                                {
+                                    <div class="col actor text-center crew_align mb-5">
+                                        <div style="width: 166px; margin: 0 10px; white-space: nowrap;">
+                                            @model.Staff[i].Name
+                                        </div>
+                                        <a href="person/@model.Staff[i].Id/@StringUtilities.Translit(model.Staff[i].Name)">
+                                            <div class="techBox" style="@(i % 2 == 0 ? "background: linear-gradient(45deg, #e52641 25%, #444 25%, #444 50%, #e52641 50%, #e52641 75%, #444 75%, #444 100%);" : "background: linear-gradient(-45deg, #e52641 25%, #444 25%, #444 50%, #e52641 50%, #e52641 75%, #444 75%, #444 100%);")background-size: 40px 40px;">
+                                                @if (model.Staff[i].HasPicture)
                                                 {
-                                                    <img src="@(appState.KlioContentUrl + "people/female.png")" title="@model.Actors[i].Name" alt="@model.Actors[i].Name" />
+                                                    <img src="@(appState.KlioContentUrl + "people/" + model.Staff[i].PictureUrl)" title="@model.Staff[i].Name" alt="@model.Staff[i].Name" />
                                                 }
                                                 else
                                                 {
-                                                    <img src="@(appState.KlioContentUrl + "people/male.png")" title="@model.Actors[i].Name" alt="@model.Actors[i].Name" />
+                                                    if (model.Staff[i].IsFemale)
+                                                    {
+                                                        <img src="@(appState.KlioContentUrl + "people/female.png")" title="@model.Staff[i].Name" alt="@model.Staff[i].Name" />
+                                                    }
+                                                    else
+                                                    {
+                                                        <img src="@(appState.KlioContentUrl + "people/male.png")" title="@model.Staff[i].Name" alt="@model.Staff[i].Name" />
+                                                    }
                                                 }
-                                            }
+                                            </div>
+                                        </a>
+                                        <div style="width: 166px; margin: 0 10px;">
+                                            @model.Staff[i].Character
                                         </div>
-                                    </a>
-                                    <div>@model.Actors[i].Character</div>
-                                </div>
-                            }
+                                    </div>
+                                }
+                            </div>
                         </div>
-                    </div>
+                    }
+                    @if (model.Actors.Count > 0)
+                    {
+                        <div class="pricing-box-wrap">
+                            <div class="section-title mb-5">
+                                <h5 class="title">Акторський склад (@model.Actors.Count)</h5>
+                            </div>
+                            <div class="row justify-content-start actor-carousel">
+                                @for (int i = 0; i < model.Actors.Count; i++)
+                                {
+                                    <div class="col actor text-center crew_align mb-5">
+                                        <div style="width: 166px; margin: 0 10px; white-space: nowrap;">
+                                            @model.Actors[i].Name
+                                        </div>
+                                        <a href="person/@model.Actors[i].Id/@StringUtilities.Translit(model.Actors[i].Name)">
+                                            <div class="techBox" style="@(i % 2 == 0 ? "background: linear-gradient(45deg, #e52641 25%, #444 25%, #444 50%, #e52641 50%, #e52641 75%, #444 75%, #444 100%);" : "background: linear-gradient(-45deg, #e52641 25%, #444 25%, #444 50%, #e52641 50%, #e52641 75%, #444 75%, #444 100%);")background-size: 40px 40px;">
+                                                @if (model.Actors[i].HasPicture)
+                                                {
+                                                    <img src="@(appState.KlioContentUrl + "people/" + model.Actors[i].PictureUrl)" title="@model.Actors[i].Name" alt="@model.Actors[i].Name" />
+                                                }
+                                                else
+                                                {
+                                                    if (model.Actors[i].IsFemale)
+                                                    {
+                                                        <img src="@(appState.KlioContentUrl + "people/female.png")" title="@model.Actors[i].Name" alt="@model.Actors[i].Name" />
+                                                    }
+                                                    else
+                                                    {
+                                                        <img src="@(appState.KlioContentUrl + "people/male.png")" title="@model.Actors[i].Name" alt="@model.Actors[i].Name" />
+                                                    }
+                                                }
+                                            </div>
+                                        </a>
+                                        <div style="width: 166px; margin: 0 10px;">
+                                            @model.Actors[i].Character
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+                    @if (model.TranslateStaff.Count > 0)
+                    {
+                        <div class="pricing-box-wrap">
+                            <div class="section-title mb-5">
+                                <h5 class="title">Український переклад (@model.TranslateStaff.Count)</h5>
+                            </div>
+                            <div class="row justify-content-start actor-carousel">
+                                @for (int i = 0; i < model.TranslateStaff.Count; i++)
+                                {
+                                    <div class="col actor text-center crew_align mb-5">
+                                        <div style="width: 166px; margin: 0 10px; white-space: nowrap;">
+                                            @model.TranslateStaff[i].Name
+                                        </div>
+                                        <a href="person/@model.TranslateStaff[i].Id/@StringUtilities.Translit(model.TranslateStaff[i].Name)">
+                                            <div class="techBox" style="@(i % 2 == 0 ? "background: linear-gradient(45deg, #e52641 25%, #444 25%, #444 50%, #e52641 50%, #e52641 75%, #444 75%, #444 100%);" : "background: linear-gradient(-45deg, #e52641 25%, #444 25%, #444 50%, #e52641 50%, #e52641 75%, #444 75%, #444 100%);")background-size: 40px 40px;">
+                                                @if (model.TranslateStaff[i].HasPicture)
+                                                {
+                                                    <img src="@(appState.KlioContentUrl + "people/" + model.TranslateStaff[i].PictureUrl)" title="@model.TranslateStaff[i].Name" alt="@model.TranslateStaff[i].Name" />
+                                                }
+                                                else
+                                                {
+                                                    if (model.TranslateStaff[i].IsFemale)
+                                                    {
+                                                        <img src="@(appState.KlioContentUrl + "people/female.png")" title="@model.TranslateStaff[i].Name" alt="@model.TranslateStaff[i].Name" />
+                                                    }
+                                                    else
+                                                    {
+                                                        <img src="@(appState.KlioContentUrl + "people/male.png")" title="@model.TranslateStaff[i].Name" alt="@model.TranslateStaff[i].Name" />
+                                                    }
+                                                }
+                                            </div>
+                                        </a>
+                                        <div style="width: 166px; margin: 0 10px;">
+                                            @model.TranslateStaff[i].Character
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+                    @if (model.TranslateActors.Count > 0)
+                    {
+                        <div class="pricing-box-wrap">
+                            <div class="section-title mb-5">
+                                <h5 class="title">Актори озвучення (@model.TranslateActors.Count)</h5>
+                            </div>
+                            <div class="row justify-content-start staff-carousel">
+                                @for (int i = 0; i < model.TranslateActors.Count; i++)
+                                {
+                                    <div class="col actor text-center crew_align mb-5">
+                                        <div style="width: 166px; margin: 0 10px; white-space: nowrap;">
+                                            @model.TranslateActors[i].Name
+                                        </div>
+                                        <a href="person/@model.Staff[i].Id/@StringUtilities.Translit(model.TranslateActors[i].Name)">
+                                            <div class="techBox" style="@(i % 2 == 0 ? "background: linear-gradient(45deg, #e52641 25%, #444 25%, #444 50%, #e52641 50%, #e52641 75%, #444 75%, #444 100%);" : "background: linear-gradient(-45deg, #e52641 25%, #444 25%, #444 50%, #e52641 50%, #e52641 75%, #444 75%, #444 100%);")background-size: 40px 40px;">
+                                                @if (model.TranslateActors[i].HasPicture)
+                                                {
+                                                    <img src="@(appState.KlioContentUrl + "people/" + model.TranslateActors[i].PictureUrl)" title="@model.TranslateActors[i].Name" alt="@model.TranslateActors[i].Name" />
+                                                }
+                                                else
+                                                {
+                                                    if (model.TranslateActors[i].IsFemale)
+                                                    {
+                                                        <img src="@(appState.KlioContentUrl + "people/female.png")" title="@model.TranslateActors[i].Name" alt="@model.TranslateActors[i].Name" />
+                                                    }
+                                                    else
+                                                    {
+                                                        <img src="@(appState.KlioContentUrl + "people/male.png")" title="@model.TranslateActors[i].Name" alt="@model.TranslateActors[i].Name" />
+                                                    }
+                                                }
+                                            </div>
+                                        </a>
+                                        <div style="width: 166px; margin: 0 10px;">
+                                            @model.TranslateActors[i].Character
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
                 </div>
                 <div class="col-lg-4">
                     <aside class="blog-sidebar">
@@ -225,7 +359,7 @@ else
                                 </div>
                             </div>
                             <div class="row episode-watch-wrap">
-                                @foreach (var inf in model.Movie.MovieInfos)
+                                @foreach (var inf in model.MovieInfos)
                                 {
                                     switch (inf.Info)
                                     {
@@ -272,6 +406,18 @@ else
                                         case "ImdbId":
                                             @infoImdbMovie(inf);
                                             break;
+                                        case "WikiUrl":
+                                            @infoWikiMovie(inf);
+                                            break;
+                                        case "WebSiteURL":
+                                            @infoMovieWebSite(inf);
+                                            break;
+                                        case "Budget":
+                                            @infoBudget(inf);
+                                            break;
+                                        case "Profit":
+                                            @infoProfit(inf);
+                                            break;
                                         case "Award":
                                             @infoAward(inf);
                                             break;
@@ -294,21 +440,26 @@ else
     DetailsMovieDTO model;
     private string downloadUrl = string.Empty;
     private string OriginalTitle = string.Empty;
+    private string Slogan = string.Empty;
     private RenderFragment<Genre> linkGenre = (genre) => @<a href="genre/@genre.Id/@StringUtilities.Translit(genre.Name)">@genre.Name</a>;
     private TrailerModal TrailerModal { get; set; }
     
     private RenderFragment<MovieInfo> infoOrigLangUA = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><img src="inf/Flag_of_Ukraine.png" class="info-img" alt="Мова оригіналу: @info.Remark" title="Мова оригіналу: @info.Remark" /><div><div class="info-content">Мова оригіналу</div><div class="info-ingredients">@info.Remark</div></div></div>;
     private RenderFragment<MovieInfo> infoOrigLangEN = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><img src="inf/Flag_of_the_United_Kingdom.png" class="info-img" alt="Мова оригіналу: @info.Remark" title="Мова оригіналу: @info.Remark" /><div><div class="info-content">Мова оригіналу</div><div class="info-ingredients">@info.Remark</div></div></div>;
     private RenderFragment<MovieInfo> infoOrigLangPL = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><img src="inf/Flag_of_Poland.png" class="info-img" alt="Мова оригіналу: @info.Remark" title="Мова оригіналу: @info.Remark" /><div><div class="info-content">Мова оригіналу</div><div class="info-ingredients">@info.Remark</div></div></div>;
-    private RenderFragment<MovieInfo> infoYoutubeUrl = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><img src="inf/YouTube.png" class="info-img" alt="YouTube" title="YouTube" /><div><div class="info-content"><a href="https://www.youtube.com/watch?v=@info.Text" target="_blank">Дивитися на YouTube</a></div><div class="info-ingredients">YouTube-канал: @info.Remark</div></div></div>;
-    private RenderFragment<MovieInfo> infoKlioYoutube = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><img src="inf/KlioYouTube.png" class="info-img" alt="YouTube KlioDpUa" title="YouTube KlioDpUa" /><div><div class="info-content"><a href="https://www.youtube.com/watch?v=@info.Text" target="_blank">Дивитися на нашому YouTube-каналі</a></div></div></div>;
-    private RenderFragment<MovieInfo> infoInstagramVideoUrl = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><img src="inf/Instagram-Logo.png" class="info-img" alt="Instagram" title="Instagram" /><div><div class="info-content"><a href="https://www.instagram.com/p/@info.Text/" target="_blank">Дивитися на Instagram</a></div><div class="info-ingredients">Користувач: @info.Remark</div></div></div>;
+    private RenderFragment<MovieInfo> infoYoutubeUrl = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><a href="https://www.youtube.com/watch?v=@info.Text" target="_blank"><img src="inf/YouTube.png" class="info-img" alt="YouTube" title="YouTube" /></a><div><div class="info-content"><a href="https://www.youtube.com/watch?v=@info.Text" target="_blank">Дивитися на YouTube</a></div><div class="info-ingredients">YouTube-канал: @info.Remark</div></div></div>;
+    private RenderFragment<MovieInfo> infoKlioYoutube = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><a href="https://www.youtube.com/watch?v=@info.Text" target="_blank"><img src="inf/KlioYouTube.png" class="info-img" alt="YouTube KlioDpUa" title="YouTube KlioDpUa" /></a><div><div class="info-content"><a href="https://www.youtube.com/watch?v=@info.Text" target="_blank">Дивитися на нашому YouTube-каналі</a></div></div></div>;
+    private RenderFragment<MovieInfo> infoInstagramVideoUrl = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><a href="https://www.instagram.com/p/@info.Text/" target="_blank"><img src="inf/Instagram-Logo.png" class="info-img" alt="Instagram" title="Instagram" /></a><div><div class="info-content"><a href="https://www.instagram.com/p/@info.Text/" target="_blank">Дивитися на Instagram</a></div><div class="info-ingredients">Користувач: @info.Remark</div></div></div>;
     private RenderFragment<MovieInfo> infoTransLangUA = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><img src="inf/Flag_of_Ukraine.png" class="info-img" alt="Спосіб перекладу: @info.Remark" title="Спосіб перекладу: @info.Remark" /><div><div class="info-content">Спосіб перекладу</div><div class="info-ingredients">@info.Remark</div></div></div>;
-    private RenderFragment<MovieInfo> infoTmdbMovie = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><img src="inf/TMDB.png" class="info-img" alt="TMDB" title="The Movie Database" /><div><div class="info-content"><a href="https://www.themoviedb.org/movie/@info.Text" target="_blank">The Movie Database</a></div></div></div>;
-    private RenderFragment<MovieInfo> infoImdbMovie = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><img src="inf/IMDB.png" class="info-img" alt="IMDB" title="Internet Movie Database" /><div><div class="info-content"><a href="https://www.imdb.com/title/@info.Text" target="_blank">Internet Movie Database</a></div></div></div>;
+    private RenderFragment<MovieInfo> infoTmdbMovie = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><a href="https://www.themoviedb.org/movie/@info.Text" target="_blank"><img src="inf/TMDB.png" class="info-img" alt="TMDB" title="The Movie Database" /></a><div><div class="info-content"><a href="https://www.themoviedb.org/movie/@info.Text" target="_blank">The Movie Database</a></div></div></div>;
+    private RenderFragment<MovieInfo> infoImdbMovie = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><a href="https://www.imdb.com/title/@info.Text" target="_blank"><img src="inf/IMDB.png" class="info-img" alt="IMDB" title="Internet Movie Database" /></a><div><div class="info-content"><a href="https://www.imdb.com/title/@info.Text" target="_blank">Internet Movie Database</a></div></div></div>;
+    private RenderFragment<MovieInfo> infoWikiMovie = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><a href="@info.Text" target="_blank"><img src="inf/wiki.png" class="info-img" alt="IMDB" title="Wikipedia" /></a><div><div class="info-content"><a href="@info.Text" target="_blank">Стаття у Вікіпедії</a></div></div></div>;
     private RenderFragment<MovieInfo> infoAward = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><img src="inf/award.png" class="info-img" alt="Нагорода" title="Нагорода" /><div><div class="info-content">@info.Text</div><div class="info-ingredients">@_infoMArkup(info.Remark)</div></div></div>;
     private RenderFragment<MovieInfo> infoFullDescr = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><img src="inf/Plot.png" class="info-img" alt="Сюжет" title="Сюжет" /><div><div class="info-content">Сюжет:</div><div class="info-ingredients">@_infoMArkup(info.Text)</div></div></div>;
     private RenderFragment<MovieInfo> infoTracklist = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><img src="inf/song.png" class="info-img" alt="Сюжет" title="Виконані пісні" /><div><div class="info-content">Виконані пісні:</div><div class="info-ingredients">@_infoMArkup(info.Text)</div></div></div>;
+    private RenderFragment<MovieInfo> infoBudget = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><img src="inf/budget.jfif" class="info-img" alt="Кошторис: @info.Text" title="Кошторис: @info.Text" /><div><div class="info-content">Кошторис: @info.Text</div></div></div>;
+    private RenderFragment<MovieInfo> infoProfit = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><img src="inf/profit.jfif" class="info-img" alt="Прибуток: @info.Text" title="Прибуток: @info.Text" /><div><div class="info-content">Прибуток: @info.Text</div></div></div>;
+    private RenderFragment<MovieInfo> infoMovieWebSite = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><a href="@info.Text" target="_blank"><img src="inf/website.png" class="info-img" alt="Вебсайт" title="Вебсайт" /></a><div><div class="info-content"><a href="@info.Text" target="_blank">Вебсайт фільму</a></div></div></div>;
 
     private static RenderFragment _infoMArkup(string Mark) => builder =>
     {
@@ -341,14 +492,19 @@ else
         allMeta.ImageHeight2 = 1080;
         allMeta.ImageType2 = "image/jpeg";
 
-        if (model.Movie.MovieInfos.Where(x => x.Info == "DownloadUrl").FirstOrDefault() != null)
+        if (model.MovieInfos.Where(x => x.Info == "DownloadUrl").FirstOrDefault() != null)
         {
-            downloadUrl = model.Movie.MovieInfos.Where(x => x.Info == "DownloadUrl").FirstOrDefault().Text;
+            downloadUrl = model.MovieInfos.Where(x => x.Info == "DownloadUrl").FirstOrDefault().Text;
         };
 
         if (model.Movie.MovieInfos.Where(x => x.Info == "OriginalTitle").FirstOrDefault() != null)
         {
-            OriginalTitle = model.Movie.MovieInfos.Where(x => x.Info == "OriginalTitle").FirstOrDefault().Text;
+            OriginalTitle = model.MovieInfos.Where(x => x.Info == "OriginalTitle").FirstOrDefault().Text;
+        };
+
+        if (model.Movie.MovieInfos.Where(x => x.Info == "Slogan").FirstOrDefault() != null)
+        {
+            Slogan = model.MovieInfos.Where(x => x.Info == "Slogan").FirstOrDefault().Text;
         };
 
         currentCategory.SetCurrentCategory(model.Movie.Partition.CategoryId);
@@ -362,6 +518,7 @@ else
     async Task InitPlayer()
     {
         await js.InvokeVoidAsync("playerInit", "player", $"{appState.KlioContentUrl}movies/{MovieId}/index.m3u8", $"{appState.KlioContentUrl}movies/{MovieId}/cover.jpg", "", 0);
+        await js.InvokeVoidAsync("initFlickity");
     }
 
     string[] SeparateTitle(string title)

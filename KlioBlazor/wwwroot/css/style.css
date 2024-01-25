@@ -3709,9 +3709,13 @@ input::file-selector-button {
     padding: 175px 0 120px;
 }
 
+.actor {
+    max-width: 190px;
+}
+
 .actor .techBox {
     position: relative;
-    /* width: 160px; */
+    width: 160px;
     height: 200px;
     background: #444;
     margin: 0 10px;
@@ -3737,7 +3741,7 @@ input::file-selector-button {
     }
 
     .actor .techBox:hover img {
-        height: 110%;
+        height: 100%;
     }
 
 .play-btn {
@@ -3848,6 +3852,10 @@ input::file-selector-button {
     display: flex;
     justify-content: space-between;
     position: relative;
+}
+.oneline {
+    height: 100%;
+    align-items: center;
 }
 
 .info-ingredients {

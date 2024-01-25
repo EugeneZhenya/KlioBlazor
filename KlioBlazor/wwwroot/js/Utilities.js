@@ -40,3 +40,26 @@ function playerStop(id, file, poster, title, autoplay) {
 function redirectToUrl(url) {
     window.location.replace(url);
 }
+
+function initFlickity() {
+    var elem1 = document.querySelector('.staff-carousel');
+    var flkty1 = new Flickity(elem1, {
+        // options
+        cellAlign: 'left',
+        contain: true,
+        freeScroll: true,
+        prevNextButtons: true,
+        pageDots: false,
+        groupCells: false
+    });
+    var elem2 = document.querySelector('.actor-carousel');
+    var flkty2 = new Flickity(elem2, {
+        // options
+        cellAlign: 'left',
+        contain: true,
+        freeScroll: true,
+        prevNextButtons: true,
+        pageDots: false,
+        groupCells: false
+    });
+}
