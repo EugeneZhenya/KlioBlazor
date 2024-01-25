@@ -1,6 +1,7 @@
 ﻿@page "/movie/{MovieId:int}"
 @page "/movie/{MovieId:int}/{MovieName}"
 @page "/Home/View/{MovieId:int}"
+
 @inject NavigationManager NavManager
 @inject IMoviesRepository moviesRepository
 @inject CurrentCategory currentCategory
@@ -364,22 +365,22 @@ else
                                     switch (inf.Info)
                                     {
                                         case "FullDescription":
-                                            @infoFullDescr(inf);
+                                            @infoFullDescr(inf)
                                             break;
                                         case "Tracklist":
-                                            @infoTracklist(inf);
+                                            @infoTracklist(inf)
                                             break;
                                         case "OriginalLanguage":
                                             switch (inf.Text)
                                             {
                                                 case "uk":
-                                                    @infoOrigLangUA(inf);
+                                                    @infoOrigLangUA(inf)
                                                     break;
                                                 case "en":
-                                                    @infoOrigLangEN(inf);
+                                                    @infoOrigLangEN(inf)
                                                     break;
                                                 case "pl":
-                                                    @infoOrigLangPL(inf);
+                                                    @infoOrigLangPL(inf)
                                                     break;
                                             }
                                             break;
@@ -387,39 +388,39 @@ else
                                             switch (inf.Text)
                                             {
                                                 case "uk":
-                                                    @infoTransLangUA(inf);
+                                                    @infoTransLangUA(inf)
                                                     break;
                                             }
                                             break;
                                         case "Youtube":
-                                            @infoYoutubeUrl(inf);
+                                            @infoYoutubeUrl(inf)
                                             break;
                                         case "KlioYoutube":
-                                            @infoKlioYoutube(inf);
+                                            @infoKlioYoutube(inf)
                                             break;
                                         case "InstagramVideo":
-                                            @infoInstagramVideoUrl(inf);
+                                            @infoInstagramVideoUrl(inf)
                                             break;
                                         case "TmdbMovieId":
-                                            @infoTmdbMovie(inf);
+                                            @infoTmdbMovie(inf)
                                             break;
                                         case "ImdbId":
-                                            @infoImdbMovie(inf);
+                                            @infoImdbMovie(inf)
                                             break;
                                         case "WikiUrl":
-                                            @infoWikiMovie(inf);
+                                            @infoWikiMovie(inf)
                                             break;
                                         case "WebSiteURL":
-                                            @infoMovieWebSite(inf);
+                                            @infoMovieWebSite(inf)
                                             break;
                                         case "Budget":
-                                            @infoBudget(inf);
+                                            @infoBudget(inf)
                                             break;
                                         case "Profit":
-                                            @infoProfit(inf);
+                                            @infoProfit(inf)
                                             break;
                                         case "Award":
-                                            @infoAward(inf);
+                                            @infoAward(inf)
                                             break;
                                     }
                                 }
@@ -508,6 +509,7 @@ else
         };
 
         currentCategory.SetCurrentCategory(model.Movie.Partition.CategoryId);
+        await InitPlayer();
     }
 
     protected override async void OnAfterRender(bool firstRender)
