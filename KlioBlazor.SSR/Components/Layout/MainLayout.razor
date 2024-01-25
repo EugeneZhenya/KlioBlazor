@@ -1,17 +1,24 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
+<header>
+    <NavMenu @rendermode="InteractiveServer" />
+</header>
+
+<main>
+    <CascadingValue Value="@appState">
+        @Body
+    </CascadingValue>
+</main>
+
+<footer>
+    <FooterArea @rendermode="InteractiveServer" />
+    <div id="blazor-error-ui">
+        Сталася якась помилка.
+        <a href="" class="reload" style="color: white;">Перезавантажити</a>
+        <a class="dismiss">🗙</a>
     </div>
+</footer>
 
-    <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
-        </div>
-
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
-</div>
+@code {
+    AppState appState = new AppState();
+}

@@ -1,0 +1,16 @@
+﻿using KlioBlazor.Shared.DTOs;
+using KlioBlazor.Shared.Entities;
+
+namespace KlioBlazor.SSR.Repository
+{
+    public interface IKeywordRepository
+    {
+        Task CreateKeyword(Keyword keyword);
+        Task DeleteKeyword(int Id);
+        Task<List<Keyword>> GetAllKeywords();
+        Task<IndexKeywordsDTO> GetIndexKeywordsDTO();
+        Task<Keyword> GetKeyword(int Id);
+        Task<List<Keyword>> GetKeywordByWord(string word);
+        Task UpdateKeyword(Keyword keyword);
+    }
+}

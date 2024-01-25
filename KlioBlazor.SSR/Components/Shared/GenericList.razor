@@ -1,0 +1,57 @@
+﻿@typeparam TItem
+@attribute [StreamRendering]
+
+@if (List == null)
+{
+    @if (NullTemplate != null)
+    {
+        @NullTemplate
+    }
+    else
+    {
+        // Default Content
+        <div id="preloader" style="height: 25vh;">
+            <div id="loading-center">
+                <div id="loading-center-absolute">
+                    <img src="img/preloader.svg" alt="">
+                </div>
+            </div>
+        </div>
+    }
+}
+else if (List.Count == 0)
+{
+    @if (EmptyTemplate != null)
+    {
+        @EmptyTemplate
+    }
+    else
+    {
+        // Default Content
+        <text>@NoRecords</text>
+    }
+}
+else
+{
+    @if (ElementTemplate != null)
+    {
+        @foreach (var element in List)
+        {
+            @ElementTemplate(element)
+        }
+    }
+    else
+    {
+        @WholeListTemplate
+    }
+}
+
+@code {
+    [Parameter] public RenderFragment NullTemplate { get; set; }
+    [Parameter] public RenderFragment EmptyTemplate { get; set; }
+    [Parameter] public RenderFragment<TItem> ElementTemplate { get; set; }
+    [Parameter] public RenderFragment WholeListTemplate { get; set; }
+    [Parameter] public List<TItem> List { get; set; }
+    [Parameter] public String NoRecords { get; set; } = "Розділ не має записів.";
+
+}

@@ -1,0 +1,43 @@
+﻿@inject IJSRuntime js
+@inject IPartitionRepository partitionRepository
+@attribute [StreamRendering]
+
+<div class="ucm-active" style="display: -webkit-flex; -webkit-flex-direction: column; -webkit-flex-wrap: wrap; -webkit-flex-direction: row;">
+    <GenericList List="Partitions" NoRecords="@NoRecords">
+        <ElementTemplate Context="partition">
+            <IndividualPartition Partition="partition" DeletePartition="DeletePartition" @key="partition.Id" ShowCategoryName="@ShowCategoryName" />
+        </ElementTemplate>
+    </GenericList>
+</div>
+
+<Confirmation @ref="confirmation" OnCancel="OnCancel" OnConfirm="OnConfirm">
+    <div>Ви впевнені, що хочете видалити розділ: "@partitionToBeDeleted.Name"?</div>
+</Confirmation>
+
+@code {
+    [Parameter] public List<Partition> Partitions { get; set; }
+    [Parameter] public String NoRecords { get; set; }
+    [Parameter] public bool ShowCategoryName { get; set; }
+    Confirmation confirmation;
+    Partition partitionToBeDeleted;
+
+    private async Task DeletePartition(Partition partition)
+    {
+        partitionToBeDeleted = partition;
+        confirmation.Show();
+    }
+
+    async void OnConfirm()
+    {
+        await partitionRepository.DeletePartition(partitionToBeDeleted.Id);
+        Partitions.Remove(partitionToBeDeleted);
+        confirmation.Hide();
+        partitionToBeDeleted = null;
+    }
+
+    void OnCancel()
+    {
+        confirmation.Hide();
+        partitionToBeDeleted = null;
+    }
+}

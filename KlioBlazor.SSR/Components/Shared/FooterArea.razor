@@ -1,0 +1,103 @@
+﻿@inject NavigationManager NavManager
+@inject CurrentCategory currentCategory
+
+<div class="footer-top-wrap">
+    <div class="container">
+        <div class="footer-menu-wrap">
+            <div class="row align-items-center">
+                <div class="col-lg-3">
+                    <div class="footer-logo">
+                        <NavLink href="" Match="NavLinkMatch.All">
+                            <img src="img/logo.png" alt="" />
+                        </NavLink>
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                    <div class="footer-menu">
+                        <nav>
+                            <ul class="navigation">
+                                <li><NavLink class="nav-link" href="Home/history" style="@CheckCategory(1)">Історія</NavLink></li>
+                                <li><NavLink class="nav-link" href="Home/literacy" style="@CheckCategory(2)">Література</NavLink></li>
+                                <li><NavLink class="nav-link" href="Home/music" style="@CheckCategory(3)">Музика</NavLink></li>
+                                <li><NavLink class="nav-link" href="Home/movies" style="@CheckCategory(4)">Фільми</NavLink></li>
+                                <li><NavLink class="nav-link" href="Home/serials" style="@CheckCategory(5)">Серіали</NavLink></li>
+                                <li><NavLink class="nav-link" href="Home/animation" style="@CheckCategory(6)">Мультфільми</NavLink></li>
+                                <li><NavLink class="nav-link" href="Home/series" style="@CheckCategory(7)">Мультсеріали</NavLink></li>
+                            </ul>
+                            <div class="footer-search">
+                                <div>
+                                    <input type="text" @bind-value="searchText" placeholder="Знайти фільм" />
+                                    <button @onclick="SearchMovie">
+                                        <i class="fa-solid fa-magnifying-glass"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-quick-link-wrap">
+                <div class="row align-items-center">
+                    <div class="col-md-7">
+                        <div class="quick-link-list">
+                            <ul>
+                                <li><NavLink class="nav-link" href="Faq">Питання</NavLink></li>
+                                <li><NavLink class="nav-link" href="HelpCenter">Підтримка</NavLink></li>
+                                <li><NavLink class="nav-link" href="TermsOfUse">Умови</NavLink></li>
+                                <li><NavLink class="nav-link" href="Privacy">Конфіденційність</NavLink></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-2" style="text-align: center;">
+                        <a href="https://donatello.to/Klio.dp.ua" class="btn" target="_blank">Допомогти</a>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="footer-social">
+                            <ul>
+                                <li><a href="#"><i class="fa-brands fa-facebook-f"></i></a></li>
+                                <li><a href="#"><i class="fa-brands fa-twitter"></i></a></li>
+                                <li><a href="#"><i class="fa-brands fa-linkedin-in"></i></a></li>
+                                <li><a href="#"><i class="fa-brands fa-telegram"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="copyright-wrap">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-6">
+                <div class="copyright-text">
+                    <p>&copy; 2006 - @DateTime.Today.Year <a href="">klio.dp.ua</a></p>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6">
+                <div class="payment-method-img text-center text-md-end">
+                    Допомогти переказом на картку: <a href="https://next.privat24.ua/send/b37vw" target="_blank"><img src="img/card_img.png" alt="Visa/MasterCard" /></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private string searchText;
+
+    protected override void OnInitialized()
+    {
+        currentCategory.OnChange += () => StateHasChanged();
+    }
+
+    private void SearchMovie()
+    {
+        NavManager.NavigateTo("movies/search?title=" + HttpUtility.UrlEncode(searchText));
+    }
+
+    public string CheckCategory(int id)
+    {
+        return (currentCategory.CurrentCat == id) ? "color: #fd0e30" : string.Empty;
+    }
+}

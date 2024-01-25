@@ -1,8 +1,6 @@
 ﻿using KlioBlazor.Data;
 using KlioBlazor.Shared.DTOs;
 using KlioBlazor.Shared.Entities;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

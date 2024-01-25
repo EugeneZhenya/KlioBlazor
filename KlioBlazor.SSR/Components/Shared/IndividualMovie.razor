@@ -1,0 +1,76 @@
+﻿<div class="movie-item mb-50" style="width: 380px; margin-right: 30px;">
+    <div class="section-title text-center text-lg-start">
+        <span class="sub-title">@Movie.Partition.Name</span>
+    </div>
+    <div class="movie-poster">
+        <a href="@movieUrl">
+            <img src="@($"{appState.KlioContentUrl}movies/{Movie.Id}/cover.jpg")" alt="@Movie.Title" />
+        </a>
+    </div>
+    <div class="movie-content">
+        <div class="top">
+            <h5 class="title ellipse"><a href="@movieUrl">@Movie.TitleBrief</a></h5>
+            <span class="date">@Movie.ReleaseDate.Value.Year</span>
+        </div>
+        <div class="bottom">
+            <ul>
+                <li>
+                    <span class="quality" style="@AgeLimitColor(Movie.AgeLimit)">@Movie.AgeLimit+</span>
+                </li>
+                <li>
+                    <span class="duration">
+                        <i class="fa-solid fa-clock"></i> @StringUtilities.SecondsToMinutes(Movie.Duration)
+                    </span>
+                    <span class="rating">
+                        <i class="fa-solid fa-thumbs-up"></i> @Movie.Rating
+                    </span>
+                </li>
+            </ul>
+            <AuthorizeView Roles="Admin">
+                <Authorized>
+                    <div class="mt-3 text-center">
+                        <a class="btn" href="movies/edit/@Movie.Id">Редагувати</a>
+                        <button type="button" class="btn" @onclick="@(() => DeleteMovie.InvokeAsync(Movie))">Видалити</button>
+                    </div>
+                </Authorized>
+            </AuthorizeView>
+        </div>
+    </div>
+</div>
+
+@code {
+    [CascadingParameter] public AppState appState { get; set; }
+    [Parameter] public Movie Movie { get; set; }
+    [Parameter] public EventCallback<Movie> DeleteMovie { get; set; }
+    private string movieUrl = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        movieUrl = $"movie/{Movie.Id}/{StringUtilities.Translit(Movie.Title)}";
+    }
+
+    string AgeLimitColor(int age)
+    {
+        string style = "color: lightgreen; border-color: lightgreen;";
+        switch (age)
+        {
+            case 12:
+                style = "color: sandybrown; border-color: sandybrown;";
+                break;
+
+            case 16:
+                style = "color: orange; border-color: orange;";
+                break;
+
+            case 18:
+                style = "color: maroon; border-color: maroon;";
+                break;
+
+            default:
+                style = "color: lightgreen; border-color: lightgreen;";
+                break;
+        }
+
+        return style;
+    }
+}

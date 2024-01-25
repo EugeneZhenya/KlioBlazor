@@ -1,20 +1,42 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="uk" data-bs-theme="dark">
 
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <base href="/" />
     <link rel="stylesheet" href="bootstrap/bootstrap.min.css" />
-    <link rel="stylesheet" href="app.css" />
+    <link rel="stylesheet" href="css/flaticon.css" />
+    <link rel="stylesheet" href="css/default.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
     <link rel="stylesheet" href="KlioBlazor.SSR.styles.css" />
+    <link rel="stylesheet" href="flickity/flickity.css" media="screen">
     <link rel="icon" type="image/png" href="favicon.png" />
+
+    <!-- Font Awesome Solid + Brands -->
+    <link href="fontawesome/css/fontawesome.min.css" rel="stylesheet">
+    <link href="fontawesome/css/brands.min.css" rel="stylesheet">
+    <link href="fontawesome/css/solid.min.css" rel="stylesheet">
+
     <HeadOutlet />
 </head>
 
 <body>
+    <!-- Scroll-top -->
+    <button class="scroll-top scroll-to-target" data-target="html">
+        <i class="fa-solid fa-angle-up"></i>
+    </button>
+    <!-- Scroll-top-end-->
+
     <Routes />
+
     <script src="_framework/blazor.web.js"></script>
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/Utilities.js"></script>
+    <script src="js/playerjs.js" type="text/javascript"></script>
+    <script src="flickity/flickity.pkgd.min.js"></script>
 </body>
 
 </html>

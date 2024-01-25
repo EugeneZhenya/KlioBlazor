@@ -1,0 +1,141 @@
+﻿<section class="movie-details-area" style="background-image: url('@($"{appState.KlioContentUrl}movies/{ShowMovie.Id}/background.jpg")')">
+    <div class="movie-details-overlay">
+        <div class="container custom-container" style="padding: 175px 15px 120px;">
+            <div class="row">
+                <div class="col-xl-6 col-lg-8">
+                    <div class="banner-content">
+                        <div class="section-title title-style-two">
+                            <span class="sub-title">@ShowMovie.Partition.Category.Name</span>
+                        </div>
+                        <h6 class="sub-title"><a href="partition/@ShowMovie.Partition.Id/@StringUtilities.Translit(ShowMovie.Partition.Name)">@ShowMovie.Partition.Name</a></h6>
+                        <h2 class="title">
+                            @for (int i = 0; i < SeparateTitle(ShowMovie.Title).Length; i++)
+                            {
+                                if (i % 2 == 0)
+                                {
+                                    @SeparateTitle(ShowMovie.Title)[i]
+                                }
+                                else
+                                {
+                                    <span>@SeparateTitle(ShowMovie.Title)[i]</span>
+                                }
+                            }
+                        </h2>
+                        @if (!string.IsNullOrEmpty(OriginalTitle))
+                        {
+                            <h3 style="margin-bottom: 20px;">
+                                @for (int i = 0; i < SeparateTitle(OriginalTitle).Length; i++)
+                                {
+                                    if (i % 2 == 0)
+                                    {
+                                        <span style="color: #e4e2e2;">@SeparateTitle(OriginalTitle)[i]</span>
+                                    }
+                                    else
+                                    {
+                                        <span style="color: #fd0e30;">@SeparateTitle(OriginalTitle)[i]</span>
+                                    }
+                                }
+                            </h3>
+                        }
+                        <div class="banner-meta">
+                            <ul>
+                                <li class="quality">
+                                    <span style="@AgeLimitColor(ShowMovie.AgeLimit)">@ShowMovie.AgeLimit+</span>
+                                </li>
+                                <li class="category">
+                                    @for (int i = 0; i < ShowMovie.MoviesGenres.Count; i++)
+                                    {
+                                        if (i == ShowMovie.MoviesGenres.Count - 1)
+                                        {
+                                            <a href="genre/@ShowMovie.MoviesGenres[i].Genre.Id/@StringUtilities.Translit(ShowMovie.MoviesGenres[i].Genre.Name)">@ShowMovie.MoviesGenres[i].Genre.Name</a>
+                                        }
+                                        else
+                                        {
+                                            <a href="genre/@ShowMovie.MoviesGenres[i].Genre.Id/@StringUtilities.Translit(ShowMovie.MoviesGenres[i].Genre.Name)">@ShowMovie.MoviesGenres[i].Genre.Name,</a>
+                                        }
+                                    }
+                                </li>
+                                <li class="release-time">
+                                    <span><i class="fa-solid fa-calendar-days"></i> @ShowMovie.ReleaseDate.Value.Year</span>
+                                    <span><i class="fa-solid fa-clock"></i> @StringUtilities.SecondsToMinutes(ShowMovie.Duration)</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="banner-meta">
+                            <ul>
+                                <li class="category">
+                                    @foreach (var country in ShowMovieCountries)
+                                    {
+                                        <img src="@($"{appState.KlioContentUrl}countries/{country.FlagUrl}")" alt="@country.Name" style="width: 25px; margin: 0 5px 0 10px;" />
+                                        <a href="country/@country.Id/@StringUtilities.Translit(@country.Name)">@country.Name</a>
+                                    }
+                                </li>
+                            </ul>
+                        </div>
+                        @if (ShowMovie.HasTrailer)
+                        {
+                            <a class="banner-btn btn popup-video" style="cursor: pointer" @onclick="() => TrailerModal.Open()">
+                                <i class="fa-solid fa-play"></i> Вістовик
+                            </a>
+                        }
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-4 d-flex align-items-center justify-content-center position-relative">
+                    <a href="@($"movie/{ShowMovie.Id}/{StringUtilities.Translit(ShowMovie.Title)}")" class="glightbox play-btn"></a>
+                </div>
+            </div>
+
+            @if (ShowMovie.HasTrailer)
+            {
+                <TrailerModal TrailerUrl="@($"{appState.KlioContentUrl}movies/{ShowMovie.Id}/Trailer/index.m3u8")" TrailerCover="@($"{appState.KlioContentUrl}movies/{ShowMovie.Id}/Trailer/cover.jpg")" @ref=TrailerModal />
+            }
+        </div>
+    </div>
+</section>
+
+@code {
+    [CascadingParameter] public AppState appState { get; set; }
+    [Parameter] public Movie ShowMovie { get; set; }
+    [Parameter] public List<Country> ShowMovieCountries { get; set; }
+    private string OriginalTitle = string.Empty;
+    private TrailerModal TrailerModal { get; set; }
+
+    string[] SeparateTitle(string title)
+    {
+        return StringUtilities.SeparateString(title);
+    }
+
+    protected override Task OnParametersSetAsync()
+    {
+        if (ShowMovie.MovieInfos.FirstOrDefault(x => x.Info == "OriginalTitle") != null)
+        {
+            OriginalTitle = ShowMovie.MovieInfos.FirstOrDefault(x => x.Info == "OriginalTitle").Text;
+        }
+        return base.OnParametersSetAsync();
+    }
+
+    string AgeLimitColor(int age)
+    {
+        string style = "color: lightgreen; border-color: lightgreen;";
+        switch (age)
+        {
+            case 12:
+                style = "color: sandybrown; border-color: sandybrown;";
+                break;
+
+            case 16:
+                style = "color: orange; border-color: orange;";
+                break;
+
+            case 18:
+                style = "color: maroon; border-color: maroon;";
+                break;
+
+            default:
+                style = "color: lightgreen; border-color: lightgreen;";
+                break;
+        }
+
+        return style;
+    }
+}

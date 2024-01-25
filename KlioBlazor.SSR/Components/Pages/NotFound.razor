@@ -1,0 +1,65 @@
+﻿@page "/StatusCode/404"
+@inject NavigationManager NavManager
+@inject CurrentCategory currentCategory
+
+<PageTitle>@allMeta.Title</PageTitle>
+
+<MetaContent MetaData="allMeta" />
+
+<BreadcrumbArea>
+    <TitleContent>
+        <h2 class="title">Сторінку <span>не знайдено</span></h2>
+    </TitleContent>
+    <ChildContent>
+        <li class="breadcrumb-item"><a href="">Домівка</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Помилка 404</li>
+    </ChildContent>
+</BreadcrumbArea>
+
+<section class="episode-area episode-bg" style="background-image: url('img/episode_bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="movie-episode-wrap">
+                    <div class="episode-top-wrap">
+                        <div class="section-title">
+                            <span class="sub-title">Помилка №404</span>
+                            <h2 class="title">На жаль, сторінку, яку ви запросили, не знайдено.</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@code {
+    OpenGraphModel allMeta = new OpenGraphModel();
+
+    protected async override Task OnInitializedAsync()
+    {
+        currentCategory.SetCurrentCategory(0);
+
+        allMeta.Title = "Сторінку не знайдено :: Український медійний архів 'KLIO'";
+        allMeta.Description = "Медійний архів 'KLIO': Музика, література, історія, фільми, мультфільми, серіали, мультсеріали, наживо, пряма трансляція, дивитися он-лайн";
+        allMeta.Robots = "all";
+        allMeta.Author = "Eugene Baklanov";
+        allMeta.Keywords = "Klio, архів, video, відео, історія, література, політика, музика, music, наживо, трансляція, пряма трансляція, дивитися он-лайн, фільм, серіал, сезон, епізод, мультфільм, мультсерал";
+        allMeta.Type = "article";
+        allMeta.Image = (NavManager.BaseUri + "img/WatchTVMockup.jpg").Replace("https://", "http://");
+        allMeta.SecureImage = (NavManager.BaseUri + "img/WatchTVMockup.jpg").Replace("http://", "https://");
+        allMeta.ImageWidth = 1920;
+        allMeta.ImageHeight = 1077;
+        allMeta.ImageType = "image/jpeg";
+        allMeta.Url = NavManager.Uri;
+        allMeta.SiteName = "Медійний архів 'KLIO'";
+        allMeta.Locale = "uk_UA";
+        allMeta.FBAdmins = "100007730161243,100002204709179";
+        allMeta.FBAppId = "885986785210347";
+        allMeta.Image2 = (NavManager.BaseUri + "img/logo_750_transp.png").Replace("https://", "http://");
+        allMeta.SecureImage2 = (NavManager.BaseUri + "img/logo_750_transp.png").Replace("http://", "https://");
+        allMeta.ImageWidth2 = 750;
+        allMeta.ImageHeight2 = 750;
+        allMeta.ImageType2 = "image/png";
+    }
+}

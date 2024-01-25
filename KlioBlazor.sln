@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KlioBlazor", "KlioBlazor\Kl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KlioBlazor.Shared", "KlioBlazor.Shared\KlioBlazor.Shared.csproj", "{1F727FBC-D2A9-405A-B51C-C3B2EFBEE816}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KlioBlazor.SSR", "KlioBlazor.SSR\KlioBlazor.SSR.csproj", "{FE9724D8-CA6B-4F9E-9715-D194037BAA24}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KlioBlazor.SSR", "KlioBlazor.SSR\KlioBlazor.SSR.csproj", "{FE9724D8-CA6B-4F9E-9715-D194037BAA24}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

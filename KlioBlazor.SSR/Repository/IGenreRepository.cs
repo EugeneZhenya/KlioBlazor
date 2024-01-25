@@ -1,0 +1,15 @@
+﻿using KlioBlazor.Shared.DTOs;
+using KlioBlazor.Shared.Entities;
+
+namespace KlioBlazor.SSR.Repository
+{
+    public interface IGenreRepository
+    {
+        Task CreateGenre(Genre genre);
+        Task DeleteGenre(int Id);
+        Task<List<Genre>> GetAllGenres();
+        Task<Genre> GetGenre(int Id);
+        Task<IndexGenresDTO> GetIndexGenresDTO();
+        Task UpdateGenre(Genre genre);
+    }
+}
