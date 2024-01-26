@@ -5,7 +5,7 @@
 <div class="ucm-active" style="display: -webkit-flex; -webkit-flex-direction: column; -webkit-flex-wrap: wrap; -webkit-flex-direction: row;">
     <GenericList List="Movies" NoRecords="@NoRecords">
         <ElementTemplate Context="movie">
-            <IndividualMovie Movie="movie" DeleteMovie="DeleteMovie" @key="movie.Id" />
+            <IndividualMovie Movie="movie" DeleteMovie="DeleteMovie" @key="movie.Id" ShowCategoryName="ShowCategoryName" />
         </ElementTemplate>
     </GenericList>
 </div>
@@ -17,6 +17,7 @@
 @code {
     [Parameter] public List<Movie> Movies { get; set; }
     [Parameter] public String NoRecords { get; set; }
+    [Parameter] public bool ShowCategoryName { get; set; }
     Confirmation confirmation;
     Movie movieToBeDeleted;
 

@@ -105,6 +105,7 @@ namespace KlioBlazor.Controllers
 
                 allPartitions = await context.Partitions
                     .Include(x => x.Category)
+                    .Include(x => x.Movies)
                     .Where(x => x.CategoryId == catId)
                     .OrderBy(x => x.Name)
                     .ToListAsync();

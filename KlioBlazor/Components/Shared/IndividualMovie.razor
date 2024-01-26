@@ -1,7 +1,10 @@
 ﻿<div class="movie-item mb-50" style="width: 380px; margin-right: 30px;">
-    <div class="section-title text-center text-lg-start">
-        <span class="sub-title">@Movie.Partition.Name</span>
-    </div>
+    @if (ShowCategoryName)
+    {
+        <div class="section-title text-center text-lg-start">
+            <span class="sub-title">@Movie.Partition.Name</span>
+        </div>
+    }
     <div class="movie-poster">
         <a href="@movieUrl">
             <img src="@($"{appState.KlioContentUrl}movies/{Movie.Id}/cover.jpg")" alt="@Movie.Title" />
@@ -42,6 +45,7 @@
     [CascadingParameter] public AppState appState { get; set; }
     [Parameter] public Movie Movie { get; set; }
     [Parameter] public EventCallback<Movie> DeleteMovie { get; set; }
+    [Parameter] public bool ShowCategoryName { get; set; }
     private string movieUrl = string.Empty;
 
     protected override void OnInitialized()

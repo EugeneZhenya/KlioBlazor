@@ -34,6 +34,11 @@ namespace KlioBlazor.Repository
             return await httpService.GetHelper<Partition>($"{url}/{Id}");
         }
 
+        public async Task<DetailsPartitionDTO> GetDetailsPartitionDTO(int Id)
+        {
+            return await httpService.GetHelper<DetailsPartitionDTO>($"{url}/details/{Id}");
+        }
+
         public async Task CreatePartition(Partition partition)
         {
             var response = await httpService.Post(url, partition);

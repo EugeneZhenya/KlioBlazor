@@ -63,6 +63,40 @@ namespace KlioBlazor.Controllers
             return partition;
         }
 
+        [HttpGet("details/{id}")]
+        public async Task<ActionResult<DetailsPartitionDTO>> GetPartitionDetails(int id)
+        {
+            double maxViews = (double)context.Movies.Max(p => p.ViewCounter);
+
+            var partition = await context.Partitions
+                .Include (x => x.Category)
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (partition == null) { return NotFound(); }
+
+            var lsstMovie = await context.Movies
+                .Where(x => x.PatitionId == id)
+                .OrderByDescending(x => x.PublicDate)
+                .FirstOrDefaultAsync();
+
+            var allMoviews = await context.Movies
+                .Where(x => x.PatitionId == id)
+                .OrderBy(x => x.ReleaseDate)
+                .ToListAsync();
+
+            foreach (var film in allMoviews)
+            {
+                film.Rating = Math.Truncate((double)film.ViewCounter / (double)maxViews * 10000) / 100;
+            }
+
+            var model = new DetailsPartitionDTO();
+            model.Partition = partition;
+            model.LastMovie = lsstMovie;
+            model.PartitionMovies = allMoviews;
+
+            return model;
+        }
+
         [HttpPost]
         public async Task<ActionResult<int>> Post(Partition partition)
         {

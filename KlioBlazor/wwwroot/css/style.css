@@ -2114,6 +2114,7 @@ label {
     background-position: top center;
     background-size: cover;
     /* padding: 175px 0 120px; */
+    min-height: 100vh;
 }
 
 .movie-details-img {
@@ -3707,6 +3708,7 @@ input::file-selector-button {
     background: -webkit-linear-gradient(to right, rgba(4, 8, 26, .66), transparent);
     background: linear-gradient(to right, #111, rgba(4, 8, 26, .55), black);
     padding: 175px 0 120px;
+    min-height: 100vh;
 }
 
 .actor {

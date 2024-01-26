@@ -8,6 +8,7 @@ namespace KlioBlazor.Repository
         Task CreatePartition(Partition partition);
         Task DeletePartition(int Id);
         Task<List<Partition>> GetAllPartitions();
+        Task<DetailsPartitionDTO> GetDetailsPartitionDTO(int Id);
         Task<IndexPartitionsDTO> GetIndexPartitionsDTO();
         Task<Partition> GetPartition(int Id);
         Task UpdatePartition(Partition partition);
