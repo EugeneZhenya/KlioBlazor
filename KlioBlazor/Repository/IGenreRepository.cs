@@ -8,6 +8,7 @@ namespace KlioBlazor.Repository
         Task CreateGenre(Genre genre);
         Task DeleteGenre(int Id);
         Task<List<Genre>> GetAllGenres();
+        Task<DetailsGenreDTO> GetDetailsGenreDTO(int Id);
         Task<Genre> GetGenre(int Id);
         Task<IndexGenresDTO> GetIndexGenresDTO();
         Task UpdateGenre(Genre genre);

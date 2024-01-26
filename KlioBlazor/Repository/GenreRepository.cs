@@ -33,6 +33,11 @@ namespace KlioBlazor.Repository
             return await httpService.GetHelper<Genre>($"{url}/{Id}");
         }
 
+        public async Task<DetailsGenreDTO> GetDetailsGenreDTO(int Id)
+        {
+            return await httpService.GetHelper<DetailsGenreDTO>($"{url}/details/{Id}");
+        }
+
         public async Task CreateGenre(Genre genre)
         {
             var response = await httpService.Post(url, genre);

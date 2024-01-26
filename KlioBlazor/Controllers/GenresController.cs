@@ -1,4 +1,5 @@
-﻿using KlioBlazor.Data;
+﻿using KlioBlazor.Components.Shared;
+using KlioBlazor.Data;
 using KlioBlazor.Helpers;
 using KlioBlazor.Shared.DTOs;
 using KlioBlazor.Shared.Entities;
@@ -60,6 +61,44 @@ namespace KlioBlazor.Controllers
             var genre = await context.Genres.FirstOrDefaultAsync(x => x.Id == id);
             if (genre == null) { return NotFound(); }
             return genre;
+        }
+
+        [HttpGet("details/{id}")]
+        public async Task<ActionResult<DetailsGenreDTO>> GetGenreDetails(int id)
+        {
+            double maxViews = (double)context.Movies.Max(p => p.ViewCounter);
+
+            var genre = await context.Genres
+                .Include(x => x.MoviesGenres)
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (genre == null) { return NotFound(); }
+
+            var allMovieInGenre = await context.MoviesGenres.OrderByDescending(x => x.MovieId).Where(x => x.GenreId == id).ToListAsync();
+            var listOfIds = from n in allMovieInGenre where n.GenreId == id select n.MovieId;
+            int lastMovieId = allMovieInGenre[0].MovieId;
+
+            var lsstMovie = await context.Movies
+                .Where(x => x.Id == lastMovieId)
+                .FirstOrDefaultAsync();
+
+            var allMovies = await (from m in context.Movies where listOfIds.Contains(m.Id) select m)
+                .Include(x => x.Partition)
+                .OrderBy(x => x.ReleaseDate)
+                .ToListAsync();
+
+
+            foreach (var film in allMovies)
+            {
+                film.Rating = Math.Truncate((double)film.ViewCounter / (double)maxViews * 10000) / 100;
+            }
+
+            var model = new DetailsGenreDTO();
+            model.Genre = genre;
+            model.LastMovie = lsstMovie;
+            model.GenreMovies = allMovies;
+
+            return model;
         }
 
         [HttpPost]

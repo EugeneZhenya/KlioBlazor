@@ -1,0 +1,103 @@
+﻿@page "/genre/{GenreId:int}"
+@page "/genre/{GenreId:int}/{GenreName}"
+
+@inject NavigationManager NavManager
+@inject IGenreRepository genreRepository
+@inject CurrentCategory currentCategory
+
+<PageTitle>@allMeta.Title</PageTitle>
+
+<MetaContent MetaData="allMeta" />
+
+@if (model == null)
+{
+    <div id="preloader" style="height: 75vh;">
+        <div id="loading-center">
+            <div id="loading-center-absolute">
+                <img src="img/preloader.svg" alt="">
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <section class="movie-details-area" style="background-image: url('@($"{appState.KlioContentUrl}movies/{model.LastMovie.Id}/background.jpg")')">
+        <div class="movie-details-overlay">
+            <div class="container">
+                <div class="row align-items-center position-relative">
+                    <div class="col-xl-6 col-lg-6" style="align-self: start; margin-top: 10px;">
+                        <div class="movie-details-img">
+                            <img src="@($"{appState.KlioContentUrl}genres/{model.Genre.IconUrl}")" alt="@model.Genre.Name" style="max-width: 100%;">
+                        </div>
+                    </div>
+                    <div class="col-xl-6 col-lg-6">
+                        <div class="movie-details-content">
+                            <div class="section-title title-style-two">
+                                <span class="sub-title">Фільми жанру</span>
+                            </div>
+                            <h2>
+                                @model.Genre.Name
+                            </h2>
+                            <div class="banner-meta">
+                                <ul style="justify-content: end;">
+                                    <li class="release-time">
+                                        <span>@model.GenreMovies.Count фільмів</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <RenderMarkdown MarkdownContent="@model.Genre.Description" />
+                            <div class="movie-details-prime">
+                                <ul style="min-width: 100%;">
+                                    <li class="share"><a href="#"><i class="fa-solid fa-share-nodes"></i> Поширити</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
+<MoviesArea Movies="moviesOfGenre" Title="@nameOfGenre" Subtitle="Фільми жанру" />
+
+@code {
+    [CascadingParameter] public AppState appState { get; set; }
+    [Parameter] public int GenreId { get; set; }
+    [Parameter] public string GenreName { get; set; }
+    OpenGraphModel allMeta = new OpenGraphModel();
+    DetailsGenreDTO model;
+    private List<Movie> moviesOfGenre;
+    private string nameOfGenre;
+
+    protected async override Task OnInitializedAsync()
+    {
+        currentCategory.SetCurrentCategory(0);
+        model = await genreRepository.GetDetailsGenreDTO(GenreId);
+
+        allMeta.Title = model.Genre.Name + " :: Український медійний архів 'KLIO'";
+        allMeta.Description = model.Genre.Name + " дивитися он-лайн, " + model.Genre.Description;
+        allMeta.Robots = "all";
+        allMeta.Author = "Eugene Baklanov";
+        allMeta.Keywords = "Klio, архів, video, відео, історія, література, політика, музика, music, наживо, трансляція, пряма трансляція, дивитися он-лайн, фільм, серіал, сезон, епізод, мультфільм, мультсерал";
+        allMeta.Type = "article";
+        allMeta.Image = $"{appState.KlioContentUrl}genres/{model.Genre.IconUrl}";
+        allMeta.SecureImage = allMeta.Image;
+        allMeta.ImageWidth = 512;
+        allMeta.ImageHeight = 512;
+        allMeta.ImageType = "image/jpeg";
+        allMeta.Url = NavManager.Uri;
+        allMeta.SiteName = "Медійний архів 'KLIO'";
+        allMeta.Locale = "uk_UA";
+        allMeta.FBAdmins = "100007730161243,100002204709179";
+        allMeta.FBAppId = "885986785210347";
+        allMeta.Image2 = $"{appState.KlioContentUrl}genres/{model.Genre.IconUrl}";
+        allMeta.SecureImage2 = allMeta.Image2;
+        allMeta.ImageWidth2 = 512;
+        allMeta.ImageHeight2 = 512;
+        allMeta.ImageType2 = "image/jpeg";
+
+        moviesOfGenre = model.GenreMovies;
+        nameOfGenre = model.Genre.Name;
+    }
+}
