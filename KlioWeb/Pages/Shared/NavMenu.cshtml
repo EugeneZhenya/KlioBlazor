@@ -50,7 +50,7 @@
                         <div class="header-action d-none d-md-block">
                             <ul>
                                 <li class="header-search">
-                                    <a style="cursor: pointer">
+                                    <a style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#search_modal">
                                         <i class="fa-solid fa-magnifying-glass"></i>
                                     </a>
                                 </li>
@@ -112,18 +112,8 @@
                 </div>
                 <div class="menu-backdrop"></div>
                 <!-- End Mobile Menu -->
-                <!-- Modal Search -->
-                <div class="modal fade" id="search-modal" tabindex="-1" role="dialog" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <form>
-                                <input type="text" placeholder="Search here...">
-                                <button><i class="fas fa-search"></i></button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <!-- Modal Search-end -->
+
+                <partial name="SearchModal" />
             </div>
         </div>
     </div>
