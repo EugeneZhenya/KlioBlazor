@@ -9,6 +9,7 @@ namespace KlioBlazor.Repository
         Task DeleteCountry(int Id);
         Task<List<Country>> GetAllCountries();
         Task<Country> GetCountry(int Id);
+        Task<DetailsCountryDTO> GetDetailsCountryDTO(int Id);
         Task<IndexCountriesDTO> GetIndexCountriesDTO();
         Task UpdateCountry(Country country);
     }

@@ -33,6 +33,11 @@ namespace KlioBlazor.Repository
             return await httpService.GetHelper<Country>($"{url}/{Id}");
         }
 
+        public async Task<DetailsCountryDTO> GetDetailsCountryDTO(int Id)
+        {
+            return await httpService.GetHelper<DetailsCountryDTO>($"{url}/details/{Id}");
+        }
+
         public async Task CreateCountry(Country country)
         {
             var response = await httpService.Post(url, country);

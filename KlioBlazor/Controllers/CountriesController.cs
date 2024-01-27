@@ -62,6 +62,38 @@ namespace KlioBlazor.Controllers
             return country;
         }
 
+        [HttpGet("details/{id}")]
+        public async Task<ActionResult<DetailsCountryDTO>> GetCountryDetails(int id)
+        {
+            double maxViews = (double)context.Movies.Max(p => p.ViewCounter);
+
+            var country = await context.Countries
+                .Include(x => x.MoviesCountries)
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (country == null) { return NotFound(); }
+
+            var allMovieOfCountry = await context.MoviesCountries.OrderByDescending(x => x.MovieId).Where(x => x.CountryId == id).ToListAsync();
+            var listOfIds = from n in allMovieOfCountry where n.CountryId == id select n.MovieId;
+
+            var allMovies = await (from m in context.Movies where listOfIds.Contains(m.Id) select m)
+                .Include(x => x.Partition)
+                .OrderBy(x => x.ReleaseDate)
+                .ToListAsync();
+
+
+            foreach (var film in allMovies)
+            {
+                film.Rating = Math.Truncate((double)film.ViewCounter / (double)maxViews * 10000) / 100;
+            }
+
+            var model = new DetailsCountryDTO();
+            model.Country = country;
+            model.CountryMovies = allMovies;
+
+            return model;
+        }
+
         [HttpPost]
         public async Task<ActionResult<int>> Post(Country country)
         {
