@@ -2,11 +2,129 @@
     <div class="container custom-container">
         <div class="row">
             <div class="col-12">
-                NavMenu
+                <div class="mobile-nav-toggler">
+                    <i class="fa-solid fa-bars"></i>
+                </div>
+                <div class="menu-wrap">
+                    <nav class="menu-nav show">
+                        <div class="logo">
+                            <a class="nav-link" href="~/">
+                                <img src="img/logo.png" alt="Логотип" />
+                            </a>
+                        </div>
+                        <div class="navbar-wrap main-menu d-none d-lg-flex">
+                            <ul class="navigation">
+                                <li>
+                                    <a class="nav-link" href="Home/history" style="">Історія</a>
+                                </li>
+                                <li>
+                                    <a class="nav-link" href="Home/literacy" style="">Література</a>
+                                </li>
+                                <li>
+                                    <a class="nav-link" href="Home/music" style="">Музика</a>
+                                </li>
+                                <li class="menu-item-has-children">
+                                    <a class="nav-link" href="Home/movies" style="">Фільми</a>
+                                    <ul class="submenu">
+                                        <li>
+                                            <a class="nav-link" href="Home/movies" style="">Фільми</a>
+                                        </li>
+                                        <li>
+                                            <a class="nav-link" href="Home/serials" style="">Серіали</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="menu-item-has-children">
+                                    <a class="nav-link" href="Home/animation" style="">Мультфільми</a>
+                                    <ul class="submenu">
+                                        <li>
+                                            <a class="nav-link" href="Home/animation" style="">Мультфільми</a>
+                                        </li>
+                                        <li>
+                                            <a class="nav-link" href="Home/series" style="">Мультсеріали</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="header-action d-none d-md-block">
+                            <ul>
+                                <li class="header-search">
+                                    <a style="cursor: pointer">
+                                        <i class="fa-solid fa-magnifying-glass"></i>
+                                    </a>
+                                </li>
+                                <li class="header-btn">
+                                    <a class="btn btnlive" href="live">
+                                        <span class="live-icon"></span>Наживо
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+
+                <!-- Mobile Menu  -->
+                <div class="mobile-menu">
+                    <div class="close-btn">
+                        <i class="fa-solid fa-xmark"></i>
+                    </div>
+
+                    <nav class="menu-box">
+                        <div class="nav-logo">
+                            <a class="nav-link" href="~/" Match="NavLinkMatch.All">
+                                <img src="img/logo.png" alt="" title="" />
+                            </a>
+                        </div>
+                        <div class="menu-outer">
+                            <!--Here Menu Will Come Automatically Via Javascript / Same Menu as in Header-->
+                        </div>
+                        <div class="social-links">
+                            <ul class="clearfix">
+                                <li>
+                                    <a href="">
+                                        <span class="fa-brands fa-twitter"></span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="">
+                                        <span class="fa-brands fa-square-facebook"></span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="">
+                                        <span class="fa-brands fa-instagram"></span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="">
+                                        <span class="fa-brands fa-youtube"></span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="">
+                                        <span class="fa-brands fa-telegram"></span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+                <div class="menu-backdrop"></div>
+                <!-- End Mobile Menu -->
+                <!-- Modal Search -->
+                <div class="modal fade" id="search-modal" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <form>
+                                <input type="text" placeholder="Search here...">
+                                <button><i class="fas fa-search"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal Search-end -->
             </div>
         </div>
     </div>
 </div>
-
-@{
-}
