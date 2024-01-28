@@ -51,10 +51,10 @@ namespace KlioBlazor.Controllers
                     catId = 4;
                     break;
                 case "serials":
-                    catId = 5;
+                    catId = 6;
                     break;
                 case "animation":
-                    catId = 6;
+                    catId = 5;
                     break;
                 case "series":
                     catId = 7;

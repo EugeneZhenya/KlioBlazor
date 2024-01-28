@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\KlioBlazor.Shared\KlioBlazor.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Update="wwwroot\flickity\flickity.css">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>

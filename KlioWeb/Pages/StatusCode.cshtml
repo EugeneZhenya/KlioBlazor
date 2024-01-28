@@ -1,9 +1,27 @@
-﻿@page
-@model IndexModel
+﻿@page "/StatusCode/{errorId}"
+@model KlioWeb.Pages.StatusCodeModel
+
+<section class="episode-area episode-bg" style="background-image: url('img/episode_bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="movie-episode-wrap">
+                    <div class="episode-top-wrap">
+                        <div class="section-title">
+                            <span class="sub-title">Помилка №@Model.errorId</span>
+                            <h2 class="title">@Html.Raw(Model.errorDescription)</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 @{
     OpenGraphModel allMeta = new OpenGraphModel();
 
-    allMeta.Title = "Український медійний архів 'KLIO'";
+    allMeta.Title = $"{Model.errorDescription} :: Український медійний архів 'KLIO'";
     allMeta.Description = "Медійний архів 'KLIO': Музика, література, історія, фільми, мультфільми, серіали, мультсеріали, наживо, пряма трансляція, дивитися он-лайн";
     allMeta.Robots = "all";
     allMeta.Author = "Eugene Baklanov";
@@ -27,3 +45,4 @@
 
     ViewBag.Meta = allMeta;
 }
+

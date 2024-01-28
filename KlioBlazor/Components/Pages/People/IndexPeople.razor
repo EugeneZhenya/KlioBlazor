@@ -20,55 +20,78 @@
 <section class="ucm-area ucm-bg" style="background-image: url('img/ucm_bg_shape.png')">
     <div class="layer">
         <div class="container">
-            <div class="row align-items-end mb-55">
-                <div class="col-lg-6">
+            <div class="row align-items-start mb-55">
                     <div class="section-title text-center text-lg-start title-style-two">
                         <span class="sub-title">Люди</span>
                         <h2 class="title">Список персоналій</h2>
                     </div>
-                </div>
-            </div>
-            <div class="tab-content">
-                <div class="tab-pane fade show active">
-                    <div class="ucm-active" style="display: -webkit-flex; -webkit-flex-direction: column; -webkit-flex-wrap: wrap; -webkit-flex-direction: row;">
-                        <GenericList List="People">
-                            <WholeListTemplate>
-                                <div class="rc-post" style="width: 100%;">
-                                    <Pagination CurrentPage="@paginationDTO.Page" TotalAmountPages="totalAmountPages" SelectedPage="SelectedPage" />
-                                        <ul style="display: flex; align-items: flex-start; flex-direction: row; flex-wrap: wrap;">
-                                        @foreach (var item in People)
-                                        {
-                                            <li class="rc-post-item" style="min-width: 320px; margin-right: 2rem; @(item.IsFemale ? "border: 1px solid #FFCCFF;" : "border: 1px solid #ccc;")">
-                                                <div class="thumb">
-                                                    <a href="person/@item.Id/@StringUtilities.Translit(item.Name)">
-                                                        <img src="@(appState.KlioContentUrl + "people/" + item.PictureUrl)" alt="@item.Name" style="max-width: 100px; margin-left: .5rem; margin-right: .5rem;" />
-                                                    </a>
-                                                </div>
-                                                <div class="content" style="height: 125px; position: relative;">
-                                                    <h5 class="title"><a href="person/@item.Id/@StringUtilities.Translit(item.Name)">@item.NameBrief</a></h5>
-                                                    @if (item.DateOfBirth != null)
-                                                    {
-                                                        <span class="date"><i class="fa-solid fa-cake-candles"></i> @StringUtilities.DateToString(item.DateOfBirth, "dd MMMM yyyy")</span>
-                                                    }
-                                                    @if (item.DateOfDeath != null)
-                                                    {
-                                                        <span class="date"><i class="fa-solid fa-cross"></i> @StringUtilities.DateToString(item.DateOfDeath, "dd MMMM yyyy")</span>
-                                                    }
-                                                    <AuthorizeView Roles="Admin">
-                                                        <Authorized>
-                                                            <p style="position: absolute; bottom: 0;">
-                                                                <a href="person/edit/@item.Id">Редагувати</a> <a style="cursor: pointer;" @onclick="@(() => DeletePerson(item))">Видалити</a>
-                                                            </p>
-                                                        </Authorized>
-                                                    </AuthorizeView>
-                                                </div>
-                                            </li>
-                                        }
-                                    </ul>
-                                 </div>
-                            </WholeListTemplate>
-                        </GenericList>
+                <div class="col-lg-7">
+                        <div class="tab-content">
+                            <div class="tab-pane fade show active">
+                                <div class="ucm-active" style="display: -webkit-flex; -webkit-flex-direction: column; -webkit-flex-wrap: wrap; -webkit-flex-direction: row;">
+                                    <GenericList List="People">
+                                        <WholeListTemplate>
+                                            <div class="rc-post" style="width: 100%;">
+                                                <Pagination CurrentPage="@paginationDTO.Page" TotalAmountPages="totalAmountPages" SelectedPage="SelectedPage" />
+                                                <ul style="display: flex; align-items: flex-start; flex-direction: row; flex-wrap: wrap;">
+                                                    @foreach (var item in People)
+                                                {
+                                                    <li class="rc-post-item" style="min-width: 320px; margin-right: 1rem; @(item.IsFemale ? "border: 1px solid #FFCCFF;" : "border: 1px solid #ccc;")">
+                                                        <div class="thumb">
+                                                            <a href="person/@item.Id/@StringUtilities.Translit(item.Name)">
+                                                                <img src="@(appState.KlioContentUrl + "people/" + item.PictureUrl)" alt="@item.Name" style="max-width: 100px; margin-left: .5rem; margin-right: .5rem;" />
+                                                            </a>
+                                                        </div>
+                                                        <div class="content" style="height: 125px; position: relative;">
+                                                            <h5 class="title"><a href="person/@item.Id/@StringUtilities.Translit(item.Name)">@item.NameBrief</a></h5>
+                                                            @if (item.DateOfBirth != null)
+                                                            {
+                                                                <span class="date"><i class="fa-solid fa-cake-candles"></i> @StringUtilities.DateToString(item.DateOfBirth, "dd MMMM yyyy")</span>
+                                                            }
+                                                            @if (item.DateOfDeath != null)
+                                                            {
+                                                                <span class="date"><i class="fa-solid fa-cross"></i> @StringUtilities.DateToString(item.DateOfDeath, "dd MMMM yyyy")</span>
+                                                            }
+                                                            <AuthorizeView Roles="Admin">
+                                                                <Authorized>
+                                                                    <p style="position: absolute; bottom: 0;">
+                                                                        <a href="person/edit/@item.Id">Редагувати</a> <a style="cursor: pointer;" @onclick="@(() => DeletePerson(item))">Видалити</a>
+                                                                    </p>
+                                                                </Authorized>
+                                                            </AuthorizeView>
+                                                        </div>
+                                                    </li>
+                                                }
+                                            </ul>
+                                        </div>
+                                    </WholeListTemplate>
+                                </GenericList>
+                            </div>
+                        </div>
                     </div>
+                </div>
+                <div class="col-lg-5">
+                    <aside class="blog-sidebar">
+                        <div class="widget blog-widget">
+                            <div class="widget-title mb-30">
+                                <h5 class="title">Шукати людину</h5>
+                            </div>
+                            <form class="sidebar-search">
+                                <MultipleSelectorTypeahead Context="person" SearchMethod="SearchPerson" SelectedElements="SelectedActors">
+                                    <MyResultTemplate>
+                                        <img style="width: 50px;" src="@(appState.KlioContentUrl + "people/" + person.PictureUrl)" alt="@person.Name" />
+                                        @person.Name
+                                    </MyResultTemplate>
+                                    <MyListTemplate>
+                                        <a href="person/@person.Id/@StringUtilities.Translit(person.Name)" target="_blank">
+                                            @person.Name
+                                        </a>
+                                    </MyListTemplate>
+                                </MultipleSelectorTypeahead>
+                                <button><i class="fa-solid fa-magnifying-glass"></i></button>
+                            </form>
+                        </div>
+                    </aside>
                 </div>
             </div>
         </div>
@@ -101,8 +124,9 @@
     List<Person> People;
     Confirmation confirmation;
     Person personToBeDeleted;
-    PaginationDTO paginationDTO = new PaginationDTO() { RecordsPerPage = 15 };
+    PaginationDTO paginationDTO = new PaginationDTO() { RecordsPerPage = 14 };
     private int totalAmountPages;
+    public List<Person> SelectedActors { get; set; } = new List<Person>();
 
     protected async override Task OnInitializedAsync()
     {
@@ -171,5 +195,10 @@
     {
         confirmation.Hide();
         personToBeDeleted = null;
+    }
+
+    private async Task<IEnumerable<Person>> SearchPerson(string searchText)
+    {
+        return await personRepository.GetPeopleByName(searchText);
     }
 }
