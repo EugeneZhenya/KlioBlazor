@@ -1,4 +1,7 @@
 using KlioWeb;
+using KlioWeb.Data;
+using KlioWeb.Repository;
+using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,6 +10,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 
 builder.Services.AddScoped<CurrentCategory>();
+builder.Services.AddScoped<IMoviesRepository, MoviesRepository>();
+
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(connectionString, o => o.UseCompatibilityLevel(120)));
 
 var app = builder.Build();
 

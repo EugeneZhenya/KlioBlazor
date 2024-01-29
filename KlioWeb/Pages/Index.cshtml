@@ -2,6 +2,11 @@
 @model IndexModel
 @inject CurrentCategory currentCategory
 
+@if (Model.lastMovie != null)
+{
+    <partial name="BannerArea" model="Model.BannerArea"/>
+}
+
 @{
     OpenGraphModel allMeta = new OpenGraphModel();
 
