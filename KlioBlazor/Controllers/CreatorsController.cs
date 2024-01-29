@@ -69,6 +69,44 @@ namespace KlioBlazor.Controllers
             return await context.Creators.Where(x => x.Title.Contains(searchText)).Take(5).ToListAsync();
         }
 
+        [HttpGet("details/{id}")]
+        public async Task<ActionResult<DetailsCreatorDTO>> GetCreatorDetails(int id)
+        {
+            double maxViews = (double)context.Movies.Max(p => p.ViewCounter);
+
+            var creator = await context.Creators
+                .Include(x => x.MoviesCreators)
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (creator == null) { return NotFound(); }
+
+            var allMovieOfCreator = await context.MoviesCreators.OrderByDescending(x => x.MovieId).Where(x => x.CreatorID == id).ToListAsync();
+            var listOfIds = from n in allMovieOfCreator where n.CreatorID == id select n.MovieId;
+            int lastMovieId = allMovieOfCreator[0].MovieId;
+
+            var lsstMovie = await context.Movies
+               .Where(x => x.Id == lastMovieId)
+               .FirstOrDefaultAsync();
+
+            var allMovies = await (from m in context.Movies where listOfIds.Contains(m.Id) select m)
+                .Include(x => x.Partition)
+                .OrderBy(x => x.ReleaseDate)
+                .ToListAsync();
+
+
+            foreach (var film in allMovies)
+            {
+                film.Rating = Math.Truncate((double)film.ViewCounter / (double)maxViews * 10000) / 100;
+            }
+
+            var model = new DetailsCreatorDTO();
+            model.Creator = creator;
+            model.LastMovie = lsstMovie;
+            model.CreatorMovies = allMovies;
+
+            return model;
+        }
+
         [HttpPost]
         public async Task<ActionResult<int>> Post(Creator creator)
         {

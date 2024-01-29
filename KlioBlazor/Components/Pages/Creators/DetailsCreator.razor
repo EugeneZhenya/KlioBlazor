@@ -1,8 +1,8 @@
-﻿@page "/country/{CountryId:int}"
-@page "/country/{CountryId:int}/{CountryName}"
+﻿@page "/creator/{CreatorId:int}"
+@page "/creator/{CreatorId:int}/{CreatorName}"
 
 @inject NavigationManager NavManager
-@inject ICountryRepository countryRepository
+@inject ICreatorRepository creatorRepository
 @inject CurrentCategory currentCategory
 
 <PageTitle>@allMeta.Title</PageTitle>
@@ -21,31 +21,41 @@
 }
 else
 {
-    <section class="movie-details-area" style="background-image: url('@($"{appState.KlioContentUrl}countries/{model.Country.BackgroundUrl}")')">
+    <section class="movie-details-area" style="background-image: url('@($"{appState.KlioContentUrl}movies/{model.LastMovie.Id}/background.jpg")')">
         <div class="movie-details-overlay">
             <div class="container">
                 <div class="row align-items-center position-relative">
                     <div class="col-xl-6 col-lg-6" style="align-self: start; margin-top: 10px;">
-                        <div class="movie-details-img">
-                            <img src="@($"{appState.KlioContentUrl}countries/{model.Country.EmblemUrl}")" alt="@model.Country.Name" style="width: 100%;">
+                        <div class="movie-details-img" style="text-align: center;">
+                            <img src="@($"{appState.KlioContentUrl}creators/{model.Creator.LogoUrl}")" alt="@model.Creator.Title">
                         </div>
                     </div>
                     <div class="col-xl-6 col-lg-6">
                         <div class="movie-details-content">
                             <div class="section-title title-style-two">
-                                <span class="sub-title">Країна</span>
+                                <span class="sub-title">Виробник (кіностудія)</span>
                             </div>
                             <h2>
-                                @model.Country.Name
+                                @for (int i = 0; i < SeparateTitle(model.Creator.Title).Length; i++)
+                                {
+                                    if (i % 2 == 0)
+                                    {
+                                        @SeparateTitle(model.Creator.Title)[i]
+                                    }
+                                    else
+                                    {
+                                        <span>@SeparateTitle(model.Creator.Title)[i]</span>
+                                    }
+                                }
                             </h2>
                             <div class="banner-meta">
                                 <ul style="justify-content: end;">
                                     <li class="release-time">
-                                        <span>@model.CountryMovies.Count фільмів</span>
+                                        <span>@model.CreatorMovies.Count фільмів</span>
                                     </li>
                                 </ul>
                             </div>
-                            <RenderMarkdown MarkdownContent="@model.Country.Description" />
+                            <RenderMarkdown MarkdownContent="@model.Creator.Description" />
                             <div class="movie-details-prime">
                                 <ul style="min-width: 100%;">
                                     <li class="share"><a href="#"><i class="fa-solid fa-share-nodes"></i> Поширити</a></li>
@@ -59,29 +69,29 @@ else
     </section>
 }
 
-<MoviesArea Movies="moviesOfCountry" Title="@nameOfCountry" Subtitle="Фільми країни" />
+<MoviesArea Movies="moviesOfCreator" Title="@nameOfCreator" Subtitle="Фільми виробника (кіностудії)" />
 
 @code {
     [CascadingParameter] public AppState appState { get; set; }
-    [Parameter] public int CountryId { get; set; }
-    [Parameter] public string CountryName { get; set; }
+    [Parameter] public int CreatorId { get; set; }
+    [Parameter] public string CreatorName { get; set; }
     OpenGraphModel allMeta = new OpenGraphModel();
-    DetailsCountryDTO model;
-    private List<Movie> moviesOfCountry;
-    private string nameOfCountry;
+    DetailsCreatorDTO model;
+    private List<Movie> moviesOfCreator;
+    private string nameOfCreator;
 
     protected async override Task OnInitializedAsync()
     {
         currentCategory.SetCurrentCategory(0);
-        model = await countryRepository.GetDetailsCountryDTO(CountryId);
+        model = await creatorRepository.GetDetailsCreatorDTO(CreatorId);
 
-        allMeta.Title = model.Country.Name + " :: Український медійний архів 'KLIO'";
-        allMeta.Description = model.Country.Name + " он-лайн, " + model.Country.Description;
+        allMeta.Title = model.Creator.Title + " :: Український медійний архів 'KLIO'";
+        allMeta.Description = model.Creator.Title + " , " + model.Creator.Description;
         allMeta.Robots = "all";
         allMeta.Author = "Eugene Baklanov";
         allMeta.Keywords = "Klio, архів, video, відео, історія, література, політика, музика, music, наживо, трансляція, пряма трансляція, дивитися он-лайн, фільм, серіал, сезон, епізод, мультфільм, мультсерал";
         allMeta.Type = "article";
-        allMeta.Image = $"{appState.KlioContentUrl}countries/{model.Country.BackgroundUrl}";
+        allMeta.Image = $"{appState.KlioContentUrl}creators/{model.Creator.LogoUrl}";
         allMeta.SecureImage = allMeta.Image;
         allMeta.ImageWidth = 1920;
         allMeta.ImageHeight = 1080;
@@ -91,13 +101,18 @@ else
         allMeta.Locale = "uk_UA";
         allMeta.FBAdmins = "100007730161243,100002204709179";
         allMeta.FBAppId = "885986785210347";
-        allMeta.Image2 = $"{appState.KlioContentUrl}countries/{model.Country.BackgroundUrl}";
+        allMeta.Image2 = $"{appState.KlioContentUrl}creators/{model.Creator.LogoUrl}";
         allMeta.SecureImage2 = allMeta.Image2;
         allMeta.ImageWidth2 = 1920;
         allMeta.ImageHeight2 = 1080;
         allMeta.ImageType2 = "image/jpeg";
 
-        moviesOfCountry = model.CountryMovies;
-        nameOfCountry = model.Country.Name;
+        moviesOfCreator = model.CreatorMovies;
+        nameOfCreator = model.Creator.Title;
+    }
+
+    string[] SeparateTitle(string title)
+    {
+        return StringUtilities.SeparateString(title);
     }
 }

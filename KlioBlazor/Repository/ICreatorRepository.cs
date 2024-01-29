@@ -12,5 +12,6 @@ namespace KlioBlazor.Repository
         Task UpdateCreator(Creator creator);
         Task CreateCreator(Creator creator);
         Task DeleteCreator(int Id);
+        Task<DetailsCreatorDTO> GetDetailsCreatorDTO(int Id);
     }
 }

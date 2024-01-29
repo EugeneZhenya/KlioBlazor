@@ -38,6 +38,11 @@ namespace KlioBlazor.Repository
             return await httpService.GetHelper<List<Creator>>($"{url}/search/{name}");
         }
 
+        public async Task<DetailsCreatorDTO> GetDetailsCreatorDTO(int Id)
+        {
+            return await httpService.GetHelper<DetailsCreatorDTO>($"{url}/details/{Id}");
+        }
+
         public async Task CreateCreator(Creator creator)
         {
             var response = await httpService.Post(url, creator);
