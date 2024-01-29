@@ -1,7 +1,12 @@
+using KlioWeb;
+using System.Globalization;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+
+builder.Services.AddScoped<CurrentCategory>();
 
 var app = builder.Build();
 
@@ -22,5 +27,9 @@ app.UseStatusCodePagesWithRedirects("/StatusCode/{0}");
 app.UseAuthorization();
 
 app.MapRazorPages();
+
+var cultureInfo = new CultureInfo("uk-UA");
+CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
 app.Run();

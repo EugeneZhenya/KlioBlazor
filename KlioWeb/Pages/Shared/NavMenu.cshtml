@@ -1,4 +1,6 @@
-﻿<div id="sticky-header" class="menu-area transparent-header">
+﻿@inject CurrentCategory currentCategory
+
+<div id="sticky-header" class="menu-area transparent-header">
     <div class="container custom-container">
         <div class="row">
             <div class="col-12">
@@ -15,33 +17,33 @@
                         <div class="navbar-wrap main-menu d-none d-lg-flex">
                             <ul class="navigation">
                                 <li>
-                                    <a class="nav-link" href="Home/history" style="">Історія</a>
+                                    <a class="nav-link" href="Home/history" style="@CheckCategory(1)">Історія</a>
                                 </li>
                                 <li>
-                                    <a class="nav-link" href="Home/literacy" style="">Література</a>
+                                    <a class="nav-link" href="Home/literacy" style="@CheckCategory(2)">Література</a>
                                 </li>
                                 <li>
-                                    <a class="nav-link" href="Home/music" style="">Музика</a>
+                                    <a class="nav-link" href="Home/music" style="@CheckCategory(3)">Музика</a>
                                 </li>
                                 <li class="menu-item-has-children">
-                                    <a class="nav-link" href="Home/movies" style="">Фільми</a>
+                                    <a class="nav-link" href="Home/movies" style="@CheckCategory(4, 6)">Фільми</a>
                                     <ul class="submenu">
                                         <li>
-                                            <a class="nav-link" href="Home/movies" style="">Фільми</a>
+                                            <a class="nav-link" href="Home/movies" style="@CheckCategory(4)">Фільми</a>
                                         </li>
                                         <li>
-                                            <a class="nav-link" href="Home/serials" style="">Серіали</a>
+                                            <a class="nav-link" href="Home/serials" style="@CheckCategory(6)">Серіали</a>
                                         </li>
                                     </ul>
                                 </li>
                                 <li class="menu-item-has-children">
-                                    <a class="nav-link" href="Home/animation" style="">Мультфільми</a>
+                                    <a class="nav-link" href="Home/animation" style="@CheckCategory(5, 7)">Мультфільми</a>
                                     <ul class="submenu">
                                         <li>
-                                            <a class="nav-link" href="Home/animation" style="">Мультфільми</a>
+                                            <a class="nav-link" href="Home/animation" style="@CheckCategory(5)">Мультфільми</a>
                                         </li>
                                         <li>
-                                            <a class="nav-link" href="Home/series" style="">Мультсеріали</a>
+                                            <a class="nav-link" href="Home/series" style="@CheckCategory(7)">Мультсеріали</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -118,3 +120,15 @@
         </div>
     </div>
 </div>
+
+@functions {
+    public string CheckCategory(int id)
+    {
+        return (currentCategory.CurrentCat == id) ? "color: #fd0e30" : string.Empty;
+    }
+
+    public string CheckCategory(int id1, int id2)
+    {
+        return (currentCategory.CurrentCat == id1 || currentCategory.CurrentCat == id2) ? "color: #fd0e30" : string.Empty;
+    }
+}

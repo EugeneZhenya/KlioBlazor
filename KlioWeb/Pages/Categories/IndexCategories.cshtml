@@ -1,13 +1,17 @@
-﻿@page
-@model IndexModel
+﻿@page "/Home/{CatName}"
+@model IndexCategoriesModel
 @inject CurrentCategory currentCategory
 
 @{
     OpenGraphModel allMeta = new OpenGraphModel();
 
-    currentCategory.SetCurrentCategory(0);
+    if (string.IsNullOrEmpty(Model.CatName))
+    {
+        Model. CatName = "all";
+    }
+    currentCategory.SetCurrentCategory(GetCatId(Model.CatName));
 
-    allMeta.Title = "Український медійний архів 'KLIO'";
+    allMeta.Title = "Категорії :: Український медійний архів 'KLIO'";
     allMeta.Description = "Медійний архів 'KLIO': Музика, література, історія, фільми, мультфільми, серіали, мультсеріали, наживо, пряма трансляція, дивитися он-лайн";
     allMeta.Robots = "all";
     allMeta.Author = "Eugene Baklanov";
@@ -30,4 +34,38 @@
     allMeta.ImageType2 = "image/png";
 
     ViewBag.Meta = allMeta;
+}
+
+@functions {
+    private int GetCatId(string name)
+    {
+        int catId = 0;
+
+        switch (name)
+        {
+            case "history":
+                catId = 1;
+                break;
+            case "literacy":
+                catId = 2;
+                break;
+            case "music":
+                catId = 3;
+                break;
+            case "movies":
+                catId = 4;
+                break;
+            case "serials":
+                catId = 6;
+                break;
+            case "animation":
+                catId = 5;
+                break;
+            case "series":
+                catId = 7;
+                break;
+        }
+
+        return catId;
+    }
 }
