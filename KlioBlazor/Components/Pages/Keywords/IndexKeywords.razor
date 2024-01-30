@@ -114,7 +114,7 @@
             var response = await keywordRepository.GetIndexKeywordsDTO();
             lastMovie = response.LastMovie;
             lastMovieCountries = response.LastMovieCountries;
-            Keywords = response.AllKeywords;
+            Keywords = response.AllKeywords.OrderBy(x => x.Word).ToList();
         }
         catch (Exception ex)
         {

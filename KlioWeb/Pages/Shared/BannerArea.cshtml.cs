@@ -1,4 +1,4 @@
-﻿using KlioBlazor.Shared.Entities;
+using KlioBlazor.Shared.Entities;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -11,13 +11,9 @@ namespace KlioWeb.Pages.Shared
         public List<Country> ShowMovieCountries { get; set; }
         public string OriginalTitle = string.Empty;
 
-        public BannerArea()
-        {
-        }
-
         public void OnGet()
         {
-            
+
         }
     }
 }

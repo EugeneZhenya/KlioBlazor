@@ -13,6 +13,7 @@ namespace KlioBlazor.Shared.Entities
         [Required(ErrorMessage = "Поле \"Слово\" не може бути порожнім.")]
         public string Word { get; set; }
         public string? Comment { get; set; }
+        public string? Equivalent { get; set; }
         public List<MoviesKeywords> MoviesKeywords { get; set; } = new List<MoviesKeywords>();
     }
 }

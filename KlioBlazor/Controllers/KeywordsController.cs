@@ -63,6 +63,44 @@ namespace KlioBlazor.Controllers
             return keyword;
         }
 
+        [HttpGet("details/{id}")]
+        public async Task<ActionResult<DetailsKeywordDTO>> GetKeywordDetails(int id)
+        {
+            double maxViews = (double)context.Movies.Max(p => p.ViewCounter);
+
+            var keyword = await context.Keywords
+                .Include(x => x.MoviesKeywords)
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (keyword == null) { return NotFound(); }
+
+            var allMovieByKeyword = await context.MoviesKeywords.OrderByDescending(x => x.MovieId).Where(x => x.KeywordId == id).ToListAsync();
+            var listOfIds = from n in allMovieByKeyword where n.KeywordId == id select n.MovieId;
+            int lastMovieId = allMovieByKeyword[0].MovieId;
+
+            var lsstMovie = await context.Movies
+                .Where(x => x.Id == lastMovieId)
+                .FirstOrDefaultAsync();
+
+            var allMovies = await (from m in context.Movies where listOfIds.Contains(m.Id) select m)
+                .Include(x => x.Partition)
+                .OrderBy(x => x.ReleaseDate)
+                .ToListAsync();
+
+
+            foreach (var film in allMovies)
+            {
+                film.Rating = Math.Truncate((double)film.ViewCounter / (double)maxViews * 10000) / 100;
+            }
+
+            var model = new DetailsKeywordDTO();
+            model.Keyword = keyword;
+            model.LastMovie = lsstMovie;
+            model.KeywordMovies = allMovies;
+
+            return model;
+        }
+
         [HttpPost]
         public async Task<ActionResult<int>> Post(Keyword keyword)
         {

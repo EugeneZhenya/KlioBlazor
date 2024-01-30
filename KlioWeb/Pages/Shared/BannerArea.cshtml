@@ -14,19 +14,19 @@
                 <div class="col-xl-6 col-lg-8">
                     <div class="banner-content">
                         <div class="section-title title-style-two">
-                            <span class="sub-title">@Model.ShowMovie.Partition.Category.Name</span>
+                            <span class="sub-title">@Html.Raw(Model.ShowMovie.Partition.Category.Name)</span>
                         </div>
-                        <h6 class="sub-title"><a href="partition/@Model.ShowMovie.Partition.Id/@StringUtilities.Translit(Model.ShowMovie.Partition.Name)">@Model.ShowMovie.Partition.Name</a></h6>
+                        <h6 class="sub-title"><a href="partition/@Model.ShowMovie.Partition.Id/@StringUtilities.Translit(Model.ShowMovie.Partition.Name)">@Html.Raw(Model.ShowMovie.Partition.Name)</a></h6>
                         <h2 class="title">
                             @for (int i = 0; i < SeparateTitle(Model.ShowMovie.Title).Length; i++)
                             {
                                 if (i % 2 == 0)
                                 {
-                                    @SeparateTitle(Model.ShowMovie.Title)[i]
+                                    @Html.Raw(SeparateTitle(Model.ShowMovie.Title)[i])
                                 }
                                 else
                                 {
-                                    <span>@SeparateTitle(Model.ShowMovie.Title)[i]</span>
+                                    <span>@Html.Raw(SeparateTitle(Model.ShowMovie.Title)[i])</span>
                                 }
                             }
                         </h2>
@@ -37,11 +37,11 @@
                                 {
                                     if (i % 2 == 0)
                                     {
-                                        <span style="color: #e4e2e2;">@SeparateTitle(Model.OriginalTitle)[i]</span>
+                                        <span style="color: #e4e2e2;">@Html.Raw(SeparateTitle(Model.OriginalTitle)[i])</span>
                                     }
                                     else
                                     {
-                                        <span style="color: #fd0e30;">@SeparateTitle(Model.OriginalTitle)[i]</span>
+                                        <span style="color: #fd0e30;">@Html.Raw(SeparateTitle(Model.OriginalTitle)[i])</span>
                                     }
                                 }
                             </h3>
@@ -56,17 +56,17 @@
                                     {
                                         if (i == Model.ShowMovie.MoviesGenres.Count - 1)
                                         {
-                                            <a href="genre/@Model.ShowMovie.MoviesGenres[i].Genre.Id/@StringUtilities.Translit(Model.ShowMovie.MoviesGenres[i].Genre.Name)">@Model.ShowMovie.MoviesGenres[i].Genre.Name</a>
+                                            <a href="genre/@Model.ShowMovie.MoviesGenres[i].Genre.Id/@StringUtilities.Translit(Model.ShowMovie.MoviesGenres[i].Genre.Name)">@Html.Raw(Model.ShowMovie.MoviesGenres[i].Genre.Name)</a>
                                         }
                                         else
                                         {
-                                            <a href="genre/@Model.ShowMovie.MoviesGenres[i].Genre.Id/@StringUtilities.Translit(Model.ShowMovie.MoviesGenres[i].Genre.Name)">@Model.ShowMovie.MoviesGenres[i].Genre.Name,</a>
+                                            <a href="genre/@Model.ShowMovie.MoviesGenres[i].Genre.Id/@StringUtilities.Translit(Model.ShowMovie.MoviesGenres[i].Genre.Name)">@Html.Raw(Model.ShowMovie.MoviesGenres[i].Genre.Name),</a>
                                         }
                                     }
                                 </li>
                                 <li class="release-time">
                                     <span><i class="fa-solid fa-calendar-days"></i> @Model.ShowMovie.ReleaseDate.Value.Year</span>
-                                    <span><i class="fa-solid fa-clock"></i> @StringUtilities.SecondsToMinutes(Model.ShowMovie.Duration)</span>
+                                    <span><i class="fa-solid fa-clock"></i> @Html.Raw(StringUtilities.SecondsToMinutes(Model.ShowMovie.Duration))</span>
                                 </li>
                             </ul>
                         </div>
@@ -75,8 +75,8 @@
                                 <li class="category">
                                     @foreach (var country in Model.ShowMovieCountries)
                                     {
-                                        <img src="@($"{Model.appState.KlioContentUrl}countries/{country.FlagUrl}")" alt="@country.Name" style="width: 25px; margin: 0 5px 0 10px;" />
-                                        <a href="country/@country.Id/@StringUtilities.Translit(@country.Name)">@country.Name</a>
+                                        <img src="@($"{Model.appState.KlioContentUrl}countries/{country.FlagUrl}")" alt="@Html.Raw(country.Name)" style="width: 25px; margin: 0 5px 0 10px;" />
+                                        <a href="country/@country.Id/@StringUtilities.Translit(@country.Name)">@Html.Raw(country.Name)</a>
                                     }
                                 </li>
                             </ul>

@@ -38,6 +38,11 @@ namespace KlioBlazor.Repository
             return await httpService.GetHelper<Keyword>($"{url}/{Id}");
         }
 
+        public async Task<DetailsKeywordDTO> GetDetailsKeywordDTO(int Id)
+        {
+            return await httpService.GetHelper<DetailsKeywordDTO>($"{url}/details/{Id}");
+        }
+
         public async Task CreateKeyword(Keyword keyword)
         {
             var response = await httpService.Post(url, keyword);

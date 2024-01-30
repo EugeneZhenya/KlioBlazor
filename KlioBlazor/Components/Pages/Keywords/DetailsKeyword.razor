@@ -1,0 +1,154 @@
+﻿@page "/keyword/{KeywordId:int}"
+@page "/keyword/{KeywordId:int}/{KeywordName}"
+@using Newtonsoft.Json
+
+@inject NavigationManager NavManager
+@inject IKeywordRepository keywordRepository
+@inject CurrentCategory currentCategory
+
+<PageTitle>@allMeta.Title</PageTitle>
+
+<MetaContent MetaData="allMeta" />
+
+@if (model == null)
+{
+    <div id="preloader" style="height: 75vh;">
+        <div id="loading-center">
+            <div id="loading-center-absolute">
+                <img src="img/preloader.svg" alt="">
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <section class="movie-details-area" style="background-image: url('@($"{appState.KlioContentUrl}movies/{model.LastMovie.Id}/background.jpg")')">
+        <div class="movie-details-overlay">
+            <div class="container">
+                <div class="row align-items-center position-relative">
+                    <div class="col-xl-6 col-lg-6">
+                        <div class="movie-details-content">
+                            <div class="section-title title-style-two">
+                                <span class="sub-title">Ключове слово</span>
+                            </div>
+                            <h2>
+                                @for (int i = 0; i < SeparateTitle(model.Keyword.Word).Length; i++)
+                                {
+                                    if (i % 2 == 0)
+                                    {
+                                        @SeparateTitle(model.Keyword.Word)[i]
+                                    }
+                                    else
+                                    {
+                                        <span>@SeparateTitle(model.Keyword.Word)[i]</span>
+                                    }
+                                }
+                            </h2>
+                            <div class="banner-meta">
+                                <ul style="justify-content: end;">
+                                    <li class="release-time">
+                                        <span>@model.KeywordMovies.Count фільмів</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <RenderMarkdown MarkdownContent="@model.Keyword.Comment" />
+                            <div class="movie-details-prime">
+                                <ul style="min-width: 100%;">
+                                    <li class="share"><a href="#"><i class="fa-solid fa-share-nodes"></i> Поширити</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-6 col-lg-6" style="align-self: start; margin-top: 10px;">
+                        <div class="movie-details-img" style="text-align: center;">
+                            @if (!string.IsNullOrEmpty(imageUrl))
+                            {
+                                <img src="@imageUrl" alt="@model.Keyword.Word" style="max-width: 100%;">
+                            }
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
+<MoviesArea Movies="moviesByKeyword" Title="@nameOfKeyword" Subtitle="Фільми за ключовим словом" />
+
+@code {
+    [CascadingParameter] public AppState appState { get; set; }
+    [Parameter] public int KeywordId { get; set; }
+    [Parameter] public string KeywordName { get; set; }
+    OpenGraphModel allMeta = new OpenGraphModel();
+    DetailsKeywordDTO model;
+    private List<Movie> moviesByKeyword;
+    private string nameOfKeyword;
+    private string imageUrl = string.Empty;
+
+    protected async override Task OnInitializedAsync()
+    {
+        currentCategory.SetCurrentCategory(0);
+        model = await keywordRepository.GetDetailsKeywordDTO(KeywordId);
+
+        allMeta.Title = model.Keyword.Word + " :: Український медійний архів 'KLIO'";
+        allMeta.Description = model.Keyword.Word + " дивитися он-лайн, " + model.Keyword.Comment;
+        allMeta.Robots = "all";
+        allMeta.Author = "Eugene Baklanov";
+        allMeta.Keywords = "Klio, архів, video, відео, історія, література, політика, музика, music, наживо, трансляція, пряма трансляція, дивитися он-лайн, фільм, серіал, сезон, епізод, мультфільм, мультсерал";
+        allMeta.Type = "article";
+        allMeta.Image = (NavManager.BaseUri + "img/WatchTVMockup.jpg").Replace("https://", "http://");
+        allMeta.SecureImage = (NavManager.BaseUri + "img/WatchTVMockup.jpg").Replace("http://", "https://");
+        allMeta.ImageWidth = 1920;
+        allMeta.ImageHeight = 1080;
+        allMeta.ImageType = "image/jpeg";
+        allMeta.Url = NavManager.Uri;
+        allMeta.SiteName = "Медійний архів 'KLIO'";
+        allMeta.Locale = "uk_UA";
+        allMeta.FBAdmins = "100007730161243,100002204709179";
+        allMeta.FBAppId = "885986785210347";
+        allMeta.Image2 = (NavManager.BaseUri + "img/logo_750_transp.png").Replace("https://", "http://");
+        allMeta.SecureImage2 = (NavManager.BaseUri + "img/logo_750_transp.png").Replace("http://", "https://");
+        allMeta.ImageWidth2 = 750;
+        allMeta.ImageHeight2 = 750;
+        allMeta.ImageType2 = "image/png";
+
+        moviesByKeyword = model.KeywordMovies;
+        nameOfKeyword = model.Keyword.Word;
+        await GetImageUrl();
+    }
+
+    private async Task GetImageUrl()
+    {
+        string API_KEY = "42108270-3502561b495d630d6052e1bcc";
+        string baseURL = "https://pixabay.com/api/";
+        string searchTerm = model.Keyword.Equivalent;
+        string URL = $"{baseURL}?key={API_KEY}&q={Uri.EscapeDataString(searchTerm)}";
+
+        using (HttpClient client = new HttpClient())
+        {
+            HttpResponseMessage response = await client.GetAsync(URL);
+            if (response.IsSuccessStatusCode)
+            {
+                string content = await response.Content.ReadAsStringAsync();
+                dynamic data = JsonConvert.DeserializeObject(content);
+
+                int totalHits = data["totalHits"].ToObject<int>();
+                if (totalHits > 0)
+                {
+                    imageUrl = data["hits"][0]["largeImageURL"];
+                }
+                else
+                {
+                    imageUrl = string.Empty;
+                }
+            }
+        }
+    }
+
+    string[] SeparateTitle(string title)
+    {
+        return StringUtilities.SeparateString(title);
+    }
+}
