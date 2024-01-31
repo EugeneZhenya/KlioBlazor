@@ -7,17 +7,17 @@
     }
 }
 
-<section class="movie-details-area" style="background-image: url('@($"{Model.appState.KlioContentUrl}movies/{Model.ShowMovie.Id}/background.jpg")')">
+<section class="movie-details-area" data-background="@($"{Model.appState.KlioContentUrl}movies/{Model.ShowMovie.Id}/background.jpg")">
     <div class="movie-details-overlay">
         <div class="container custom-container" style="padding: 175px 15px 120px;">
             <div class="row">
                 <div class="col-xl-6 col-lg-8">
                     <div class="banner-content">
-                        <div class="section-title title-style-two">
+                        <div class="section-title title-style-two" data-aos="fade-up" data-aos-delay="100">
                             <span class="sub-title">@Html.Raw(Model.ShowMovie.Partition.Category.Name)</span>
                         </div>
-                        <h6 class="sub-title"><a href="partition/@Model.ShowMovie.Partition.Id/@StringUtilities.Translit(Model.ShowMovie.Partition.Name)">@Html.Raw(Model.ShowMovie.Partition.Name)</a></h6>
-                        <h2 class="title">
+                        <h6 class="sub-title" data-aos="fade-up" data-aos-delay="200"><a href="partition/@Model.ShowMovie.Partition.Id/@StringUtilities.Translit(Model.ShowMovie.Partition.Name)">@Html.Raw(Model.ShowMovie.Partition.Name)</a></h6>
+                        <h2 class="title" data-aos="fade-up" data-aos-delay="300">
                             @for (int i = 0; i < SeparateTitle(Model.ShowMovie.Title).Length; i++)
                             {
                                 if (i % 2 == 0)
@@ -32,7 +32,7 @@
                         </h2>
                         @if (!string.IsNullOrEmpty(Model.OriginalTitle))
                         {
-                            <h3 style="margin-bottom: 20px;">
+                            <h3 style="margin-bottom: 20px;" data-aos="fade-up" data-aos-delay="400">
                                 @for (int i = 0; i < SeparateTitle(Model.OriginalTitle).Length; i++)
                                 {
                                     if (i % 2 == 0)
@@ -46,7 +46,7 @@
                                 }
                             </h3>
                         }
-                        <div class="banner-meta">
+                        <div class="banner-meta" data-aos="fade-up" data-aos-delay="500">
                             <ul>
                                 <li class="quality">
                                     <span style="@AgeLimitColor(Model.ShowMovie.AgeLimit)">@Model.ShowMovie.AgeLimit+</span>
@@ -70,7 +70,7 @@
                                 </li>
                             </ul>
                         </div>
-                        <div class="banner-meta">
+                        <div class="banner-meta" data-aos="fade-up" data-aos-delay="600">
                             <ul>
                                 <li class="category">
                                     @foreach (var country in Model.ShowMovieCountries)
@@ -83,13 +83,13 @@
                         </div>
                         @if (Model.ShowMovie.HasTrailer)
                         {
-                            <a class="banner-btn btn popup-video" style="cursor: pointer">
+                            <a class="banner-btn btn popup-video" style="cursor: pointer" data-aos="fade-up" data-aos-delay="700">
                                 <i class="fa-solid fa-play"></i> Вістовик
                             </a>
                         }
                     </div>
                 </div>
-                <div class="col-xl-6 col-lg-4 d-flex align-items-center justify-content-center position-relative">
+                <div class="col-xl-6 col-lg-4 d-flex align-items-center justify-content-center position-relative" data-aos="zoom-in" data-aos-delay="200">
                     <a href="@($"movie/{Model.ShowMovie.Id}/{StringUtilities.Translit(Model.ShowMovie.Title)}")" class="glightbox play-btn"></a>
                 </div>
             </div>

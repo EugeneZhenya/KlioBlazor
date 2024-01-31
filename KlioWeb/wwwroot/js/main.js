@@ -2,7 +2,7 @@
 	"use strict";
 
 	$(window).on('load', function () {
-		console.log("loaded");
+		aosAnimation();
 	});
 
 	/*=============================================
@@ -67,6 +67,18 @@
 				scrollTop: $(target).offset().top
 			}, 1000);
 
+		});
+	}
+
+	/*=============================================
+	=    		 Aos Active  	                  =
+    =============================================*/
+	function aosAnimation() {
+		AOS.init({
+			duration: 1000,
+			mirror: true,
+			once: true,
+			disable: 'mobile',
 		});
 	}
 })(jQuery);

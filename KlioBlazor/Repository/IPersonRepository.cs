@@ -7,6 +7,7 @@ namespace KlioBlazor.Repository
     {
         Task CreatePerson(Person person);
         Task DeletePerson(int Id);
+        Task<DetailsPersonDTO> GetDetailsPersonDTO(int Id);
         Task<PaginatedResponse<List<Person>>> GetPeople(PaginationDTO paginationDTO);
         Task<List<Person>> GetPeopleByName(string name);
         Task<Person> GetPersonById(int id);

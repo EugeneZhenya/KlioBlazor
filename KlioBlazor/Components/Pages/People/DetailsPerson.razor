@@ -1,0 +1,162 @@
+﻿@page "/person/{PersonId:int}"
+@page "/person/{PersonId:int}/{PersonName}"
+
+@inject NavigationManager NavManager
+@inject IPersonRepository personRepository
+@inject CurrentCategory currentCategory
+
+<PageTitle>@allMeta.Title</PageTitle>
+
+<MetaContent MetaData="allMeta" />
+
+@if (model == null)
+{
+    <div id="preloader" style="height: 75vh;">
+        <div id="loading-center">
+            <div id="loading-center-absolute">
+                <img src="img/preloader.svg" alt="">
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <section class="movie-details-area" style="background-image: url('@($"{appState.KlioContentUrl}movies/{model.LastMovie.Id}/background.jpg")')">
+        <div class="movie-details-overlay">
+            <div class="container">
+                <div class="row align-items-center position-relative">
+                    <div class="col-xl-6 col-lg-6" style="align-self: start; margin-top: 10px;">
+                        <div class="movie-details-img" style="text-align: center;">
+                            <img src="@($"{appState.KlioContentUrl}people/{model.Person.PictureUrl}")" alt="@model.Person.Name" style="padding-top: 10px; transform: scale(0.98); background-color: @GenderColor();" />
+                            @if (model.Person.DateOfDeath == null)
+                            {
+                                <img src="img/photoframe.png" alt="@model.Person.Name" style="position: absolute; margin: auto; left: 0; right: 0; text-align: center;" />
+                            }
+                            else
+                            {
+                                <img src="img/photoframe_dead.png" alt="@model.Person.Name" style="position: absolute; margin: auto; left: 0; right: 0; text-align: center;" />
+                            }
+                        </div>
+                    </div>
+                    <div class="col-xl-6 col-lg-6">
+                        <div class="movie-details-content">
+                            <div class="section-title title-style-two">
+                                <span class="sub-title">Інформація про особу</span>
+                            </div>
+                            <h2>
+                                @for (int i = 0; i < SeparateTitle(model.Person.Name).Length; i++)
+                                {
+                                    if (i % 2 == 0)
+                                    {
+                                        @SeparateTitle(model.Person.Name)[i]
+                                    }
+                                    else
+                                    {
+                                        <span>@SeparateTitle(model.Person.Name)[i]</span>
+                                    }
+                                }
+                            </h2>
+                            <div class="banner-meta">
+                                <ul style="justify-content: space-between;">
+                                    <li class="category">
+                                        @if (model.Person.DateOfBirth != null)
+                                        {
+                                            @if (model.Person.DateOfBirthExact)
+                                            {
+                                                <span class="date"><i class="fa-solid fa-cake-candles"></i> @StringUtilities.DateToString(model.Person.DateOfBirth, "dd MMMM yyyy")</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="date"><i class="fa-solid fa-cake-candles"></i> @model.Person.DateOfBirth.Value.Year</span>
+                                            }
+                                        }
+                                        @if (model.Person.DateOfDeath != null)
+                                        {
+                                            @if (model.Person.DateOfDeathExact)
+                                            {
+                                                <span class="date" style="padding-left: 15px;"><i class="fa-solid fa-cross"></i> @StringUtilities.DateToString(model.Person.DateOfDeath, "dd MMMM yyyy")</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="date" style="padding-left: 15px;"><i class="fa-solid fa-cross"></i> @model.Person.DateOfDeath.Value.Year</span>
+                                            }
+                                        }
+                                    </li>
+                                    <li class="release-time">
+                                        <span>@model.PersonMovies.Count фільмів</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <RenderMarkdown MarkdownContent="@model.Person.Biography" />
+                            <div class="movie-details-prime">
+                                <ul style="min-width: 100%;">
+                                    <li class="share"><a href="#"><i class="fa-solid fa-share-nodes"></i> Поширити</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
+<MoviesArea Movies="moviesByPerson" Title="@nameOfPerson" Subtitle="Фільми за участю" />
+
+@code {
+    [CascadingParameter] public AppState appState { get; set; }
+    [Parameter] public int PersonId { get; set; }
+    [Parameter] public string PersonName { get; set; }
+    OpenGraphModel allMeta = new OpenGraphModel();
+    DetailsPersonDTO model;
+    private List<Movie> moviesByPerson;
+    private string nameOfPerson;
+
+    protected async override Task OnInitializedAsync()
+    {
+        currentCategory.SetCurrentCategory(0);
+        model = await personRepository.GetDetailsPersonDTO(PersonId);
+
+        allMeta.Title = model.Person.Name + " :: Український медійний архів 'KLIO'";
+        allMeta.Description = model.Person.Name + " дивитися он-лайн, " + model.Person.Biography;
+        allMeta.Robots = "all";
+        allMeta.Author = "Eugene Baklanov";
+        allMeta.Keywords = "Klio, архів, video, відео, історія, література, політика, музика, music, наживо, трансляція, пряма трансляція, дивитися он-лайн, фільм, серіал, сезон, епізод, мультфільм, мультсерал";
+        allMeta.Type = "article";
+        allMeta.Image = $"{appState.KlioContentUrl}genres/{model.Person.PictureUrl}";
+        allMeta.SecureImage = allMeta.Image;
+        allMeta.ImageWidth = 320;
+        allMeta.ImageHeight = 400;
+        allMeta.ImageType = "image/png";
+        allMeta.Url = NavManager.Uri;
+        allMeta.SiteName = "Медійний архів 'KLIO'";
+        allMeta.Locale = "uk_UA";
+        allMeta.FBAdmins = "100007730161243,100002204709179";
+        allMeta.FBAppId = "885986785210347";
+        allMeta.Image2 = $"{appState.KlioContentUrl}genres/{model.Person.PictureUrl}";
+        allMeta.SecureImage2 = allMeta.Image2;
+        allMeta.ImageWidth2 = 320;
+        allMeta.ImageHeight2 = 400;
+        allMeta.ImageType2 = "image/png";
+
+        moviesByPerson = model.PersonMovies;
+        nameOfPerson = model.Person.Name;
+    }
+
+    string[] SeparateTitle(string title)
+    {
+        return StringUtilities.SeparateString(title);
+    }
+
+    string GenderColor()
+    {
+        @if (model.Person.IsFemale)
+        {
+            return "darkmagenta";
+        }
+        else
+        {
+            return "darkblue";
+        }
+    }
+}

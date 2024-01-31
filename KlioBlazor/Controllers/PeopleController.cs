@@ -46,6 +46,44 @@ namespace KlioBlazor.Controllers
             return await context.People.Where(x => x.Name.Contains(searchText)).Take(5).ToListAsync();
         }
 
+        [HttpGet("details/{id}")]
+        public async Task<ActionResult<DetailsPersonDTO>> GetPersonDetails(int id)
+        {
+            double maxViews = (double)context.Movies.Max(p => p.ViewCounter);
+
+            var person = await context.People
+                .Include(x => x.MoviesActors)
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (person == null) { return NotFound(); }
+
+            var allMovieByPerson = await context.MoviesActors.OrderByDescending(x => x.MovieId).Where(x => x.PersonId == id).ToListAsync();
+            var listOfIds = from n in allMovieByPerson where n.PersonId == id select n.MovieId;
+            int lastMovieId = allMovieByPerson[0].MovieId;
+
+            var lsstMovie = await context.Movies
+                .Where(x => x.Id == lastMovieId)
+                .FirstOrDefaultAsync();
+
+            var allMovies = await (from m in context.Movies where listOfIds.Contains(m.Id) select m)
+                .Include(x => x.Partition)
+                .OrderBy(x => x.ReleaseDate)
+                .ToListAsync();
+
+
+            foreach (var film in allMovies)
+            {
+                film.Rating = Math.Truncate((double)film.ViewCounter / (double)maxViews * 10000) / 100;
+            }
+
+            var model = new DetailsPersonDTO();
+            model.Person = person;
+            model.LastMovie = lsstMovie;
+            model.PersonMovies = allMovies;
+
+            return model;
+        }
+
         [HttpPost]
         public async Task<ActionResult<int>> Post(Person person)
         {
