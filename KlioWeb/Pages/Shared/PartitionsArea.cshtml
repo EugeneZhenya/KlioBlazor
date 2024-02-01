@@ -1,26 +1,108 @@
-﻿@model PartitionsArea
+﻿@using KlioBlazor.Shared.Entities
+@model PartitionsArea
 
-<section class="ucm-area ucm-bg" style="background-image: url('img/ucm_bg_shape.png')">
+@{
+    int catCounter = 0;
+    List<Category> popCatorogies = new List<Category>();
+
+    foreach (var part in Model.Partitions)
+    {
+        var containsItem = popCatorogies.SingleOrDefault(x => x.Id == part.CategoryId);
+
+        if (containsItem == null)
+        {
+            popCatorogies.Add(new Category() { Id = part.Category.Id, Name = part.Category.Name, Description = part.Category.Description });
+        }
+    }
+
+    string partitionUrl(Partition partition)
+    {
+        return $"partition/{partition.Id}/{StringUtilities.Translit(partition.Name)}";
+    }
+}
+
+<section class="ucm-area ucm-bg" data-background="img/ucm_bg_shape.png">
     <div class="layer">
         <div class="container">
             <div class="row align-items-end mb-55">
-                <div class="col-lg-6">
+                <div class="col-lg-5">
                     <div class="section-title text-center text-lg-start title-style-two">
                         <span class="sub-title">@Html.Raw(Model.Subtitle)</span>
                         <h2 class="title">@Html.Raw(Model.Title)</h2>
                     </div>
                 </div>
+                <div class="col-lg-7">
+                    <div class="ucm-nav-wrap">
+                        <ul class="nav nav-tabs owl-filter-bar">
+                            <li class="nav-item">
+                                <a id="all" class="nav-link active item" data-owl-filter="*">Всі</a>
+                            </li>
+                            @foreach (var cat in popCatorogies)
+                            {
+                                <li class="nav-item">
+                                    <a data-owl-filter=".@StringUtilities.Translit(cat.Name)" class="nav-link item">@Html.Raw(cat.Name)</a>
+                                </li>
+                                catCounter++;
+                                if (catCounter > 2)
+                                {
+                                    break;
+                                }
+                            }
+                        </ul>
+                    </div>
+                </div>
             </div>
             <div class="tab-content">
                 <div class="tab-pane fade show active">
-                    <!--
-                    <PartitionsList  />
-                    -->
+                    <div class="ucm-active owl-carousel">
+                        @if (Model.Partitions == null)
+                        {
+                            <div id="preloader" style="height: 25vh;">
+                                <div id="loading-center">
+                                    <div id="loading-center-absolute">
+                                        <img src="img/preloader.svg" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else if (Model.Partitions.Count == 0)
+                        {
+                            <div id="preloader" style="height: 25vh;">
+                                <div id="loading-center">
+                                    <div id="loading-center-absolute">
+                                        <p>@Model.NoRecords</p>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            @foreach (var element in Model.Partitions)
+                            {
+                                <div class="@StringUtilities.Translit(element.Category.Name) movie-item mb-50" style="margin-right: 30px;">
+                                    @if (Model.ShowCategoryName)
+                                    {
+                                        <div class="section-title text-center text-lg-start">
+                                            <span class="sub-title">@Html.Raw(element.Category.Name)</span>
+                                        </div>
+                                    }
+                                    <div class="movie-poster">
+                                        <a href="@partitionUrl(element)">
+                                            <img src="@($"{Model.appState.KlioContentUrl}partitions/{element.PictureUrl}")" alt="@Html.Raw(element.Name)" />
+                                        </a>
+                                    </div>
+                                    <div class="movie-content">
+                                        <div class="top">
+                                            <h5 class="title ellipse"><a href="@partitionUrl(element)">@Html.Raw(element.Name)</a></h5>
+                                            <span class="date" style="white-space: nowrap;">@element.Movies.Count фільмів</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
-
-@{
-}

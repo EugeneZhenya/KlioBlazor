@@ -1,6 +1,26 @@
 ﻿@page "/StatusCode/{errorId}"
 @model KlioWeb.Pages.StatusCodeModel
 
+<section class="breadcrumb-area breadcrumb-bg" style="background-image: url('img/WatchTVMockup.jpg')">
+    <div class="layer">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="breadcrumb-content">
+                        <h2 class="title">Помилка <span>@Model.errorId</span></h2>
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="">Домівка</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Помилка @Model.errorId</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 <section class="episode-area episode-bg" style="background-image: url('img/episode_bg.jpg')">
     <div class="container">
         <div class="row">

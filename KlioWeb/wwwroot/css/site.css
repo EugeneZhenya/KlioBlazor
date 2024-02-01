@@ -247,6 +247,7 @@ label {
 .quick-link-list ul li a:hover,
 .footer-social ul li a:hover,
 .copyright-text > p > a,
+.owl-controls,
 .mobile-menu .social-links li a:hover,
 .header-top-link .quick-link li a:hover,
 .header-top-link .header-social li a:hover,
@@ -1422,6 +1423,7 @@ label {
 }
 
 .ucm-active .owl-nav,
+.owl-controls,
 .ucm-active-two .owl-nav {
     position: absolute;
     top: -99px;
@@ -1432,25 +1434,38 @@ label {
     padding: 9.5px 19px;
     border-radius: 50px;
 }
+.owl-buttons {
+    display: flex;
+}
 
 .ucm-active.owl-carousel .owl-nav button.owl-prev,
+.owl-prev,
 .ucm-active-two.owl-carousel .owl-nav button.owl-prev {
     padding-right: 17px;
     margin-right: 13px;
     position: relative;
 }
 
-.ucm-active .owl-nav .owl-prev::before,
-.ucm-active-two .owl-nav .owl-prev::before {
-    content: "";
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 3px;
-    height: 26px;
-    background: #292b37;
-}
+    .ucm-active .owl-nav .owl-prev::before,
+    .owl-prev::before,
+    .ucm-active-two .owl-nav .owl-prev::before {
+        content: "";
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 3px;
+        height: 26px;
+        background: #292b37;
+    }
+
+    .owl-prev:hover {
+        color: #fd0e30;
+    }
+
+    .owl-next:hover {
+        color: #fd0e30;
+    }
 
 .ucm-active .owl-nav button,
 .ucm-active-two .owl-nav button {
@@ -3890,4 +3905,13 @@ input::file-selector-button {
     .active > .page-link, .page-link.active {
         background-color: #fd0e30;
         border-color: #fd0e30;
+    }
+
+.owl-filter-bar .item {
+    color: #222;
+    cursor: pointer;
+}
+
+    .owl-filter-bar .item.current {
+        font-weight: bold;
     }

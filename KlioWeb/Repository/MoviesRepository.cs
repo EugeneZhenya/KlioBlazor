@@ -20,7 +20,7 @@ namespace KlioWeb.Repository
         public async Task<HomePageDTO> GetHomePageDTO()
         {
             var limitPopular = 6;
-            var limitPartition = 3;
+            var limitPartition = 12;
             var limitLasts = 3;
             double maxViews = (double)context.Movies.Max(p => p.ViewCounter);
             Random rnd = new Random();

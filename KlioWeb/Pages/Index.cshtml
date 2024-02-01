@@ -2,10 +2,6 @@
 @model IndexModel
 @inject CurrentCategory currentCategory
 
-<partial name="BannerArea" model="Model.BannerArea" />
-
-<partial name="PartitionsArea" model="Model.PartitionsArea" />
-
 @{
     OpenGraphModel allMeta = new OpenGraphModel();
 
@@ -34,4 +30,17 @@
     allMeta.ImageType2 = "image/png";
 
     ViewBag.Meta = allMeta;
+}
+
+
+<partial name="BannerArea" model="Model.BannerArea" />
+
+<partial name="PartitionsArea" model="Model.PartitionsArea" />
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            
+        })
+    </script>
 }

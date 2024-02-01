@@ -71,6 +71,55 @@
 	}
 
 	/*=============================================
+	=       Most Popular Partitions Active        =
+    =============================================*/
+
+	var owl = $('.owl-carousel').owlCarousel({
+		loop: false,
+		items: 3,
+		autoplay: false,
+		autoplayTimeout: 5000,
+		autoplaySpeed: 1000,
+		nav: true,
+		navText: ['<i class="fa-solid fa-chevron-left"></i>', '<i class="fa-solid fa-chevron-right"></i>'],
+		navigation: true,
+		navigationText: ['<i class="fa-solid fa-chevron-left"></i>', '<i class="fa-solid fa-chevron-right"></i>'],
+		dots: false,
+		responsive: {
+			0: {
+				items: 1,
+				nav: false,
+			},
+			575: {
+				items: 2,
+				nav: false,
+			},
+			768: {
+				items: 2,
+				nav: false,
+			},
+			992: {
+				items: 3,
+			},
+			1200: {
+				items: 3
+			},
+		}
+	});
+
+	$('.owl-filter-bar').on('click', '.item', function () {
+		$('.owl-filter-bar .item').removeClass("active");
+
+		var $item = $(this);
+		var filter = $item.data('owl-filter')
+
+		$item.addClass("active");
+
+		owl.owlcarousel2_filter(filter);
+
+	})
+
+	/*=============================================
 	=    		 Aos Active  	                  =
     =============================================*/
 	function aosAnimation() {

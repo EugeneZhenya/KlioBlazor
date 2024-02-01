@@ -10,10 +10,5 @@ namespace KlioWeb.Pages.Shared
         public Movie ShowMovie { get; set; }
         public List<Country> ShowMovieCountries { get; set; }
         public string OriginalTitle = string.Empty;
-
-        public void OnGet()
-        {
-
-        }
     }
 }
