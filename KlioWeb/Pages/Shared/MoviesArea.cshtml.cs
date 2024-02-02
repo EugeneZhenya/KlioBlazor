@@ -12,5 +12,6 @@ namespace KlioWeb.Pages.Shared
         public List<Movie> Movies { get; set; }
         public bool CenterHeader { get; set; } = false;
         public bool ShowCategoryName { get; set; } = true;
+        public bool UseFilter { get; set; } = false;
     }
 }

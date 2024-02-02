@@ -89,7 +89,49 @@
     </div>
 </section>
 
-<partial name="MoviesArea" model="Model.MoviesArea" />
+<partial name="MoviesArea" model="Model.PopularMovies" />
+
+@if (Model.RecommendMovie != null)
+{
+    <section class="live-area live-bg fix" data-background="img/live_bg.jpg">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-xl-5 col-lg-6">
+                    <div class="section-title title-style-two mb-25">
+                        <span class="sub-title">Радимо подивитися</span>
+                        <h2 class="title">@Html.Raw(Model.RecommendMovie.Title)</h2>
+                    </div>
+                    <div class="live-movie-content">
+                        <p>
+                            @Html.Raw(Model.RecommendMovie.Summary)
+                        </p>
+                        <div class="live-fact-wrap">
+                            <div class="resolution">
+                                @foreach (var country in Model.RecommendMovieCountries)
+                                {
+                                    <h2 style="font-family: Arial;">@Html.Raw(country.Name)</h2>
+                                }
+                            </div>
+                            <div class="active-customer">
+                                <p>@Html.Raw(Model.RecommendMovie.Partition.Name)</p>
+                                @foreach (var genre in Model.RecommendMovie.MoviesGenres)
+                                {
+                                    <h4>@Html.Raw(genre.Genre.Name)</h4>
+                                }
+                            </div>
+                        </div>
+                        <a href="@($"movie/{Model.RecommendMovie.Id}/{StringUtilities.Translit(Model.RecommendMovie.Title)}")" class="btn"><i class="fa-regular fa-circle-play"></i> Дивитися</a>
+                    </div>
+                </div>
+                <div class="col-xl-7 col-lg-6">
+                    <div class="live-movie-img" data-aos="fade-left" data-aos-delay="180">
+                        <img src="@($"{Model.appState.KlioContentUrl}movies/{Model.RecommendMovie.Id}/cover.jpg")" alt="@Html.Raw(Model.RecommendMovie.Title)" style="width: 100%;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
 
 @functions {
     List<string> videoLogos = new List<string>()
@@ -122,7 +164,25 @@
 @section Scripts {
     <script>
         $(document).ready(function () {
+            var $grid = $('.tr-movie-active').isotope({
+                itemSelector: '.grid-item',
+                percentPosition: true,
+                masonry: {
+                    // columnWidth: '.grid-sizer',
+                }
+            });
             
+            $('.tr-movie-menu-active').on('click', 'button', function () {
+                var filterValue = $(this).attr('data-filter');
+                console.log(filterValue);
+                $grid.isotope({ filter: filterValue });
+            });
+
+            $('.tr-movie-menu-active button').on('click', function (event) {
+                $(this).siblings('.active').removeClass('active');
+                $(this).addClass('active');
+                event.preventDefault();
+            });
         })
     </script>
 }

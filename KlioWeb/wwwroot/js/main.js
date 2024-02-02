@@ -117,7 +117,7 @@
 
 		owl.owlcarousel2_filter(filter);
 
-	})
+	});
 
 	/*=============================================
 	=    		 Aos Active  	                  =

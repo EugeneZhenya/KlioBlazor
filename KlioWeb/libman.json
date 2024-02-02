@@ -15,10 +15,6 @@
       "destination": "wwwroot/lib/bootstrap/"
     },
     {
-      "library": "flickity@3.0.0",
-      "destination": "wwwroot/flickity/"
-    },
-    {
       "library": "animate.css@4.1.1",
       "destination": "wwwroot/lib/animate.css/"
     },

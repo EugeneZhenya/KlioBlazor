@@ -19,7 +19,7 @@ namespace KlioWeb.Repository
 
         public async Task<HomePageDTO> GetHomePageDTO()
         {
-            var limitPopular = 6;
+            var limitPopular = 9;
             var limitPartition = 12;
             var limitLasts = 3;
             double maxViews = (double)context.Movies.Max(p => p.ViewCounter);
@@ -51,7 +51,7 @@ namespace KlioWeb.Repository
 
             var allMoviesPopular = await context.Movies
                 .OrderByDescending(x => x.ViewCounter)
-                .Include(x => x.Partition)
+                .Include(x => x.Partition).ThenInclude(x => x.Category)
                 .ToListAsync();
 
             var allPartitionsPopular = allMoviesPopular.GroupBy(x => x.Partition).Take(limitPartition).ToList();
