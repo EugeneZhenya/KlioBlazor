@@ -49,7 +49,17 @@ else
                                 }
                             </h2>
                             <div class="banner-meta">
-                                <ul style="justify-content: end;">
+                                <ul style="justify-content: space-between;">
+                                    <li class="category">
+                                        <img src="@($"{appState.KlioContentUrl}countries/{model.Creator.Country.FlagUrl}")" alt="@model.Creator.Country.Name" style="width: 25px; margin: 0 5px 0 10px;" />
+                                        <span class="date">@model.Creator.Country.Name</span>
+                                    </li>
+                                    @if (model.Creator.Location != null)
+                                    {
+                                        <li class="release-time">
+                                            <span class="date"><i class="fa-solid fa-location-dot"></i> @model.Creator.Location</span>
+                                        </li>
+                                    }
                                     <li class="release-time">
                                         <span>@model.CreatorMovies.Count фільмів</span>
                                     </li>

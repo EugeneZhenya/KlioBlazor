@@ -76,6 +76,7 @@ namespace KlioBlazor.Controllers
 
             var creator = await context.Creators
                 .Include(x => x.MoviesCreators)
+                .Include(x => x.Country)
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             if (creator == null) { return NotFound(); }
