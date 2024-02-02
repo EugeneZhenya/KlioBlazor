@@ -37,6 +37,86 @@
 
 <partial name="PartitionsArea" model="Model.PartitionsArea" />
 
+<section class="services-area services-bg" data-background="img/services_bg.jpg">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <div class="services-img-wrap">
+                    <video width="100%" autoplay muted loop oncanplay="this.muted=true">
+                        <source src="@GetLogo()" type="video/mp4">
+                        Ваш переглядач не підтримує відтворення відео взагалі, або відтворення відео у форматах mp4/ogg.
+                    </video>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="services-content-wrap">
+                    <div class="section-title title-style-two mb-20">
+                        <span class="sub-title">До ваших послуг</span>
+                        <h2 class="title">Дивіться відеофільми нашого архіву.</h2>
+                    </div>
+                    <p>
+                        На нашому сайті ви можете безоплатно подивитися або завантажити відеофайли:
+                    </p>
+                    <div class="services-list">
+                        <ul>
+                            <li>
+                                <div class="icon">
+                                    <a href="live">
+                                        <i class="flaticon-television"></i>
+                                    </a>
+                                </div>
+                                <div class="content">
+                                    <h5><a href="live">В режимі прямої трансляцій</a></h5>
+                                    <p>Відеофайли нашого архіву трасляются наживо згідно з програмою трансляції.</p>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="icon">
+                                    <a href="movies/search">
+                                        <i class="flaticon-video-camera"></i>
+                                    </a>
+                                </div>
+                                <div class="content">
+                                    <h5><a href="movies/search">Відео на вимогу</a></h5>
+                                    <p>Шукайте та дивіться відео, які вам до вподоби. Ви можете також завантажити відео, яке вас зацікавило, для подальшого перегляду без підключення до інтернету.</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@functions {
+    List<string> videoLogos = new List<string>()
+    {
+        "https://raw.githubusercontent.com/EugeneZhenya/KlioMoviesContent/main/vlogos/AutumnLogo.mp4",
+        "https://raw.githubusercontent.com/EugeneZhenya/KlioMoviesContent/main/vlogos/BreakingWtoneWallLogo.mp4",
+        "https://raw.githubusercontent.com/EugeneZhenya/KlioMoviesContent/main/vlogos/GoldLogo.mp4",
+        "https://raw.githubusercontent.com/EugeneZhenya/KlioMoviesContent/main/vlogos/LaserLogo.mp4",
+        "https://raw.githubusercontent.com/EugeneZhenya/KlioMoviesContent/main/vlogos/White%20Logo.mp4",
+    };
+
+    string GetLogo()
+    {
+        Random rnd = new Random();
+        int i = 0;
+        int _rnd = rnd.Next(videoLogos.Count);
+        foreach (string logo in videoLogos)
+        {
+            if (i == _rnd)
+            {
+                return logo;
+            }
+            i++;
+        }
+
+        return "";
+    }
+}
+
 @section Scripts {
     <script>
         $(document).ready(function () {

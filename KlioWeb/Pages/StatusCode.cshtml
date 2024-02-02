@@ -1,6 +1,34 @@
 ﻿@page "/StatusCode/{errorId}"
 @model KlioWeb.Pages.StatusCodeModel
 
+@{
+    OpenGraphModel allMeta = new OpenGraphModel();
+
+    allMeta.Title = $"{Model.errorDescription} :: Український медійний архів 'KLIO'";
+    allMeta.Description = "Медійний архів 'KLIO': Музика, література, історія, фільми, мультфільми, серіали, мультсеріали, наживо, пряма трансляція, дивитися он-лайн";
+    allMeta.Robots = "all";
+    allMeta.Author = "Eugene Baklanov";
+    allMeta.Keywords = "Klio, архів, video, відео, історія, література, політика, музика, music, наживо, трансляція, пряма трансляція, дивитися он-лайн, фільм, серіал, сезон, епізод, мультфільм, мультсерал";
+    allMeta.Type = "article";
+    allMeta.Image = ($"{Request.Scheme}://{Request.Host}/img/WatchTVMockup.jpg").Replace("https://", "http://");
+    allMeta.SecureImage = ($"{Request.Scheme}://{Request.Host}/img/WatchTVMockup.jpg").Replace("http://", "https://");
+    allMeta.ImageWidth = 1920;
+    allMeta.ImageHeight = 1080;
+    allMeta.ImageType = "image/jpeg";
+    allMeta.Url = $"{Request.Scheme}://{Request.Host}{Request.Path}{Request.QueryString}";
+    allMeta.SiteName = "Медійний архів 'KLIO'";
+    allMeta.Locale = "uk_UA";
+    allMeta.FBAdmins = "100007730161243,100002204709179";
+    allMeta.FBAppId = "885986785210347";
+    allMeta.Image2 = ($"{Request.Scheme}://{Request.Host}/img/logo_750_transp.png").Replace("https://", "http://");
+    allMeta.SecureImage2 = ($"{Request.Scheme}://{Request.Host}/img/logo_750_transp.png").Replace("http://", "https://");
+    allMeta.ImageWidth2 = 750;
+    allMeta.ImageHeight2 = 750;
+    allMeta.ImageType2 = "image/png";
+
+    ViewBag.Meta = allMeta;
+}
+
 <section class="breadcrumb-area breadcrumb-bg" style="background-image: url('img/WatchTVMockup.jpg')">
     <div class="layer">
         <div class="container">
@@ -37,32 +65,3 @@
         </div>
     </div>
 </section>
-
-@{
-    OpenGraphModel allMeta = new OpenGraphModel();
-
-    allMeta.Title = $"{Model.errorDescription} :: Український медійний архів 'KLIO'";
-    allMeta.Description = "Медійний архів 'KLIO': Музика, література, історія, фільми, мультфільми, серіали, мультсеріали, наживо, пряма трансляція, дивитися он-лайн";
-    allMeta.Robots = "all";
-    allMeta.Author = "Eugene Baklanov";
-    allMeta.Keywords = "Klio, архів, video, відео, історія, література, політика, музика, music, наживо, трансляція, пряма трансляція, дивитися он-лайн, фільм, серіал, сезон, епізод, мультфільм, мультсерал";
-    allMeta.Type = "article";
-    allMeta.Image = ($"{Request.Scheme}://{Request.Host}/img/WatchTVMockup.jpg").Replace("https://", "http://");
-    allMeta.SecureImage = ($"{Request.Scheme}://{Request.Host}/img/WatchTVMockup.jpg").Replace("http://", "https://");
-    allMeta.ImageWidth = 1920;
-    allMeta.ImageHeight = 1080;
-    allMeta.ImageType = "image/jpeg";
-    allMeta.Url = $"{Request.Scheme}://{Request.Host}{Request.Path}{Request.QueryString}";
-    allMeta.SiteName = "Медійний архів 'KLIO'";
-    allMeta.Locale = "uk_UA";
-    allMeta.FBAdmins = "100007730161243,100002204709179";
-    allMeta.FBAppId = "885986785210347";
-    allMeta.Image2 = ($"{Request.Scheme}://{Request.Host}/img/logo_750_transp.png").Replace("https://", "http://");
-    allMeta.SecureImage2 = ($"{Request.Scheme}://{Request.Host}/img/logo_750_transp.png").Replace("http://", "https://");
-    allMeta.ImageWidth2 = 750;
-    allMeta.ImageHeight2 = 750;
-    allMeta.ImageType2 = "image/png";
-
-    ViewBag.Meta = allMeta;
-}
-
