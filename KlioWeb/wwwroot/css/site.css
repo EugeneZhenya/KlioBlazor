@@ -716,26 +716,20 @@ label {
     }
 
 /* 3. Search modal */
-#search_modal {
+.search_modal {
     background-color: rgba(23,26,33,.95);
 }
 
-    #search_modal .modal-dialog {
+    .search_modal .modal-dialog {
         position: absolute;
-        top: 50%;
-        left: 50%;
-        -webkit-transform: translate(-50%,-50%);
-        -moz-transform: translate(-50%,-50%);
-        -ms-transform: translate(-50%,-50%);
-        -o-transform: translate(-50%,-50%);
-        transform: translate(-50%,-50%);
+        left: 0;
+        right: 0;
+        margin: auto;
         border: none;
         outline: 0;
-        margin: 0;
-        min-width: 700px;
     }
 
-        #search_modal .modal-dialog .modal-content {
+        .search_modal .modal-dialog .modal-content {
             background: 0 0;
             -webkit-box-shadow: none;
             -moz-box-shadow: none;
@@ -743,12 +737,12 @@ label {
             border: none;
         }
 
-            #search_modal .modal-dialog .modal-content form {
+            .search_modal .modal-dialog .modal-content form {
                 width: 100%;
                 position: relative;
             }
 
-                #search_modal .modal-dialog .modal-content form input {
+                .search_modal .modal-dialog .modal-content form input {
                     width: 100%;
                     font-size: 36px;
                     border: none;
@@ -758,15 +752,15 @@ label {
                     padding: 0 85px 12px 40px;
                 }
 
-                    #search_modal .modal-dialog .modal-content form input::-moz-placeholder {
+                    .search_modal .modal-dialog .modal-content form input::-moz-placeholder {
                         font-size: 35px;
                     }
 
-                    #search_modal .modal-dialog .modal-content form input::placeholder {
+                    .search_modal .modal-dialog .modal-content form input::placeholder {
                         font-size: 35px;
                     }
 
-                #search_modal .modal-dialog .modal-content form button {
+                .search_modal .modal-dialog .modal-content form button {
                     position: absolute;
                     right: 40px;
                     margin-bottom: 0;
@@ -778,7 +772,7 @@ label {
                     top: 8px;
                 }
 
-    #search_modal button {
+    .search_modal button {
         position: fixed;
         top: 28px;
         right: 28px;

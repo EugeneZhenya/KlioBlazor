@@ -83,7 +83,7 @@
                         </div>
                         @if (Model.ShowMovie.HasTrailer)
                         {
-                            <a class="banner-btn btn popup-video" style="cursor: pointer" data-aos="fade-up" data-aos-delay="700">
+                            <a class="banner-btn btn popup-video" style="cursor: pointer" data-aos="fade-up" data-aos-delay="700" data-bs-toggle="modal" data-bs-target="#trailer_modal">
                                 <i class="fa-solid fa-play"></i> Вістовик
                             </a>
                         }
@@ -101,6 +101,8 @@
         </div>
     </div>
 </section>
+
+<partial name="TrailerModal" />
 
 @functions {
     string[] SeparateTitle(string title)
