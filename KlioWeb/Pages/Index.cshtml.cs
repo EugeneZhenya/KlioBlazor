@@ -12,12 +12,14 @@ namespace KlioWeb.Pages
         private List<Country> lastMovieCountries;
         private List<Partition> partitionsPopular;
         private List<Movie> moviesPopular;
+        private List<Movie> lastAdded;
         public Movie RecommendMovie;
         public List<Country> RecommendMovieCountries;
 
         public BannerArea BannerArea;
         public PartitionsArea PartitionsArea = new PartitionsArea();
         public MoviesArea PopularMovies = new MoviesArea();
+        public MoviesArea LastAdded = new MoviesArea();
 
         private readonly ILogger<IndexModel> _logger;
         private readonly IMoviesRepository _moviesRepository;
@@ -37,10 +39,12 @@ namespace KlioWeb.Pages
             moviesPopular = response.MoviesPopular;
             RecommendMovie = response.RecomendMovie;
             RecommendMovieCountries = response.RecomendMovieCountries;
+            lastAdded = response.LastAdded;
 
             BannerArea = new BannerArea() { ShowMovie = lastMovie, ShowMovieCountries = lastMovieCountries };
             PartitionsArea = new PartitionsArea() { Partitions = partitionsPopular, Title = "Найпопулярніші розділи", Subtitle = "Дивіться зараз" };
             PopularMovies = new MoviesArea() { Movies = moviesPopular, Title = "Найпопулярніші фільми", Subtitle = "Дивіться зараз", CenterHeader = true, UseFilter = true };
+            LastAdded = new MoviesArea() { Movies = lastAdded, Title = "Останні додані", Subtitle = "Не проґавте", CenterHeader = true };
         }
     }
 }
