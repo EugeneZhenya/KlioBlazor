@@ -11,6 +11,7 @@ builder.Services.AddRazorPages();
 
 builder.Services.AddScoped<CurrentCategory>();
 builder.Services.AddScoped<IMoviesRepository, MoviesRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>

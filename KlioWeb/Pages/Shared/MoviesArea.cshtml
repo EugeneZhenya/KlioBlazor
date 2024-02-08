@@ -18,6 +18,8 @@
     {
         return $"movie/{movie.Id}/{StringUtilities.Translit(movie.Title)}";
     }
+
+    string prefix = Guid.NewGuid().ToString();
 }
 
 <section class="ucm-area ucm-bg" data-background="img/ucm_bg_shape.png">
@@ -53,68 +55,70 @@
                             <button class="active" data-filter="*">Всі</button>
                             @foreach (var cat in movCatorogies)
                             {
-                                <button class="" data-filter=".@StringUtilities.Translit(cat.Name)">@Html.Raw(cat.Name)</button>
+                                <button class="" data-filter=".@(prefix)_@StringUtilities.Translit(cat.Name)">@Html.Raw(cat.Name)</button>
                             }
                         </div>
                     </div>
                 </div>
             }
-            <div class="row">
-                <div class="ucm-active tr-movie-active" style="display: -webkit-flex; -webkit-flex-direction: column; -webkit-flex-wrap: wrap; -webkit-flex-direction: row;">
-                    @if (Model.Movies == null)
-                    {
-                        <div id="preloader" style="height: 25vh;">
-                            <div id="loading-center">
-                                <div id="loading-center-absolute">
-                                    <img src="img/preloader.svg" alt="">
-                                </div>
-                            </div>
-                        </div>
-                    }
-                    else if (Model.Movies.Count == 0)
-                    {
-                        <p>@Html.Raw(Model.NoRecords)</p>
-                    }
-                    else
-                    {
-                        @foreach (var element in Model.Movies)
+            <div class="tab-content @(string.IsNullOrEmpty(Model.CarouselClass) ? "isotope-active" : "")">
+                <div class="tab-pane fade show active">
+                    <div class="ucm-active @Model.CarouselClass" style="display: -webkit-flex; -webkit-flex-wrap: wrap; -webkit-flex-direction: row; justify-content: center;">
+                        @if (Model.Movies == null)
                         {
-                            <div class="movie-item mb-50 @StringUtilities.Translit(element.Partition.Category.Name) grid-item" style="width: 380px; margin-right: 30px;">
-                                @if (Model.ShowCategoryName)
-                                {
-                                    <div class="section-title text-center text-lg-start">
-                                        <span class="sub-title">@Html.Raw(element.Partition.Name)</span>
-                                    </div>
-                                }
-                                <div class="movie-poster">
-                                    <a href="@movieUrl(element)">
-                                        <img src="@($"{Model.appState.KlioContentUrl}movies/{element.Id}/cover.jpg")" alt="@Html.Raw(element.Title)" />
-                                    </a>
-                                </div>
-                                <div class="movie-content">
-                                    <div class="top">
-                                        <h5 class="title ellipse"><a href="@movieUrl(element)">@Html.Raw(element.TitleBrief)</a></h5>
-                                        <span class="date">@element.ReleaseDate.Value.Year</span>
-                                    </div>
-                                    <div class="bottom">
-                                        <ul>
-                                            <li>
-                                                <span class="quality" style="@AgeLimitColor(element.AgeLimit)">@element.AgeLimit+</span>
-                                            </li>
-                                            <li>
-                                                <span class="duration">
-                                                    <i class="fa-solid fa-clock"></i> @Html.Raw(StringUtilities.SecondsToMinutes(element.Duration))
-                                                </span>
-                                                <span class="rating">
-                                                    <i class="fa-solid fa-thumbs-up"></i> @element.Rating
-                                                </span>
-                                            </li>
-                                        </ul>
+                            <div id="preloader" style="height: 25vh;">
+                                <div id="loading-center">
+                                    <div id="loading-center-absolute">
+                                        <img src="img/preloader.svg" alt="">
                                     </div>
                                 </div>
                             </div>
                         }
-                    }
+                        else if (Model.Movies.Count == 0)
+                        {
+                            <p>@Html.Raw(Model.NoRecords)</p>
+                        }
+                        else
+                        {
+                            @foreach (var element in Model.Movies)
+                            {
+                                <div class="movie-item mb-50 @(prefix)_@StringUtilities.Translit(element.Partition.Category.Name) grid-item" style="max-width: 380px; margin-right: 30px;">
+                                    @if (Model.ShowCategoryName)
+                                    {
+                                        <div class="section-title text-center text-lg-start">
+                                            <span class="sub-title">@Html.Raw(element.Partition.Name)</span>
+                                        </div>
+                                    }
+                                    <div class="movie-poster">
+                                        <a href="@movieUrl(element)">
+                                            <img src="@($"{Model.appState.KlioContentUrl}movies/{element.Id}/cover.jpg")" alt="@Html.Raw(element.Title)" />
+                                        </a>
+                                    </div>
+                                    <div class="movie-content">
+                                        <div class="top">
+                                            <h5 class="title ellipse"><a href="@movieUrl(element)">@Html.Raw(element.TitleBrief)</a></h5>
+                                            <span class="date">@element.ReleaseDate.Value.Year</span>
+                                        </div>
+                                        <div class="bottom">
+                                            <ul>
+                                                <li>
+                                                    <span class="quality" style="@AgeLimitColor(element.AgeLimit)">@element.AgeLimit+</span>
+                                                </li>
+                                                <li>
+                                                    <span class="duration">
+                                                        <i class="fa-solid fa-clock"></i> @Html.Raw(StringUtilities.SecondsToMinutes(element.Duration))
+                                                    </span>
+                                                    <span class="rating">
+                                                        <i class="fa-solid fa-thumbs-up"></i> @element.Rating
+                                                    </span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
                 </div>
             </div>
         </div>

@@ -33,28 +33,31 @@
                 </div>
                 <div class="col-lg-7">
                     <div class="ucm-nav-wrap">
-                        <ul class="nav nav-tabs owl-filter-bar">
-                            <li class="nav-item">
-                                <a id="all" class="nav-link active item" data-owl-filter="*">Всі</a>
-                            </li>
-                            @foreach (var cat in popCatorogies)
-                            {
+                        @if (Model.UseOwlCarousel)
+                        {
+                            <ul class="nav nav-tabs owl-filter-bar">
                                 <li class="nav-item">
-                                    <a data-owl-filter=".@StringUtilities.Translit(cat.Name)" class="nav-link item">@Html.Raw(cat.Name)</a>
+                                    <a id="all" class="nav-link active item" data-owl-filter="*">Всі</a>
                                 </li>
-                                catCounter++;
-                                if (catCounter > 2)
+                                @foreach (var cat in popCatorogies)
                                 {
-                                    break;
+                                    <li class="nav-item">
+                                        <a data-owl-filter=".@StringUtilities.Translit(cat.Name)" class="nav-link item">@Html.Raw(cat.Name)</a>
+                                    </li>
+                                    catCounter++;
+                                    if (catCounter > 2)
+                                    {
+                                        break;
+                                    }
                                 }
-                            }
-                        </ul>
+                            </ul>
+                        }
                     </div>
                 </div>
             </div>
             <div class="tab-content">
                 <div class="tab-pane fade show active">
-                    <div class="ucm-active owl-carousel">
+                    <div class="ucm-active @(Model.UseOwlCarousel ? "owl-carousel" : "")" id="partition-carousel" style="display: -webkit-flex; -webkit-flex-wrap: wrap; -webkit-flex-direction: row; justify-content: center;">
                         @if (Model.Partitions == null)
                         {
                             <div id="preloader" style="height: 25vh;">
@@ -79,7 +82,7 @@
                         {
                             @foreach (var element in Model.Partitions)
                             {
-                                <div class="@StringUtilities.Translit(element.Category.Name) movie-item mb-50" style="margin-right: 30px;">
+                                <div class="@StringUtilities.Translit(element.Category.Name) movie-item mb-50" style="max-width: 380px; margin-right: 30px;">
                                     @if (Model.ShowCategoryName)
                                     {
                                         <div class="section-title text-center text-lg-start">

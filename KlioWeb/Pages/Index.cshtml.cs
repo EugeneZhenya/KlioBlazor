@@ -44,7 +44,7 @@ namespace KlioWeb.Pages
             BannerArea = new BannerArea() { ShowMovie = lastMovie, ShowMovieCountries = lastMovieCountries };
             PartitionsArea = new PartitionsArea() { Partitions = partitionsPopular, Title = "Найпопулярніші розділи", Subtitle = "Дивіться зараз" };
             PopularMovies = new MoviesArea() { Movies = moviesPopular, Title = "Найпопулярніші фільми", Subtitle = "Дивіться зараз", CenterHeader = true, UseFilter = true };
-            LastAdded = new MoviesArea() { Movies = lastAdded, Title = "Останні додані", Subtitle = "Не проґавте", CenterHeader = true };
+            LastAdded = new MoviesArea() { Movies = lastAdded, Title = "Останні додані", Subtitle = "Не проґавте", CenterHeader = true, CarouselClass= "bottom-carousel" };
         }
     }
 }

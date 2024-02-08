@@ -13,5 +13,6 @@ namespace KlioWeb.Pages.Shared
         public bool CenterHeader { get; set; } = false;
         public bool ShowCategoryName { get; set; } = true;
         public bool UseFilter { get; set; } = false;
+        public string CarouselClass { get; set; }
     }
 }

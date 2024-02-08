@@ -62,4 +62,24 @@ function initFlickity() {
         pageDots: false,
         groupCells: false
     });
+    var elem3 = document.querySelector('.transstaff-carousel');
+    var flkty3 = new Flickity(elem3, {
+        // options
+        cellAlign: 'left',
+        contain: true,
+        freeScroll: true,
+        prevNextButtons: true,
+        pageDots: false,
+        groupCells: false
+    });
+    var elem4 = document.querySelector('.transactor-carousel');
+    var flkty4 = new Flickity(elem4, {
+        // options
+        cellAlign: 'left',
+        contain: true,
+        freeScroll: true,
+        prevNextButtons: true,
+        pageDots: false,
+        groupCells: false
+    });
 }

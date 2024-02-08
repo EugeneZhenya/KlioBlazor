@@ -1,4 +1,5 @@
 ﻿@page "/Home/{CatName}"
+@using KlioBlazor.Shared.Entities
 @model IndexCategoriesModel
 @inject CurrentCategory currentCategory
 
@@ -7,7 +8,7 @@
 
     if (string.IsNullOrEmpty(Model.CatName))
     {
-        Model. CatName = "all";
+        Model.CatName = "all";
     }
     currentCategory.SetCurrentCategory(GetCatId(Model.CatName));
 
@@ -33,7 +34,71 @@
     allMeta.ImageHeight2 = 750;
     allMeta.ImageType2 = "image/png";
 
+    if (Model.LastMovie != null)
+    {
+        allMeta.Title = Model.LastMovie.Partition.Category.Name + " :: Український медійний архів 'KLIO'";
+        allMeta.Description += Model.LastMovie.Partition.Category.Description;
+    }
+
     ViewBag.Meta = allMeta;
+}
+
+@if (Model.LastMovie != null)
+{
+    <partial name="BannerArea" model="Model.BannerArea" />
+}
+
+@if (Model.CatName.ToLower() == "all")
+{
+    <section class="ucm-area ucm-bg" style="background-image: url('img/ucm_bg_shape.png')">
+        <div class="layer">
+            <div class="container">
+                <div class="row align-items-end mb-55">
+                    <div class="col-lg-6">
+                        <div class="section-title text-center text-lg-start title-style-two">
+                            <span class="sub-title">Категорії</span>
+                            <h2 class="title">Список категорій</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-content">
+                    <div class="tab-pane fade show active">
+                        <div class="ucm-active" style="display: -webkit-flex; -webkit-flex-direction: column; -webkit-flex-wrap: wrap; -webkit-flex-direction: row;">
+                            <div class="widget blog-widget" style="width: 75vw;">
+                                <div class="sidebar-cat">
+                                    <ul>
+                                        @foreach (var item in Model.Categories)
+                                        {
+                                            <li style="min-height: 25px;">
+                                                <div class="row" style="align-items: stretch; width: 100%; float: left;">
+                                                    <div style="width: 65%; align-self: center;">
+                                                        <a href="@GetCatUrl(item)">@item.Name</a> <span>@item.Partitions.Count() розд.</span>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+else
+{
+    @if (Model.LastMovie != null)
+    {
+        <partial name="PartitionsArea" model="Model.PartitionsArea" />
+        <PartitionsArea Partitions="Partitions" Title="@Model.LastMovie.Partition.Category.Name" Subtitle="Розділи категорії" ShowCategoryName="false" />
+    }
+}
+
+@if (Model.MoviesArea != null)
+{
+    <partial name="MoviesArea" model="Model.MoviesArea" />
 }
 
 @functions {
@@ -41,7 +106,7 @@
     {
         int catId = 0;
 
-        switch (name)
+        switch (name.ToLower())
         {
             case "history":
                 catId = 1;
@@ -67,5 +132,36 @@
         }
 
         return catId;
+    }
+
+    private string GetCatUrl(Category category)
+    {
+        string url = "Home";
+        switch (category.Id)
+        {
+            case 1:
+                url += "/history";
+                break;
+            case 2:
+                url += "/literacy";
+                break;
+            case 3:
+                url += "/music";
+                break;
+            case 4:
+                url += "/movies";
+                break;
+            case 6:
+                url += "/serials";
+                break;
+            case 5:
+                url += "/animation";
+                break;
+            case 7:
+                url += "/series";
+                break;
+        }
+
+        return url;
     }
 }

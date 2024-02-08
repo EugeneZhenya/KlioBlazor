@@ -12,5 +12,6 @@ namespace KlioWeb.Pages.Shared
         public string NoRecords { get; set; } = "Розділ не має записів.";
         public List<Partition> Partitions { get; set; }
         public bool ShowCategoryName { get; set; } = true;
+        public bool UseOwlCarousel { get; set; } = true;
     }
 }

@@ -13,5 +13,6 @@ namespace KlioBlazor.Shared.DTOs
         public List<Country> LastMovieCountries { get; set; }
         public List<Category> AllCategories { get; set; }
         public List<Partition> CategoryPartitions { get; set; }
+        public List<Movie> LastAdded { get; set; }
     }
 }
