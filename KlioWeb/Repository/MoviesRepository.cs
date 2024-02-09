@@ -201,7 +201,7 @@ namespace KlioWeb.Repository
 
             var movies = await moviesQueryable
                 .Paginate(filterMoviesDTO.Pagination)
-                .Include(x => x.Partition)
+                .Include(x => x.Partition).ThenInclude(x => x.Category)
                 .ToListAsync();
 
             foreach (var film in movies)

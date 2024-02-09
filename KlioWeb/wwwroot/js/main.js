@@ -39,6 +39,41 @@
 		$('.menu-backdrop, .mobile-menu .close-btn').on('click', function () {
 			$('body').removeClass('mobile-menu-visible');
 		});
+
+		$('#search_modal_button').on('click', function (event) {
+			event.preventDefault();
+			var searchText = $('#search_modal_input').val();
+			if (searchText) {
+				window.location = encodeURI("/movies/search?title=" + searchText);
+			};
+		});
+
+		$('#search_modal_input').keypress(function (e) {
+			var key = e.which;
+			if (key == 13)  // the enter key code
+			{
+				$('#search_modal_button').click();
+				return false;
+			}
+		});
+
+		$("#footerSearchBtn").on('click', function () {
+			var searchText = $("#footerSearch").val();
+			if (searchText) {
+				event.preventDefault();
+				var searchText = $('#footerSearch').val();
+				window.location = encodeURI("/movies/search?title=" + searchText);
+			}
+		});
+
+		$('#footerSearch').keypress(function (e) {
+			var key = e.which;
+			if (key == 13)  // the enter key code
+			{
+				$('#footerSearchBtn').click();
+				return false;
+			}
+		});
 	}
 
 	/*=============================================

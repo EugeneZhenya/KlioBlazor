@@ -1,0 +1,88 @@
+﻿@page "/movies/search"
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model KlioWeb.Pages.Movies.MovieFilterModel
+@inject CurrentCategory currentCategory
+
+@{
+    OpenGraphModel allMeta = new OpenGraphModel();
+    currentCategory.SetCurrentCategory(0);
+
+    allMeta.Title = "Пошук фільмів :: Український медійний архів 'KLIO'";
+    allMeta.Description = "Медійний архів 'KLIO': Музика, література, історія, фільми, мультфільми, серіали, мультсеріали, наживо, пряма трансляція, дивитися он-лайн";
+    allMeta.Robots = "all";
+    allMeta.Author = "Eugene Baklanov";
+    allMeta.Keywords = "Klio, архів, video, відео, історія, література, політика, музика, music, наживо, трансляція, пряма трансляція, дивитися он-лайн, фільм, серіал, сезон, епізод, мультфільм, мультсерал";
+    allMeta.Type = "article";
+    allMeta.Image = ($"{Request.Scheme}://{Request.Host}/img/WatchTVMockup.jpg").Replace("https://", "http://");
+    allMeta.SecureImage = ($"{Request.Scheme}://{Request.Host}/img/WatchTVMockup.jpg").Replace("http://", "https://");
+    allMeta.ImageWidth = 1920;
+    allMeta.ImageHeight = 1080;
+    allMeta.ImageType = "image/jpeg";
+    allMeta.Url = $"{Request.Scheme}://{Request.Host}{Request.Path}{Request.QueryString}";
+    allMeta.SiteName = "Медійний архів 'KLIO'";
+    allMeta.Locale = "uk_UA";
+    allMeta.FBAdmins = "100007730161243,100002204709179";
+    allMeta.FBAppId = "885986785210347";
+    allMeta.Image2 = ($"{Request.Scheme}://{Request.Host}/img/logo_750_transp.png").Replace("https://", "http://");
+    allMeta.SecureImage2 = ($"{Request.Scheme}://{Request.Host}/img/logo_750_transp.png").Replace("http://", "https://");
+    allMeta.ImageWidth2 = 750;
+    allMeta.ImageHeight2 = 750;
+    allMeta.ImageType2 = "image/png";
+
+    ViewBag.Meta = allMeta;
+}
+
+<partial name="BreadcrumbArea" model="Model.BreadcrumbArea" />
+
+<section class="contact-area contact-bg" data-background="img/contact_bg.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-12 col-lg-11">
+                <div class="contact-form-wrap">
+                    <div class="widget-title mb-50">
+                        <h5 class="title">Пошук фільмів</h5>
+                    </div>
+                    <form method="post" asp-antiforgery="true" id="searchForm">
+                        <div class="contact-form">
+                            <div class="col-md-12">
+                                <input type="text" placeholder="Назва фільму..." id="title" asp-for="@Model.FilterMoviesDTO.Title">
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <select asp-for="@Model.FilterMoviesDTO.GenreId" id="genre_id">
+                                        <option value="0">
+                                            -- Виберіть жанр
+                                        </option>
+                                        @foreach (var genre in Model.Genres)
+                                        {
+                                            <option value="@genre.Id">@genre.Name</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-md-6" style="text-align: end;">
+                                    <button type="button" class="btn" id="resetBtn">Очистити</button>
+                                    <button type="submit" class="btn" id="startSearch">Шукати</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<partial name="MoviesArea" model="Model.FiltredMovies" />
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#resetBtn').on('click', function () {
+                console.log('reset');
+                $("#title").val("");
+                $("#genre_id").val(0);
+            });
+        })
+    </script>
+}
+

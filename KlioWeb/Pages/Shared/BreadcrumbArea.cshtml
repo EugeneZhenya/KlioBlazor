@@ -1,0 +1,24 @@
+﻿@model BreadcrumbArea
+
+@{
+}
+
+<section class="breadcrumb-area breadcrumb-bg" data-background="img/WatchTVMockup.jpg">
+    <div class="layer">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="breadcrumb-content">
+                        @Html.Raw(Model.TitleContent)
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                @Html.Raw(Model.ChildContent)
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

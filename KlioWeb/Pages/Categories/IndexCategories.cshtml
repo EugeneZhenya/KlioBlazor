@@ -50,7 +50,7 @@
 
 @if (Model.CatName.ToLower() == "all")
 {
-    <section class="ucm-area ucm-bg" style="background-image: url('img/ucm_bg_shape.png')">
+    <section class="ucm-area ucm-bg" data-background="img/ucm_bg_shape.png">
         <div class="layer">
             <div class="container">
                 <div class="row align-items-end mb-55">
@@ -92,7 +92,6 @@ else
     @if (Model.LastMovie != null)
     {
         <partial name="PartitionsArea" model="Model.PartitionsArea" />
-        <PartitionsArea Partitions="Partitions" Title="@Model.LastMovie.Partition.Category.Name" Subtitle="Розділи категорії" ShowCategoryName="false" />
     }
 }
 
