@@ -74,6 +74,18 @@
 
 <partial name="MoviesArea" model="Model.FiltredMovies" />
 
+<paging page-no="Model.FilterMoviesDTO.Page"
+        page-size="Model.PageSize"
+        total-records="Model.TotalRecords"
+        max-displayed-pages="5"
+        query-string-key-page-no="page"
+        show-page-size-nav="false"
+        show-total-pages="false"
+        show-total-records="false"
+        class="mb-5 mt-5"
+        class-paging-control="pagination justify-content-center">
+</paging>
+
 @section Scripts {
     <script>
         $(document).ready(function () {

@@ -3909,3 +3909,7 @@ input::file-selector-button {
     .owl-filter-bar .item.current {
         font-weight: bold;
     }
+
+.page-item .active {
+    color: white !important;
+}

@@ -209,7 +209,7 @@ namespace KlioWeb.Repository
                 film.Rating = Math.Truncate((double)film.ViewCounter / (double)maxViews * 10000) / 100;
             }
 
-            return new PaginatedResponse<List<Movie>>() { Response = movies, TotalAmountPages = (int)totalAmountPages };
+            return new PaginatedResponse<List<Movie>>() { Response = movies, TotalAmountPages = (int)totalAmountPages, TotalRecords = (int)count };
         }
     }
 }

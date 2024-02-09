@@ -10,5 +10,6 @@ namespace KlioBlazor.Shared.DTOs
     {
         public T Response { get; set; }
         public int TotalAmountPages { get; set; }
+        public int TotalRecords { get; set; }
     }
 }

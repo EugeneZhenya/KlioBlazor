@@ -23,6 +23,13 @@ namespace KlioWeb.Pages.Movies
         private readonly IGenreRepository _genreRepository;
         private readonly IMoviesRepository _moviesRepository;
 
+        [BindProperty(SupportsGet = true)]
+        public int PageNumber { get; set; } = 1;
+        [BindProperty(SupportsGet = true)]
+        public int PageSize { get; set; } = 15;
+        [BindProperty(SupportsGet = true)]
+        public int TotalRecords { get; set; }
+
         public MoviesArea FiltredMovies = new MoviesArea();
 
         public MovieFilterModel(ILogger<IndexModel> logger, IGenreRepository genreRepository, IMoviesRepository moviesRepository)
@@ -83,6 +90,7 @@ namespace KlioWeb.Pages.Movies
             var pagenatedResponse = await _moviesRepository.GetMoviesFiltered(FilterMoviesDTO);
             Movies = pagenatedResponse.Response;
             TotalAmountPages = pagenatedResponse.TotalAmountPages;
+            TotalRecords = pagenatedResponse.TotalRecords;
 
             FiltredMovies = new MoviesArea() { Movies = Movies, Title = TitleDisplay, Subtitle = "Результати пошуку", NoRecords = "Нічого не знайдено", CarouselClass = "bottom-carousel" };
         }
