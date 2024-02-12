@@ -1,0 +1,224 @@
+﻿@page "/live"
+@model KlioWeb.Pages.LiveModel
+@inject CurrentCategory currentCategory
+
+@{
+    OpenGraphModel allMeta = new OpenGraphModel();
+    currentCategory.SetCurrentCategory(0);
+
+    allMeta.Title = "Наживо :: Український медійний архів 'KLIO'";
+    allMeta.Description = "Медійний архів 'KLIO': Музика, література, історія, фільми, мультфільми, серіали, мультсеріали, наживо, пряма трансляція, дивитися он-лайн";
+    allMeta.Robots = "all";
+    allMeta.Author = "Eugene Baklanov";
+    allMeta.Keywords = "Klio, архів, video, відео, історія, література, політика, музика, music, наживо, трансляція, пряма трансляція, дивитися он-лайн, фільм, серіал, сезон, епізод, мультфільм, мультсерал";
+    allMeta.Type = "article";
+    allMeta.Image = ($"{Request.Scheme}://{Request.Host}/img/WatchTVMockup.jpg").Replace("https://", "http://");
+    allMeta.SecureImage = ($"{Request.Scheme}://{Request.Host}/img/WatchTVMockup.jpg").Replace("http://", "https://");
+    allMeta.ImageWidth = 1920;
+    allMeta.ImageHeight = 1080;
+    allMeta.ImageType = "image/jpeg";
+    allMeta.Url = $"{Request.Scheme}://{Request.Host}{Request.Path}{Request.QueryString}";
+    allMeta.SiteName = "Медійний архів 'KLIO'";
+    allMeta.Locale = "uk_UA";
+    allMeta.FBAdmins = "100007730161243,100002204709179";
+    allMeta.FBAppId = "885986785210347";
+    allMeta.Image2 = ($"{Request.Scheme}://{Request.Host}/img/logo_750_transp.png").Replace("https://", "http://");
+    allMeta.SecureImage2 = ($"{Request.Scheme}://{Request.Host}/img/logo_750_transp.png").Replace("http://", "https://");
+    allMeta.ImageWidth2 = 750;
+    allMeta.ImageHeight2 = 750;
+    allMeta.ImageType2 = "image/png";
+
+    ViewBag.Meta = allMeta;
+}
+
+<partial name="BreadcrumbArea" model="Model.BreadcrumbArea" />
+
+<section class="episode-area episode-bg" data-background="img/episode_bg.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="movie-episode-wrap">
+                    <div class="episode-top-wrap">
+                        <div class="section-title">
+                            <span class="sub-title">Потокова трансляція</span>
+                            <h2 class="title">Програма передач</h2>
+                        </div>
+                    </div>
+                    <div class="episode-watch-wrap">
+                        <div class="accordion">
+                            <div class="card">
+                                <div class="card-header">
+                                    <button class="col-12 text-start" type="button" id="acvToggleButton">
+                                        <span class="season" id="playingNow"></span>
+                                        <div id="nowOrNot" style="color: #fd0e30;"></div>
+                                    </button>
+                                    <div id="percentage" style="width: 0%; background-color: #fd0e30; height: 5px;"></div>
+                                </div>
+                                <div class="">
+                                    <div class="card-body">
+                                        <ul id="schedule">
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="episode-img">
+                    <div id="player"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="movie-history-wrap">
+                    <h3 class="title" id="curTitle"></h3>
+                    <p id="curDesc"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        var allProgrames = @Html.Raw(Model.jsonString);
+        var curTitle = [];
+        var curPercent = 0;
+        var player;
+
+        $(document).ready(function () {
+            player = new Playerjs({ id: "player", file: "@Model.AppState.KlioStreamUrl", poster: "@Model.AppState.KlioStreamPoster", title: "", autoplay: 0 });
+
+            UpdateCurState();
+            setInterval(function () { 
+                UpdateCurState();
+            }, 1000);
+        })
+
+        function UpdateCurState() {
+            const element = document.getElementById("playingNow");
+            const curTitleElement = document.getElementById("curTitle");
+            const descElement = document.getElementById("curDesc");
+
+            var startDate = new Date();
+
+            var selProgrammes = allProgrames.filter(a => {
+                var date = new Date(a.StopDatetIme);
+                return (date >= startDate);
+            });
+
+            if (selProgrammes.length > 0) {
+                if (selProgrammes[0].Title.Text.startsWith("т/с ") || selProgrammes[0].Title.Text.startsWith("х/ф ") || selProgrammes[0].Title.Text.startsWith("д/с ") || selProgrammes[0].Title.Text.startsWith("д/ф ")) {
+                    curTitle = SeparateString(selProgrammes[0].Title.Text.substring(4));
+                }
+                else {
+                    curTitle = SeparateString(selProgrammes[0].Title.Text);
+                }
+            }
+            var curTitleHTML = "";
+            for (var i = 0; i < curTitle.length; i++)
+            {
+                if (i % 2 == 0) {
+                    curTitleHTML += curTitle[i];
+                }
+                else {
+                    curTitleHTML += "<span>" + curTitle[i] + "</span>";
+                }
+            }
+            var TotalSeconds = new Date(selProgrammes[0].StopDatetIme) - new Date(selProgrammes[0].StartDatetIme);
+            var NowSeconds = new Date() - new Date(selProgrammes[0].StartDatetIme);
+            curPercent = Math.round(NowSeconds / TotalSeconds * 100);
+
+            if (curPercent < 0) {
+                curPercent = 0;
+                $('#nowOrNot').html("Незабаром");
+            }
+            else {
+                $('#nowOrNot').html("В етері зараз");
+            }
+
+            var sheduleHTML = "";
+            if (selProgrammes.length > 0) {
+                $.each(selProgrammes, function (index, value) {
+                    sheduleHTML += "<li><a>" + startTime(value.StartDatetIme) + " <i class='fa-solid fa-play'></i>" + value.TitleBrief + "</a>";
+                    sheduleHTML += "<span class='duration' style='width: 70px;'><i class='fa - regular fa - clock'></i> " + GetDuration(value.StartDatetIme, value.StopDatetIme) + " хв</span></li>";
+                    if (selProgrammes.length > 4) { 
+                        if (index == 4) {
+                            return false;
+                        }
+                    }
+                });
+            }
+
+            $('#percentage').width(curPercent + '%');
+            curTitleElement.innerHTML = curTitleHTML;
+            descElement.innerHTML = selProgrammes[0].Desc.Text;
+            $('#schedule').html(sheduleHTML);
+
+            if (selProgrammes.length > 0) {
+                element.innerHTML = FirstCharUpper(selProgrammes[0].Title.Text);
+            }
+            else {
+                $('#nowOrNot').html("");
+            }
+        }
+
+        function startTime(corTime) {
+            var timeDay = new Date(corTime);
+            var h = timeDay.getHours();
+            var m = timeDay.getMinutes();
+            var s = timeDay.getSeconds();
+            // add a zero in front of numbers<10
+            h = checkTime(h);
+            m = checkTime(m);
+            s = checkTime(s);
+            return h + ":" + m;
+        }
+
+        function checkTime(i) {
+            if (i < 10) {
+                i = "0" + i;
+            }
+            return i;
+        }
+
+        function SeparateString(inpString)
+        {
+            var words = inpString.split(/(?<=[.:…])/);
+
+            if (words.length == 1 || words.length == 0)
+            {
+                var allWords = inpString.split(' ');
+                var part1 = "";
+                var part2 = "";
+                for (var i = 0; i < (allWords.length / 2); i++)
+                {
+                    part1 += allWords[i] + " ";
+                }
+                for (var i = (allWords.Length / 2); i < allWords.length; i++)
+                {
+                    part2 += allWords[i] + " ";
+                }
+                var list = [];
+                list.push(part1);
+                list.push(part2);
+                words = list;
+            }
+            return words;
+        }
+
+        function GetDuration(start, stop) {
+            var diffInSeconds = new Date(stop) - new Date(start);
+            return Math.round(diffInSeconds / 60000);
+        }
+
+        function FirstCharUpper(str) {
+            strVal = '';
+            strVal += str.substring(0, 1).toUpperCase() + str.substring(1, str.length);
+            return strVal;
+        }
+    </script>
+}
