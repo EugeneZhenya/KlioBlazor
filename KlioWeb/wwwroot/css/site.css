@@ -2338,8 +2338,8 @@ label {
             .episode-watch-wrap .card .card-header button .season {
                 font-size: 16px;
                 font-weight: 700;
-                width: 50%;
-                flex: 0 0 50%;
+                width: 75%;
+                flex: 0 0 75%;
             }
 
             .episode-watch-wrap .card-body ul li a:hover,

@@ -67,9 +67,9 @@ namespace KlioBlazor.Shared
                     return string.Empty;
                 }
 
-                if (Title.Text.Length > 35)
+                if (Title.Text.Length > 34)
                 {
-                    return Title.Text.Substring(0, 35) + "…";
+                    return Title.Text.Substring(0, 34) + "…";
                 }
                 else
                 {

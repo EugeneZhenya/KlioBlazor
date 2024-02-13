@@ -72,6 +72,17 @@
     </div>
 </section>
 
+<div style="text-align: center;">
+    <!-- LiveKlioAds -->
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-8113874437122486"
+         data-ad-slot="7371334300"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+</div>
+
+
 <partial name="MoviesArea" model="Model.FiltredMovies" />
 
 <paging page-no="Model.FilterMoviesDTO.Page"
@@ -87,6 +98,9 @@
 </paging>
 
 @section Scripts {
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
     <script>
         $(document).ready(function () {
             $('#resetBtn').on('click', function () {
