@@ -14,5 +14,6 @@ namespace KlioWeb.Pages.Shared
         public bool ShowCategoryName { get; set; } = true;
         public bool UseFilter { get; set; } = false;
         public string CarouselClass { get; set; }
+        public bool WatchAll { get; set; } = false;
     }
 }

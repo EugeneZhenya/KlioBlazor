@@ -203,15 +203,14 @@
 
             if (words.length == 1 || words.length == 0)
             {
-                var allWords = inpString.split(' ');
+                var allWords = inpString.split(" ");
                 var part1 = "";
                 var part2 = "";
                 for (var i = 0; i < (allWords.length / 2); i++)
                 {
                     part1 += allWords[i] + " ";
                 }
-                for (var i = (allWords.Length / 2); i < allWords.length; i++)
-                {
+                for (var i = (allWords.length / 2); i < allWords.length; i++) {
                     part2 += allWords[i] + " ";
                 }
                 var list = [];

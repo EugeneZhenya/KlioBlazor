@@ -9,7 +9,7 @@ namespace KlioWeb.Pages.Categories
     public class IndexCategoriesModel : PageModel
     {
         [BindProperty(SupportsGet = true)]
-        public string CatName { get; set; }
+        public string? CatName { get; set; }
         public Movie LastMovie;
         public List<Country> LastMovieCountries;
         public List<Category> Categories;

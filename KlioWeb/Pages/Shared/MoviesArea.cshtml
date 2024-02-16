@@ -45,6 +45,18 @@
                             <h2 class="title">@Html.Raw(Model.Title)</h2>
                         </div>
                     </div>
+                    @if (Model.WatchAll)
+                    {
+                        <div class="col-lg-6">
+                            <div class="ucm-nav-wrap">
+                                <ul class="nav nav-tabs">
+                                    <li class="nav-item">
+                                        <a data-bs-toggle="modal" id="watchAllMovies" data-bs-target="#playlist_modal" class="nav-link item">Дивитися усі</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    }
                 </div>
             }
             @if (Model.UseFilter)
@@ -61,6 +73,7 @@
                     </div>
                 </div>
             }
+            
             <div class="tab-content @(string.IsNullOrEmpty(Model.CarouselClass) ? "isotope-active" : "")">
                 <div class="tab-pane fade show active">
                     <div class="ucm-active @Model.CarouselClass" style="display: -webkit-flex; -webkit-flex-wrap: wrap; -webkit-flex-direction: row; justify-content: center;">
@@ -124,6 +137,29 @@
         </div>
     </div>
 </section>
+
+@if (Model.WatchAll)
+{
+    int i = 0;
+    <div id="allMoviesZone" style="display: none;">
+    @foreach (var element in Model.Movies)
+    {
+        <div id="playlister_@i" data-title="@Html.Raw(element.Title)" data-file="@($"{Model.appState.KlioContentUrl}movies/{element.Id}/index.m3u8")"></div>
+        i++;
+    }
+    </div>
+}
+
+<div class="modal fade search_modal" id="playlist_modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="top: 50%; -webkit-transform: translateY(-50%); -moz-transform: translateY(-50%); -ms-transform: translateY(-50%); -o-transform: translateY(-50%); transform: translateY(-50%);">
+        <div class="modal-content">
+            <div id="playlistArea"></div>
+        </div>
+    </div>
+    <button data-bs-dismiss="modal">
+        <i class="fa-regular fa-circle-xmark"></i>
+    </button>
+</div>
 
 @functions {
     string AgeLimitColor(int age)

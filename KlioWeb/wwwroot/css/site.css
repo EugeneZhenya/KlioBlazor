@@ -3913,3 +3913,8 @@ input::file-selector-button {
 .page-item .active {
     color: white !important;
 }
+
+#watchAllMovies:hover, .share_link:hover {
+    cursor: pointer;
+    color: #fd0e30;
+}

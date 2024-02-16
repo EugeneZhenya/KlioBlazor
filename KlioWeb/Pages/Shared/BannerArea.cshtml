@@ -93,11 +93,6 @@
                     <a href="@($"movie/{Model.ShowMovie.Id}/{StringUtilities.Translit(Model.ShowMovie.Title)}")" class="glightbox play-btn"></a>
                 </div>
             </div>
-
-            @if (Model.ShowMovie.HasTrailer)
-            {
-                <TrailerModal TrailerUrl="@($"{Model.appState.KlioContentUrl}movies/{Model.ShowMovie.Id}/Trailer/index.m3u8")" TrailerCover="@($"{Model.appState.KlioContentUrl}movies/{Model.ShowMovie.Id}/Trailer/cover.jpg")" />
-            }
         </div>
     </div>
 </section>

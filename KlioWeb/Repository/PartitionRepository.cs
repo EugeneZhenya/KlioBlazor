@@ -72,6 +72,7 @@ namespace KlioWeb.Repository
 
         public async Task<DetailsPartitionDTO> GetDetailsPartitionDTO(int Id)
         {
+            var limitLasts = 3;
             double maxViews = (double)context.Movies.Max(p => p.ViewCounter);
 
             var partition = await context.Partitions
@@ -95,10 +96,23 @@ namespace KlioWeb.Repository
                 film.Rating = Math.Truncate((double)film.ViewCounter / (double)maxViews * 10000) / 100;
             }
 
+            var allLastMovies = await context.Movies
+                    .OrderByDescending(x => x.PublicDate)
+                    .Include(x => x.Partition).ThenInclude(x => x.Category)
+                    .ToListAsync();
+
+            var moviesLast = allLastMovies.Take(limitLasts).ToList();
+
+            foreach (var movie in moviesLast)
+            {
+                movie.Rating = Math.Truncate((double)movie.ViewCounter / (double)maxViews * 10000) / 100;
+            }
+
             var model = new DetailsPartitionDTO();
             model.Partition = partition;
             model.LastMovie = lsstMovie;
             model.PartitionMovies = allMoviews;
+            model.LastAdded = moviesLast;
 
             return model;
         }

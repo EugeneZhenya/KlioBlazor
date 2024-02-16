@@ -1,4 +1,4 @@
-﻿@page "/Home/{CatName}"
+﻿@page "/category/{CatName?}"
 @using KlioBlazor.Shared.Entities
 @model IndexCategoriesModel
 @inject CurrentCategory currentCategory
@@ -145,7 +145,7 @@ else
 
     private string GetCatUrl(Category category)
     {
-        string url = "Home";
+        string url = "category";
         switch (category.Id)
         {
             case 1:
