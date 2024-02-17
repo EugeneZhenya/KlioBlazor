@@ -157,12 +157,14 @@
                 $.each(selProgrammes, function (index, value) {
                     sheduleHTML += "<li><a>" + startTime(value.StartDatetIme) + " <i class='fa-solid fa-play'></i>" + value.TitleBrief + "</a>";
                     sheduleHTML += "<span class='duration' style='width: 70px;'><i class='fa - regular fa - clock'></i> " + GetDuration(value.StartDatetIme, value.StopDatetIme) + " хв</span></li>";
-                    if (selProgrammes.length > 4) { 
+                    if (selProgrammes.length > 4) {
                         if (index == 4) {
                             return false;
                         }
                     }
                 });
+            } else {
+                curTitle = "Програма передач наразі недоступна"
             }
 
             $('#percentage').width(curPercent + '%');

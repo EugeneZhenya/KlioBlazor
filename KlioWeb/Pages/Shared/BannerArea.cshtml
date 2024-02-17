@@ -1,4 +1,5 @@
-﻿@model BannerArea
+﻿@using KlioBlazor.Shared.Enums
+@model BannerArea
 
 @{
     if (Model.ShowMovie.MovieInfos.FirstOrDefault(x => x.Info == "OriginalTitle") != null)
@@ -37,19 +38,26 @@
                                 {
                                     if (i % 2 == 0)
                                     {
-                                        <span style="color: #e4e2e2;">@Html.Raw(SeparateTitle(Model.OriginalTitle)[i])</span>
+                                        <span style="color: #fd0e30;">@Html.Raw(SeparateTitle(Model.OriginalTitle)[i])</span>
                                     }
                                     else
                                     {
-                                        <span style="color: #fd0e30;">@Html.Raw(SeparateTitle(Model.OriginalTitle)[i])</span>
+                                        <span style="color: #e4e2e2;">@Html.Raw(SeparateTitle(Model.OriginalTitle)[i])</span>
                                     }
                                 }
                             </h3>
                         }
                         <div class="banner-meta" data-aos="fade-up" data-aos-delay="500">
                             <ul>
+                                <!-- 
                                 <li class="quality">
                                     <span style="@AgeLimitColor(Model.ShowMovie.AgeLimit)">@Model.ShowMovie.AgeLimit+</span>
+                                </li>
+                                -->
+                                <li class="quality">
+                                    <a href="age/@((AgeCategory)Model.ShowMovie.AgeLimit)">
+                                        <span style="@AgeLimitColor(Model.ShowMovie.AgeLimit)">@Model.ShowMovie.AgeLimit+</span>
+                                    </a>
                                 </li>
                                 <li class="category">
                                     @for (int i = 0; i < Model.ShowMovie.MoviesGenres.Count; i++)

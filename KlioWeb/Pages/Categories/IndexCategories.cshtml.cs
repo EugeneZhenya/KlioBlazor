@@ -8,6 +8,7 @@ namespace KlioWeb.Pages.Categories
 {
     public class IndexCategoriesModel : PageModel
     {
+        public AppState appState = new AppState();
         [BindProperty(SupportsGet = true)]
         public string? CatName { get; set; }
         public Movie LastMovie;

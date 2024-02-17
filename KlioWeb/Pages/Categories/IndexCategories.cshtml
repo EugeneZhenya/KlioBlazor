@@ -41,6 +41,9 @@
     }
 
     ViewBag.Meta = allMeta;
+
+    string fileUrl = $"{Model.appState.KlioContentUrl}movies/{Model.BannerArea.ShowMovie.Id}/Trailer/index.m3u8";
+    string posterUrl = $"{Model.appState.KlioContentUrl}movies/{Model.BannerArea.ShowMovie.Id}/Trailer/cover.jpg";
 }
 
 @if (Model.LastMovie != null)
@@ -178,5 +181,26 @@ else
 @section Scripts {
     <script>
         (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+    <script>
+        var fileUrl = "@fileUrl";
+        var posterUrl = "@posterUrl";
+        var tPlayer;
+
+        $(document).ready(function () {
+            $('#trailer_modal').on('shown.bs.modal', function () {
+                tPlayer = new Playerjs({
+                    id: "trailer",
+                    file: fileUrl,
+                    poster: posterUrl,
+                    title: "",
+                    autoplay: 0
+                });
+            });
+
+            $("#trailer_modal").on("hidden.bs.modal", function () {
+                tPlayer.api("stop");
+            });
+        })
     </script>
 }

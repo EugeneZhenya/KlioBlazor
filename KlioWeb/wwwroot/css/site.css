@@ -1175,6 +1175,24 @@ label {
                     padding: 5px 10px;
                 }
 
+            .banner-meta ul li.quality > a > span {
+                font-size: 11px;
+                text-transform: uppercase;
+                color: #21232b;
+                background: #fff;
+                font-weight: 700;
+                padding: 7px 11px;
+                line-height: 1;
+            }
+
+                .banner-meta ul li.quality > a > span:last-child {
+                    background: transparent;
+                    color: #fff;
+                    margin-left: 9px;
+                    border: 2px solid #fff;
+                    padding: 5px 10px;
+                }
+
             .banner-meta ul li.category > a {
                 font-size: 14px;
                 font-weight: 500;

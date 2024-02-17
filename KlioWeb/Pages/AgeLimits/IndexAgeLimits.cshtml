@@ -1,12 +1,13 @@
-﻿@page "/Partitions"
-@model KlioWeb.Pages.Partitions.IndexPartitionsModel
+﻿@page "/AgeLimits"
+@using KlioBlazor.Shared.Enums
+@model KlioWeb.Pages.AgeLimits.IndexAgeLimitsModel
 @inject CurrentCategory currentCategory
 
 @{
     OpenGraphModel allMeta = new OpenGraphModel();
     currentCategory.SetCurrentCategory(0);
 
-    allMeta.Title = "Розділи :: Український медійний архів 'KLIO'";
+    allMeta.Title = "Вікові обмеження :: Український медійний архів 'KLIO'";
     allMeta.Description = "Медійний архів 'KLIO': Музика, література, історія, фільми, мультфільми, серіали, мультсеріали, наживо, пряма трансляція, дивитися он-лайн";
     allMeta.Robots = "all";
     allMeta.Author = "Eugene Baklanov";
@@ -42,8 +43,8 @@
             <div class="row align-items-end mb-55">
                 <div class="col-lg-6">
                     <div class="section-title text-center text-lg-start title-style-two">
-                        <span class="sub-title">Розділи</span>
-                        <h2 class="title">Список розділів</h2>
+                        <span class="sub-title">Вікові обмеження</span>
+                        <h2 class="title">Вікова кваліфікація фільмів</h2>
                     </div>
                 </div>
             </div>
@@ -53,14 +54,31 @@
                         <div class="widget blog-widget" style="width: 100vw;">
                             <div class="sidebar-cat">
                                 <ul>
-                                    @foreach (var item in Model.Partitions)
+                                    @for (int i = 0; i < Model.AgeCategories.Count; i++)
                                     {
                                         <li style="height: 75px;">
                                             <div class="row" style="align-items: stretch; width: 100%; float: left;">
                                                 <div style="align-self: center;">
-                                                    <img src="@($"{Model.AppState.KlioContentUrl}partitions/{item.PictureUrl}")" alt="item.Name" style="height: 50px;">
-                                                    <a href="partition/@item.Id/@StringUtilities.Translit(item.Name)">@Html.Raw(item.Name)</a>
-                                                    <span style="line-height: 50px;">@item.Movies.Count() фільмів</span>
+                                                    <a href="age/@Model.AgeCategories[i].ToString()">
+                                                        <img src="inf/@(EnumHelper<AgeCategory>.GetEnumDescription(Model.AgeCategories[i])).webp" alt="@(EnumHelper<AgeCategory>.GetDisplayValue(Model.AgeCategories[i]))" style="height: 50px;">
+                                                        @* @(EnumHelper<AgeCategory>.GetDisplayValue(Model.AgeCategories[i])) *@
+                                                        @switch ((int)Model.AgeCategories[i])
+                                                        {
+                                                            case 0:
+                                                                @Html.Raw("Без вікових обмежень")
+                                                                break;
+                                                            case 12:
+                                                                @Html.Raw("Перегляд можливий дітьми віком від 12 років тільки у присутності батьків")
+                                                                break;
+                                                            case 16:
+                                                                @Html.Raw("Перегляд забороняється особам віком до 16 років")
+                                                                break;
+                                                            case 18:
+                                                                @Html.Raw("Перегляд забороняється особам віком до 18 років")
+                                                                break;
+                                                        }
+                                                    </a>
+                                                    <span style="line-height: 50px;">@Model.AgeCounters[i] фільмів</span>
                                                 </div>
                                             </div>
                                         </li>
@@ -95,4 +113,3 @@
         (adsbygoogle = window.adsbygoogle || []).push({});
     </script>
 }
-
