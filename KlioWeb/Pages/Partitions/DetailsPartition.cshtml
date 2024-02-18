@@ -5,7 +5,7 @@
 @{
     OpenGraphModel allMeta = new OpenGraphModel();
 
-    allMeta.Title = Model.model.Partition.Name + " :: Український медійний архів 'KLIO'";
+    allMeta.Title = Model.model.Partition.Name;
     allMeta.Description = Model.model.Partition.Name + " дивитися он-лайн, " + Model.model.Partition.Description;
     allMeta.Robots = "all";
     allMeta.Author = "Eugene Baklanov";
@@ -69,7 +69,7 @@
                                     </li>
                                 </ul>
                             </div>
-                            <RenderMarkdown MarkdownContent="@Html.Raw(Model.model.Partition.Description)" />
+
                             <div class="movie-details-prime">
                                 <ul style="min-width: 100%;">
                                     <li class="share"><i class="fa-solid fa-share-nodes"></i><br />Поширити</li>
@@ -94,7 +94,7 @@
                                         </a>
                                     </li>
                                     <li class="streaming" style="text-align: center;">
-                                        <a target="_blank" href="@($"mailto:?subject={Model.model.Partition.Name}&body=Раджу подивитися цікаве відео за цим посиланням: {Request.Scheme}://{Request.Host}{Request.Path}{Request.QueryString}")">
+                                        <a target="_blank" href="@($"mailto:?subject={Model.model.Partition.Name}&body=Раджу подивитися цікаві відео за цим посиланням: {Request.Scheme}://{Request.Host}{Request.Path}{Request.QueryString}")">
                                             <h6 class="share_link"><i class="fa-brands fa-telegram"></i></h6>
                                             <span>Пошта</span>
                                         </a>
@@ -102,7 +102,6 @@
                                 </ul>
                             </div>
                         <div id="fb-root"></div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -125,8 +124,6 @@
 {
     <partial name="MoviesArea" model="Model.MoviesArea" />
 }
-
-<TrailerModal />
 
 @functions {
     private string[] SeparateTitle(string title)

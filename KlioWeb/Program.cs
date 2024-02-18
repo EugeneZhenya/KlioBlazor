@@ -18,7 +18,7 @@ builder.Services.AddScoped<IAgeLimitsRepository, AgeLimitsRepository>();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString, o => o.UseCompatibilityLevel(120)));
+    options.UseSqlServer(connectionString, o => o.UseCompatibilityLevel(120).UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)));
 
 var app = builder.Build();
 

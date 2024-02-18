@@ -7,7 +7,7 @@
     OpenGraphModel allMeta = new OpenGraphModel();
     currentCategory.SetCurrentCategory(0);
 
-    allMeta.Title = "Вікові обмеження :: Український медійний архів 'KLIO'";
+    allMeta.Title = "Вікові обмеження";
     allMeta.Description = "Медійний архів 'KLIO': Музика, література, історія, фільми, мультфільми, серіали, мультсеріали, наживо, пряма трансляція, дивитися он-лайн";
     allMeta.Robots = "all";
     allMeta.Author = "Eugene Baklanov";
@@ -68,13 +68,13 @@
                                                                 @Html.Raw("Без вікових обмежень")
                                                                 break;
                                                             case 12:
-                                                                @Html.Raw("Перегляд можливий дітьми віком від 12 років тільки у присутності батьків")
+                                                                @Html.Raw("Дітям від 12 років у присутності батьків")
                                                                 break;
                                                             case 16:
-                                                                @Html.Raw("Перегляд забороняється особам віком до 16 років")
+                                                                @Html.Raw("Не для осіб віком до 16 років")
                                                                 break;
                                                             case 18:
-                                                                @Html.Raw("Перегляд забороняється особам віком до 18 років")
+                                                                @Html.Raw("Забороняється особам віком до 18 років")
                                                                 break;
                                                         }
                                                     </a>

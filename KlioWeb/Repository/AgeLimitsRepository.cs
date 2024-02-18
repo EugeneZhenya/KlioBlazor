@@ -67,5 +67,45 @@ namespace KlioWeb.Repository
 
             return response;
         }
+
+        public async Task<DetailsAgeLimitsDTO> GetDetailsAgeLimitsDTO(int age)
+        {
+            var limitLasts = 3;
+            double maxViews = (double)context.Movies.Max(p => p.ViewCounter);
+
+            var lsstMovie = await context.Movies
+                .Where(x => x.AgeLimit == age)
+                .OrderByDescending(x => x.PublicDate)
+                .FirstOrDefaultAsync();
+
+            var allMoviews = await context.Movies
+                .Where(x => x.AgeLimit == age)
+                .OrderBy(x => x.ReleaseDate)
+                .ToListAsync();
+
+            foreach (var film in allMoviews)
+            {
+                film.Rating = Math.Truncate((double)film.ViewCounter / (double)maxViews * 10000) / 100;
+            }
+
+            var allLastMovies = await context.Movies
+                    .OrderByDescending(x => x.PublicDate)
+                    .Include(x => x.Partition).ThenInclude(x => x.Category)
+                    .ToListAsync();
+
+            var moviesLast = allLastMovies.Take(limitLasts).ToList();
+
+            foreach (var movie in moviesLast)
+            {
+                movie.Rating = Math.Truncate((double)movie.ViewCounter / (double)maxViews * 10000) / 100;
+            }
+
+            var model = new DetailsAgeLimitsDTO();
+            model.LastMovie = lsstMovie;
+            model.AgesMovies = allMoviews;
+            model.LastAdded = moviesLast;
+
+            return model;
+        }
     }
 }
