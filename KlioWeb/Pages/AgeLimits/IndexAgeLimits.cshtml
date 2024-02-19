@@ -37,7 +37,7 @@
     <partial name="BannerArea" model="Model.BannerArea" />
 }
 
-<section class="ucm-area ucm-bg" data-background="img /ucm_bg_shape.png">
+<section class="ucm-area ucm-bg" data-background="img/ucm_bg_shape.png">
     <div class="layer">
         <div class="container">
             <div class="row align-items-end mb-55">
@@ -60,7 +60,7 @@
                                             <div class="row" style="align-items: stretch; width: 100%; float: left;">
                                                 <div style="align-self: center;">
                                                     <a href="age/@Model.AgeCategories[i].ToString()">
-                                                        <img src="inf/@(EnumHelper<AgeCategory>.GetEnumDescription(Model.AgeCategories[i])).webp" alt="@(EnumHelper<AgeCategory>.GetDisplayValue(Model.AgeCategories[i]))" style="height: 50px;">
+                                                        <img src="inf/@(EnumHelper<AgeCategory>.GetEnumDescription(Model.AgeCategories[i])).webp" alt="@Html.Raw(EnumHelper<AgeCategory>.GetDisplayValue(Model.AgeCategories[i]))" style="height: 50px;">
                                                         @* @(EnumHelper<AgeCategory>.GetDisplayValue(Model.AgeCategories[i])) *@
                                                         @switch ((int)Model.AgeCategories[i])
                                                         {

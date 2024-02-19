@@ -40,7 +40,7 @@ namespace KlioWeb.Pages.AgeLimits
             LastAdded = model.LastAdded;
             LastMovie = model.LastMovie;
 
-            AgeLimitsMovies = new MoviesArea() { Movies = MoviesOfAgeLimit, Title = EnumHelper<AgeCategory>.GetDisplayValue(ageEnum), Subtitle = "Вікові обмеження", ShowCategoryName = false, WatchAll = true };
+            AgeLimitsMovies = new MoviesArea() { Movies = MoviesOfAgeLimit, Title = EnumHelper<AgeCategory>.GetDisplayValue(ageEnum), Subtitle = "Вікові обмеження", ShowCategoryName = false };
             MoviesArea = new MoviesArea() { Movies = LastAdded, Title = "Останні додані", Subtitle = "Не проґавте", CenterHeader = true, CarouselClass = "bottom-carousel" };
         }
     }

@@ -63,10 +63,10 @@
                     <div class="col-xl-6 col-lg-6">
                         <div class="movie-details-content">
                             <div class="section-title title-style-two">
-                                <span class="sub-title">@limitName</span>
+                                <span class="sub-title">@Html.Raw(limitName)</span>
                             </div>
                             <h2>
-                                @(EnumHelper<AgeCategory>.GetDisplayValue(ageEnum))
+                                @Html.Raw(EnumHelper<AgeCategory>.GetDisplayValue(ageEnum))
                             </h2>
                             <div class="banner-meta">
                                 <p>@Html.Raw(limitDesc)</p>
@@ -102,7 +102,7 @@
                                         </a>
                                     </li>
                                     <li class="streaming" style="text-align: center;">
-                                        <a target="_blank" href="@($"mailto:?subject={limitName}&body=Раджу подивитися цікаві відео за цим посиланням: {Request.Scheme}://{Request.Host}{Request.Path}{Request.QueryString}")">
+                                        <a target="_blank" href="@Html.Raw($"mailto:?subject={limitName}&body=Раджу подивитися цікаві відео за цим посиланням: {Request.Scheme}://{Request.Host}{Request.Path}{Request.QueryString}")">
                                             <h6 class="share_link"><i class="fa-brands fa-telegram"></i></h6>
                                             <span>Пошта</span>
                                         </a>
@@ -115,7 +115,7 @@
 
                     <div class="col-xl-6 col-lg-6" style="align-self: start; margin-top: 10px;">
                         <div class="movie-details-img" style="text-align: center;">
-                            <img src="inf/@(EnumHelper<AgeCategory>.GetEnumDescription(ageEnum)).webp" alt="@(EnumHelper<AgeCategory>.GetDisplayValue(ageEnum))" style="max-width: 100%;">
+                            <img src="inf/@(EnumHelper<AgeCategory>.GetEnumDescription(ageEnum)).webp" alt="@Html.Raw(EnumHelper<AgeCategory>.GetDisplayValue(ageEnum))" style="max-width: 100%;">
                         </div>
                     </div>
                 </div>

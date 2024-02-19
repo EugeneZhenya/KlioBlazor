@@ -22,6 +22,9 @@ namespace KlioWeb.Repository
 
         public async Task<IndexGenresDTO> GetIndexGenresDTO()
         {
+            var limitLasts = 3;
+            double maxViews = (double)context.Movies.Max(p => p.ViewCounter);
+
             var movieLast = await context.Movies
                 .OrderByDescending(x => x.PublicDate)
                 .Include(x => x.Partition).ThenInclude(x => x.Category)
@@ -37,10 +40,23 @@ namespace KlioWeb.Repository
                 .Include(x => x.MoviesGenres)
                 .ToListAsync();
 
+            var allLastMovies = await context.Movies
+                    .OrderByDescending(x => x.PublicDate)
+                    .Include(x => x.Partition).ThenInclude(x => x.Category)
+                    .ToListAsync();
+
+            var moviesLast = allLastMovies.Take(limitLasts).ToList();
+
+            foreach (var movie in moviesLast)
+            {
+                movie.Rating = Math.Truncate((double)movie.ViewCounter / (double)maxViews * 10000) / 100;
+            }
+
             var response = new IndexGenresDTO();
             response.LastMovie = movieLast;
             response.LastMovieCountries = Countries;
             response.AllGenres = allGenres;
+            response.LastAdded = moviesLast;
 
             return response;
         }
@@ -54,6 +70,7 @@ namespace KlioWeb.Repository
 
         public async Task<DetailsGenreDTO> GetDetailsGenreDTO(int Id)
         {
+            var limitLasts = 3;
             double maxViews = (double)context.Movies.Max(p => p.ViewCounter);
 
             var genre = await context.Genres
@@ -75,16 +92,23 @@ namespace KlioWeb.Repository
                 .OrderBy(x => x.ReleaseDate)
                 .ToListAsync();
 
-
             foreach (var film in allMovies)
             {
                 film.Rating = Math.Truncate((double)film.ViewCounter / (double)maxViews * 10000) / 100;
             }
 
+            var allLastMovies = await context.Movies
+                    .OrderByDescending(x => x.PublicDate)
+                    .Include(x => x.Partition).ThenInclude(x => x.Category)
+                    .ToListAsync();
+
+            var moviesLast = allLastMovies.Take(limitLasts).ToList();
+
             var model = new DetailsGenreDTO();
             model.Genre = genre;
             model.LastMovie = lsstMovie;
             model.GenreMovies = allMovies;
+            model.LastAdded = moviesLast;
 
             return model;
         }

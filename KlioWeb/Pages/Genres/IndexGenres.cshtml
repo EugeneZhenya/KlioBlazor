@@ -1,12 +1,12 @@
-﻿@page "/Partitions"
-@model KlioWeb.Pages.Partitions.IndexPartitionsModel
+﻿@page "/Genres"
+@model KlioWeb.Pages.Genres.IndexGenresModel
 @inject CurrentCategory currentCategory
 
 @{
     OpenGraphModel allMeta = new OpenGraphModel();
     currentCategory.SetCurrentCategory(0);
 
-    allMeta.Title = "Розділи";
+    allMeta.Title = "Жанри";
     allMeta.Description = "Медійний архів 'KLIO': Музика, література, історія, фільми, мультфільми, серіали, мультсеріали, наживо, пряма трансляція, дивитися он-лайн";
     allMeta.Robots = "all";
     allMeta.Author = "Eugene Baklanov";
@@ -36,14 +36,14 @@
     <partial name="BannerArea" model="Model.BannerArea" />
 }
 
-<section class="ucm-area ucm-bg" data-background="img /ucm_bg_shape.png">
+<section class="ucm-area ucm-bg" data-background="img/ucm_bg_shape.png">
     <div class="layer">
         <div class="container">
             <div class="row align-items-end mb-55">
                 <div class="col-lg-6">
                     <div class="section-title text-center text-lg-start title-style-two">
-                        <span class="sub-title">Розділи</span>
-                        <h2 class="title">Список розділів</h2>
+                        <span class="sub-title">Жанри</span>
+                        <h2 class="title">Список жанрів</h2>
                     </div>
                 </div>
             </div>
@@ -53,14 +53,14 @@
                         <div class="widget blog-widget" style="width: 100vw;">
                             <div class="sidebar-cat">
                                 <ul>
-                                    @foreach (var item in Model.Partitions)
+                                    @foreach (var item in Model.Genres)
                                     {
                                         <li style="height: 75px;">
                                             <div class="row" style="align-items: stretch; width: 100%; float: left;">
                                                 <div style="align-self: center;">
-                                                    <img src="@($"{Model.AppState.KlioContentUrl}partitions/{item.PictureUrl}")" alt="@Html.Raw(item.Name)" style="height: 50px;">
-                                                    <a href="partition/@item.Id/@StringUtilities.Translit(item.Name)">@Html.Raw(item.Name)</a>
-                                                    <span style="line-height: 50px;">@item.Movies.Count() фільмів</span>
+                                                    <img src="@(Model.AppState.KlioContentUrl + "genres/" + item.IconUrl)" alt="@Html.Raw(item.Name)" style="width: 50px;" />
+                                                    <a href="genre/@item.Id/@StringUtilities.Translit(item.Name)">@Html.Raw(item.Name)</a>
+                                                    <span style="line-height: 50px;">@item.MoviesGenres.Count() фільмів</span>
                                                 </div>
                                             </div>
                                         </li>
@@ -95,4 +95,3 @@
         (adsbygoogle = window.adsbygoogle || []).push({});
     </script>
 }
-
