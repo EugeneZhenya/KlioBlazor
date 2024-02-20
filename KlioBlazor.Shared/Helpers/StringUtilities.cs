@@ -66,5 +66,9 @@ namespace KlioBlazor.Shared.Helpers
             var minutes = Math.Round(seconds / 60, 0, MidpointRounding.AwayFromZero);
             return minutes + " хв";
         }
+
+        public static String ToHex(System.Drawing.Color c) => $"#{c.R:X2}{c.G:X2}{c.B:X2}";
+
+        public static String ToRGB(System.Drawing.Color c) => $"RGB({c.R},{c.G},{c.B})";
     }
 }

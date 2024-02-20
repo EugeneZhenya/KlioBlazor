@@ -19,13 +19,13 @@ namespace KlioWeb.Pages.Genres
         public List<Movie> MoviesOfGenre;
         public string NameOfGenre;
 
-        private readonly ILogger<IndexModel> _logger;
+        private readonly ILogger<DetailsGenreModel> _logger;
         private readonly IGenreRepository _genreRepository;
         public MoviesArea GenreMovies = new MoviesArea();
         public MoviesArea MoviesArea = new MoviesArea();
         public List<Movie> LastAdded { get; set; }
 
-        public DetailsGenreModel(ILogger<IndexModel> logger, IGenreRepository genreRepository)
+        public DetailsGenreModel(ILogger<DetailsGenreModel> logger, IGenreRepository genreRepository)
         {
             _logger = logger;
             _genreRepository = genreRepository;
@@ -39,7 +39,7 @@ namespace KlioWeb.Pages.Genres
             NameOfGenre = model.Genre.Name;
             LastAdded = model.LastAdded;
 
-            GenreMovies = new MoviesArea() { Movies = MoviesOfGenre, Title = NameOfGenre, Subtitle = "Фільми жанру", ShowCategoryName = false, WatchAll = false };
+            GenreMovies = new MoviesArea() { Movies = MoviesOfGenre, Title = NameOfGenre, Subtitle = "Фільми жанру", ShowCategoryName = true, WatchAll = false };
             MoviesArea = new MoviesArea() { Movies = LastAdded, Title = "Останні додані", Subtitle = "Не проґавте", CenterHeader = true, CarouselClass = "bottom-carousel" };
         }
     }

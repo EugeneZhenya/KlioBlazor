@@ -11,7 +11,7 @@ namespace KlioWeb.Pages.Partitions
         public AppState AppState = new AppState();
         public Movie LastMovie;
 
-        private readonly ILogger<IndexModel> _logger;
+        private readonly ILogger<IndexPartitionsModel> _logger;
         private readonly IPartitionRepository _partitionRepository;
 
         public BannerArea BannerArea;
@@ -20,7 +20,7 @@ namespace KlioWeb.Pages.Partitions
         public MoviesArea MoviesArea = new MoviesArea();
         public List<Movie> LastAdded { get; set; }
 
-        public IndexPartitionsModel(ILogger<IndexModel> logger, IPartitionRepository partitionRepository)
+        public IndexPartitionsModel(ILogger<IndexPartitionsModel> logger, IPartitionRepository partitionRepository)
         {
             _logger = logger;
             _partitionRepository = partitionRepository;

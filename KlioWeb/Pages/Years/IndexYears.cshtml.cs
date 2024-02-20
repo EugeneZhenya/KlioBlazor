@@ -4,34 +4,34 @@ using KlioWeb.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace KlioWeb.Pages.Genres
+namespace KlioWeb.Pages.Years
 {
-    public class IndexGenresModel : PageModel
+    public class IndexYearsModel : PageModel
     {
         public AppState AppState = new AppState();
         public Movie LastMovie;
 
-        private readonly ILogger<IndexGenresModel> _logger;
-        private readonly IGenreRepository _genreRepository;
+        private readonly ILogger<IndexYearsModel> _logger;
+        private readonly IMoviesRepository _moviesRepository;
 
         public BannerArea BannerArea;
         public List<Country> LastMovieCountries;
-        public List<Genre> Genres;
-        public MoviesArea MoviesArea = new MoviesArea();
+        public List<DateTime> ListOfYears;
         public List<Movie> LastAdded { get; set; }
+        public MoviesArea MoviesArea = new MoviesArea();
 
-        public IndexGenresModel(ILogger<IndexGenresModel> logger, IGenreRepository genreRepository)
+        public IndexYearsModel(ILogger<IndexYearsModel> logger, IMoviesRepository moviesRepository)
         {
             _logger = logger;
-            _genreRepository = genreRepository;
+            _moviesRepository = moviesRepository;
         }
 
         public async Task OnGetAsync()
         {
-            var response = await _genreRepository.GetIndexGenresDTO();
+            var response = await _moviesRepository.GetIndexYearsDTO();
             LastMovie = response.LastMovie;
             LastMovieCountries = response.LastMovieCountries;
-            Genres = response.AllGenres.OrderBy(x => x.Name).ToList();
+            ListOfYears = response.AllYears;
             LastAdded = response.LastAdded;
 
             BannerArea = new BannerArea() { ShowMovie = LastMovie, ShowMovieCountries = LastMovieCountries };

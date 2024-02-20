@@ -17,7 +17,7 @@ namespace KlioWeb.Pages.AgeLimits
         public string LimitName { get; set; }
         public DetailsAgeLimitsDTO model;
 
-        private readonly ILogger<IndexModel> _logger;
+        private readonly ILogger<DetailsAgeLimitModel> _logger;
         private readonly IAgeLimitsRepository _ageLimitsRepository;
         public MoviesArea AgeLimitsMovies = new MoviesArea();
         public MoviesArea MoviesArea = new MoviesArea();
@@ -25,7 +25,7 @@ namespace KlioWeb.Pages.AgeLimits
         public List<Movie> MoviesOfAgeLimit;
         public Movie LastMovie;
 
-        public DetailsAgeLimitModel(ILogger<IndexModel> logger, IAgeLimitsRepository ageLimitsRepository)
+        public DetailsAgeLimitModel(ILogger<DetailsAgeLimitModel> logger, IAgeLimitsRepository ageLimitsRepository)
         {
             _logger = logger;
             _ageLimitsRepository = ageLimitsRepository;
@@ -40,7 +40,7 @@ namespace KlioWeb.Pages.AgeLimits
             LastAdded = model.LastAdded;
             LastMovie = model.LastMovie;
 
-            AgeLimitsMovies = new MoviesArea() { Movies = MoviesOfAgeLimit, Title = EnumHelper<AgeCategory>.GetDisplayValue(ageEnum), Subtitle = "Вікові обмеження", ShowCategoryName = false };
+            AgeLimitsMovies = new MoviesArea() { Movies = MoviesOfAgeLimit, Title = EnumHelper<AgeCategory>.GetDisplayValue(ageEnum), Subtitle = "Вікові обмеження", ShowCategoryName = true };
             MoviesArea = new MoviesArea() { Movies = LastAdded, Title = "Останні додані", Subtitle = "Не проґавте", CenterHeader = true, CarouselClass = "bottom-carousel" };
         }
     }

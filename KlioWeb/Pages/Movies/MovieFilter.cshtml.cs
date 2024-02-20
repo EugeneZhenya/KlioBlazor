@@ -19,7 +19,7 @@ namespace KlioWeb.Pages.Movies
         public int TotalAmountPages;
         public string TitleDisplay = "";
 
-        private readonly ILogger<IndexModel> _logger;
+        private readonly ILogger<MovieFilterModel> _logger;
         private readonly IGenreRepository _genreRepository;
         private readonly IMoviesRepository _moviesRepository;
 
@@ -32,7 +32,7 @@ namespace KlioWeb.Pages.Movies
 
         public MoviesArea FiltredMovies = new MoviesArea();
 
-        public MovieFilterModel(ILogger<IndexModel> logger, IGenreRepository genreRepository, IMoviesRepository moviesRepository)
+        public MovieFilterModel(ILogger<MovieFilterModel> logger, IGenreRepository genreRepository, IMoviesRepository moviesRepository)
         {
             _logger = logger;
             _genreRepository = genreRepository;

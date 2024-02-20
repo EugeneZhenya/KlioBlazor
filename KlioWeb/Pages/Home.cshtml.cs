@@ -12,10 +12,10 @@ namespace KlioWeb.Pages
         [BindProperty(SupportsGet = true)]
         public string? Param2 { get; set; }
 
-        private readonly ILogger<IndexModel> _logger;
+        private readonly ILogger<HomeModel> _logger;
         private readonly IPartitionRepository _partitionRepository;
 
-        public HomeModel(ILogger<IndexModel> logger, IPartitionRepository partitionRepository)
+        public HomeModel(ILogger<HomeModel> logger, IPartitionRepository partitionRepository)
         {
             _logger = logger;
             _partitionRepository = partitionRepository;

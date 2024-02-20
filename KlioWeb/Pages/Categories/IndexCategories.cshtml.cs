@@ -17,14 +17,14 @@ namespace KlioWeb.Pages.Categories
         public List<Partition> Partitions;
         public List<Movie> LastAdded { get; set; }
 
-        private readonly ILogger<IndexModel> _logger;
+        private readonly ILogger<IndexCategoriesModel> _logger;
         private readonly ICategoryRepository _categoryRepository;
 
         public BannerArea BannerArea;
         public PartitionsArea PartitionsArea = new PartitionsArea();
         public MoviesArea MoviesArea = new MoviesArea();
 
-        public IndexCategoriesModel(ILogger<IndexModel> logger, ICategoryRepository categoryRepository)
+        public IndexCategoriesModel(ILogger<IndexCategoriesModel> logger, ICategoryRepository categoryRepository)
         {
             _logger = logger;
             _categoryRepository = categoryRepository;

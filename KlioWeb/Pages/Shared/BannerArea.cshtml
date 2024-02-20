@@ -73,7 +73,7 @@
                                     }
                                 </li>
                                 <li class="release-time">
-                                    <span><i class="fa-solid fa-calendar-days"></i> @Model.ShowMovie.ReleaseDate.Value.Year</span>
+                                    <span><i class="fa-solid fa-calendar-days"></i> <a href="year/@Model.ShowMovie.ReleaseDate.Value.Year">@Model.ShowMovie.ReleaseDate.Value.Year</a></span>
                                     <span><i class="fa-solid fa-clock"></i> @Html.Raw(StringUtilities.SecondsToMinutes(Model.ShowMovie.Duration))</span>
                                 </li>
                             </ul>

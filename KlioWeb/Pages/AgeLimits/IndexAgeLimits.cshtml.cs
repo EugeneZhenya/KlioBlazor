@@ -12,7 +12,7 @@ namespace KlioWeb.Pages.AgeLimits
         public AppState AppState = new AppState();
         public Movie LastMovie;
 
-        private readonly ILogger<IndexModel> _logger;
+        private readonly ILogger<IndexAgeLimitsModel> _logger;
         private readonly IAgeLimitsRepository _ageLimitsRepository;
 
         public BannerArea BannerArea;
@@ -22,7 +22,7 @@ namespace KlioWeb.Pages.AgeLimits
         public MoviesArea MoviesArea = new MoviesArea();
         public List<Movie> LastAdded { get; set; }
 
-        public IndexAgeLimitsModel(ILogger<IndexModel> logger, IAgeLimitsRepository ageLimitsRepository)
+        public IndexAgeLimitsModel(ILogger<IndexAgeLimitsModel> logger, IAgeLimitsRepository ageLimitsRepository)
         {
             _logger = logger;
             _ageLimitsRepository = ageLimitsRepository;

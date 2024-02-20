@@ -20,13 +20,13 @@ namespace KlioWeb.Pages.Partitions
         public string NameOfPartition;
         public string NameOfCategory;
 
-        private readonly ILogger<IndexModel> _logger;
+        private readonly ILogger<DetailsPartitionModel> _logger;
         private readonly IPartitionRepository _partitionRepository;
         public MoviesArea PartitionMovies = new MoviesArea();
         public MoviesArea MoviesArea = new MoviesArea();
         public List<Movie> LastAdded { get; set; }
 
-        public DetailsPartitionModel(ILogger<IndexModel> logger, IPartitionRepository partitionRepository)
+        public DetailsPartitionModel(ILogger<DetailsPartitionModel> logger, IPartitionRepository partitionRepository)
         {
             _logger = logger;
             _partitionRepository = partitionRepository;
