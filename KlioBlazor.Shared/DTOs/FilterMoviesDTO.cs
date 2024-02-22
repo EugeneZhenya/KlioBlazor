@@ -16,5 +16,7 @@ namespace KlioBlazor.Shared.DTOs
         }
         public string Title { get; set; }
         public int GenreId { get; set; }
+        public int Age { get; set; }
+        public int Year { get; set; }
     }
 }

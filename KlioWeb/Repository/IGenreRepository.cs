@@ -6,7 +6,7 @@ namespace KlioWeb.Repository
     public interface IGenreRepository
     {
         Task<List<Genre>> GetAllGenres();
-        Task<DetailsGenreDTO> GetDetailsGenreDTO(int Id);
+        Task<DetailsGenreDTO> GetDetailsGenreDTO(FilterMoviesDTO filterMoviesDTO);
         Task<Genre> GetGenre(int Id);
         Task<IndexGenresDTO> GetIndexGenresDTO();
     }

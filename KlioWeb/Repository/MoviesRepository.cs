@@ -257,22 +257,27 @@ namespace KlioWeb.Repository
             return response;
         }
 
-        public async Task<DetailsYearDTO> GetDetailsYearDTO(int year)
+        public async Task<DetailsYearDTO> GetDetailsYearDTO(FilterMoviesDTO filterMoviesDTO)
         {
             var limitLasts = 3;
             double maxViews = (double)context.Movies.Max(p => p.ViewCounter);
+            var moviesQueryable = context.Movies.AsQueryable();
+            moviesQueryable = moviesQueryable.Where(m => m.ReleaseDate.Value.Year == filterMoviesDTO.Year).OrderBy(x => x.ReleaseDate);
+
+            double count = await moviesQueryable.CountAsync();
+            double totalAmountPages = Math.Ceiling(count / filterMoviesDTO.RecordsPerPage);
 
             var lsstMovie = await context.Movies
-                .Where(m => m.ReleaseDate.Value.Year == year)
+                .Where(m => m.ReleaseDate.Value.Year == filterMoviesDTO.Year)
                 .OrderByDescending(x => x.PublicDate)
                 .FirstOrDefaultAsync();
 
-            var allMoviews = await context.Movies
-                .Where(m => m.ReleaseDate.Value.Year == year)
-                .OrderBy(x => x.ReleaseDate)
+            var allMovies = await moviesQueryable
+                .Paginate(filterMoviesDTO.Pagination)
+                .Include(x => x.Partition).ThenInclude(x => x.Category)
                 .ToListAsync();
 
-            foreach (var film in allMoviews)
+            foreach (var film in allMovies)
             {
                 film.Rating = Math.Truncate((double)film.ViewCounter / (double)maxViews * 10000) / 100;
             }
@@ -289,9 +294,11 @@ namespace KlioWeb.Repository
                 movie.Rating = Math.Truncate((double)movie.ViewCounter / (double)maxViews * 10000) / 100;
             }
 
+            var yearMovies = new PaginatedResponse<List<Movie>>() { Response = allMovies, TotalAmountPages = (int)totalAmountPages, TotalRecords = (int)count };
+
             var model = new DetailsYearDTO();
             model.LastMovie = lsstMovie;
-            model.YearMovies = allMoviews;
+            model.YearMovies = yearMovies;
             model.LastAdded = moviesLast;
 
             return model;

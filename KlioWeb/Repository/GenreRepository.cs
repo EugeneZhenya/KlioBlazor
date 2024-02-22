@@ -1,6 +1,7 @@
 ﻿using KlioBlazor.Shared.DTOs;
 using KlioBlazor.Shared.Entities;
 using KlioWeb.Data;
+using KlioWeb.Helpers;
 using Microsoft.EntityFrameworkCore;
 using System;
 
@@ -68,34 +69,39 @@ namespace KlioWeb.Repository
             return genre;
         }
 
-        public async Task<DetailsGenreDTO> GetDetailsGenreDTO(int Id)
+        public async Task<DetailsGenreDTO> GetDetailsGenreDTO(FilterMoviesDTO filterMoviesDTO)
         {
             var limitLasts = 3;
             double maxViews = (double)context.Movies.Max(p => p.ViewCounter);
+            var moviesQueryable = context.Movies.AsQueryable();
+            moviesQueryable = moviesQueryable.OrderBy(x => x.ReleaseDate);
 
             var genre = await context.Genres
                 .Include(x => x.MoviesGenres)
-                .FirstOrDefaultAsync(x => x.Id == Id);
+                .FirstOrDefaultAsync(x => x.Id == filterMoviesDTO.GenreId);
 
             if (genre == null) { return null; }
 
-            var allMovieInGenre = await context.MoviesGenres.OrderByDescending(x => x.MovieId).Where(x => x.GenreId == Id).ToListAsync();
-            var listOfIds = from n in allMovieInGenre where n.GenreId == Id select n.MovieId;
+            var allMovieInGenre = await context.MoviesGenres.OrderByDescending(x => x.MovieId).Where(x => x.GenreId == filterMoviesDTO.GenreId).ToListAsync();
+            var listOfIds = from n in allMovieInGenre where n.GenreId == filterMoviesDTO.GenreId select n.MovieId;
             int lastMovieId = allMovieInGenre[0].MovieId;
 
             var lsstMovie = await context.Movies
                 .Where(x => x.Id == lastMovieId)
                 .FirstOrDefaultAsync();
 
-            var allMovies = await (from m in context.Movies where listOfIds.Contains(m.Id) select m)
+            double count = await (from m in moviesQueryable where listOfIds.Contains(m.Id) select m).CountAsync();
+            var allMovies = await (from m in moviesQueryable where listOfIds.Contains(m.Id) select m)
+                .Paginate(filterMoviesDTO.Pagination)
                 .Include(x => x.Partition)
-                .OrderBy(x => x.ReleaseDate)
                 .ToListAsync();
 
             foreach (var film in allMovies)
             {
                 film.Rating = Math.Truncate((double)film.ViewCounter / (double)maxViews * 10000) / 100;
             }
+
+            double totalAmountPages = Math.Ceiling(count / filterMoviesDTO.RecordsPerPage);
 
             var allLastMovies = await context.Movies
                     .OrderByDescending(x => x.PublicDate)
@@ -104,10 +110,12 @@ namespace KlioWeb.Repository
 
             var moviesLast = allLastMovies.Take(limitLasts).ToList();
 
+            var genreMovies = new PaginatedResponse<List<Movie>>() { Response = allMovies, TotalAmountPages = (int)totalAmountPages, TotalRecords = (int)count };
+
             var model = new DetailsGenreDTO();
             model.Genre = genre;
             model.LastMovie = lsstMovie;
-            model.GenreMovies = allMovies;
+            model.GenreMovies = genreMovies;
             model.LastAdded = moviesLast;
 
             return model;

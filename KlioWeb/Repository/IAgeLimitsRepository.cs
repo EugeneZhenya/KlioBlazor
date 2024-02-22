@@ -4,7 +4,7 @@ namespace KlioWeb.Repository
 {
     public interface IAgeLimitsRepository
     {
-        Task<DetailsAgeLimitsDTO> GetDetailsAgeLimitsDTO(int age);
+        Task<DetailsAgeLimitsDTO> GetDetailsAgeLimitsDTO(FilterMoviesDTO filterMoviesDTO);
         Task<IndexAgeLimitsDTO> GetIndexAgeLimitsDTO();
     }
 }

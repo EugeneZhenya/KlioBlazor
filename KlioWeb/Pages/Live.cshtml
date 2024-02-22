@@ -69,16 +69,16 @@
                 <div class="episode-img">
                     <div id="player"></div>
                 </div>
-                <div class="mt-2" style="text-align: center;">
-                    <!-- LiveKlioAds -->
-                    <ins class="adsbygoogle"
-                         style="display:block"
-                         data-ad-client="ca-pub-8113874437122486"
-                         data-ad-slot="7371334300"
-                         data-ad-format="auto"
-                         data-full-width-responsive="true"></ins>
-                </div>
             </div>
+        </div>
+        <div class="mt-2" style="text-align: center;">
+            <!-- LiveKlioAds -->
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-8113874437122486"
+                 data-ad-slot="7371334300"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
         </div>
         <div class="row">
             <div class="col-12">
@@ -129,7 +129,10 @@
                 else {
                     curTitle = SeparateString(selProgrammes[0].Title.Text);
                 }
+            } else {
+                curTitle = SeparateString("Програма передач наразі недоступна");
             }
+
             var curTitleHTML = "";
             for (var i = 0; i < curTitle.length; i++)
             {
@@ -140,16 +143,19 @@
                     curTitleHTML += "<span>" + curTitle[i] + "</span>";
                 }
             }
-            var TotalSeconds = new Date(selProgrammes[0].StopDatetIme) - new Date(selProgrammes[0].StartDatetIme);
-            var NowSeconds = new Date() - new Date(selProgrammes[0].StartDatetIme);
-            curPercent = Math.round(NowSeconds / TotalSeconds * 100);
 
-            if (curPercent < 0) {
-                curPercent = 0;
-                $('#nowOrNot').html("Незабаром");
-            }
-            else {
-                $('#nowOrNot').html("В етері зараз");
+            if (selProgrammes.length > 0) {
+                var TotalSeconds = new Date(selProgrammes[0].StopDatetIme) - new Date(selProgrammes[0].StartDatetIme);
+                var NowSeconds = new Date() - new Date(selProgrammes[0].StartDatetIme);
+                curPercent = Math.round(NowSeconds / TotalSeconds * 100);
+
+                if (curPercent < 0) {
+                    curPercent = 0;
+                    $('#nowOrNot').html("Незабаром");
+                }
+                else {
+                    $('#nowOrNot').html("В етері зараз");
+                }
             }
 
             var sheduleHTML = "";
@@ -163,20 +169,19 @@
                         }
                     }
                 });
-            } else {
-                curTitle = "Програма передач наразі недоступна"
             }
 
             $('#percentage').width(curPercent + '%');
             curTitleElement.innerHTML = curTitleHTML;
-            descElement.innerHTML = selProgrammes[0].Desc.Text;
             $('#schedule').html(sheduleHTML);
 
             if (selProgrammes.length > 0) {
+                descElement.innerHTML = selProgrammes[0].Desc.Text;
                 element.innerHTML = FirstCharUpper(selProgrammes[0].Title.Text);
             }
             else {
                 $('#nowOrNot').html("");
+                element.innerHTML = "Програма передач наразі недоступна";
             }
         }
 

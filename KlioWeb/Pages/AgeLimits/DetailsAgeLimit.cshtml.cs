@@ -12,6 +12,7 @@ namespace KlioWeb.Pages.AgeLimits
 {
     public class DetailsAgeLimitModel : PageModel
     {
+        public FilterMoviesDTO FilterMoviesDTO { get; set; } = new FilterMoviesDTO();
         public AppState AppState = new AppState();
         [BindProperty(SupportsGet = true)]
         public string LimitName { get; set; }
@@ -25,6 +26,13 @@ namespace KlioWeb.Pages.AgeLimits
         public List<Movie> MoviesOfAgeLimit;
         public Movie LastMovie;
 
+        [BindProperty(SupportsGet = true)]
+        public int PageNumber { get; set; } = 1;
+        public int PageSize { get; set; } = 15;
+        [BindProperty(SupportsGet = true)]
+        public int TotalRecords { get; set; }
+        public int TotalAmountPages;
+
         public DetailsAgeLimitModel(ILogger<DetailsAgeLimitModel> logger, IAgeLimitsRepository ageLimitsRepository)
         {
             _logger = logger;
@@ -33,12 +41,26 @@ namespace KlioWeb.Pages.AgeLimits
 
         public async Task OnGetAsync()
         {
-            AgeCategory ageEnum = (AgeCategory)Enum.Parse(typeof(AgeCategory), LimitName);
-            model = await _ageLimitsRepository.GetDetailsAgeLimitsDTO((int)ageEnum);
+            if (!string.IsNullOrEmpty(Request.Query["page"]))
+            {
+                FilterMoviesDTO.Page = int.Parse(Request.Query["page"]);
+            }
+            await LoadMovies();
+        }
 
-            MoviesOfAgeLimit = model.AgesMovies;
+        private async Task LoadMovies()
+        {
+            model = null;
+            AgeCategory ageEnum = (AgeCategory)Enum.Parse(typeof(AgeCategory), LimitName);
+            FilterMoviesDTO.Age = (int)ageEnum;
+            model = await _ageLimitsRepository.GetDetailsAgeLimitsDTO(FilterMoviesDTO);
+
+            MoviesOfAgeLimit = model.AgesMovies.Response;
             LastAdded = model.LastAdded;
             LastMovie = model.LastMovie;
+
+            TotalAmountPages = model.AgesMovies.TotalAmountPages;
+            TotalRecords = model.AgesMovies.TotalRecords;
 
             AgeLimitsMovies = new MoviesArea() { Movies = MoviesOfAgeLimit, Title = EnumHelper<AgeCategory>.GetDisplayValue(ageEnum), Subtitle = "Вікові обмеження", ShowCategoryName = true };
             MoviesArea = new MoviesArea() { Movies = LastAdded, Title = "Останні додані", Subtitle = "Не проґавте", CenterHeader = true, CarouselClass = "bottom-carousel" };

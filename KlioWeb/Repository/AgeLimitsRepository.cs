@@ -1,6 +1,8 @@
 ﻿using KlioBlazor.Shared.DTOs;
+using KlioBlazor.Shared.Entities;
 using KlioBlazor.Shared.Enums;
 using KlioWeb.Data;
+using KlioWeb.Helpers;
 using Microsoft.EntityFrameworkCore;
 
 namespace KlioWeb.Repository
@@ -68,22 +70,27 @@ namespace KlioWeb.Repository
             return response;
         }
 
-        public async Task<DetailsAgeLimitsDTO> GetDetailsAgeLimitsDTO(int age)
+        public async Task<DetailsAgeLimitsDTO> GetDetailsAgeLimitsDTO(FilterMoviesDTO filterMoviesDTO)
         {
             var limitLasts = 3;
             double maxViews = (double)context.Movies.Max(p => p.ViewCounter);
+            var moviesQueryable = context.Movies.AsQueryable();
+            moviesQueryable = moviesQueryable.Where(x => x.AgeLimit == filterMoviesDTO.Age).OrderBy(x => x.ReleaseDate);
+
+            double count = await moviesQueryable.CountAsync();
+            double totalAmountPages = Math.Ceiling(count / filterMoviesDTO.RecordsPerPage);
 
             var lsstMovie = await context.Movies
-                .Where(x => x.AgeLimit == age)
+                .Where(x => x.AgeLimit == filterMoviesDTO.Age)
                 .OrderByDescending(x => x.PublicDate)
                 .FirstOrDefaultAsync();
 
-            var allMoviews = await context.Movies
-                .Where(x => x.AgeLimit == age)
-                .OrderBy(x => x.ReleaseDate)
+            var allMovies = await moviesQueryable
+                .Paginate(filterMoviesDTO.Pagination)
+                .Include(x => x.Partition).ThenInclude(x => x.Category)
                 .ToListAsync();
 
-            foreach (var film in allMoviews)
+            foreach (var film in allMovies)
             {
                 film.Rating = Math.Truncate((double)film.ViewCounter / (double)maxViews * 10000) / 100;
             }
@@ -100,9 +107,11 @@ namespace KlioWeb.Repository
                 movie.Rating = Math.Truncate((double)movie.ViewCounter / (double)maxViews * 10000) / 100;
             }
 
+            var ageMovies = new PaginatedResponse<List<Movie>>() { Response = allMovies, TotalAmountPages = (int)totalAmountPages, TotalRecords = (int)count };
+
             var model = new DetailsAgeLimitsDTO();
             model.LastMovie = lsstMovie;
-            model.AgesMovies = allMoviews;
+            model.AgesMovies = ageMovies;
             model.LastAdded = moviesLast;
 
             return model;

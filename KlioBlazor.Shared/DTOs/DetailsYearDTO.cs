@@ -10,7 +10,7 @@ namespace KlioBlazor.Shared.DTOs
     public class DetailsYearDTO
     {
         public Movie LastMovie { get; set; }
-        public List<Movie> YearMovies { get; set; }
+        public PaginatedResponse<List<Movie>> YearMovies { get; set; }
         public List<Movie> LastAdded { get; set; }
     }
 }
