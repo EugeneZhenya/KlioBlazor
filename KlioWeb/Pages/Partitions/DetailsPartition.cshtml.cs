@@ -36,6 +36,11 @@ namespace KlioWeb.Pages.Partitions
         {
             model = await _partitionRepository.GetDetailsPartitionDTO(PartitionId);
 
+            if (model.LastMovie == null)
+            {
+                model.LastMovie = new Movie() { Id = 0, PatitionId = model.Partition.Id };
+            }
+
             MoviesOfPartition = model.PartitionMovies;
             NameOfPartition = model.Partition.Name;
             NameOfCategory = model.Partition.Category.Name;

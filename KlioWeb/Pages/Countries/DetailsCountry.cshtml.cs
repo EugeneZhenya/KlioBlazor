@@ -1,29 +1,29 @@
 using KlioBlazor.Shared.DTOs;
 using KlioBlazor.Shared.Entities;
-using KlioBlazor.Shared.Helpers;
+using KlioWeb.Pages.Genres;
 using KlioWeb.Pages.Shared;
 using KlioWeb.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace KlioWeb.Pages.Genres
+namespace KlioWeb.Pages.Countries
 {
-    public class DetailsGenreModel : PageModel
+    public class DetailsCountryModel : PageModel
     {
         public FilterMoviesDTO FilterMoviesDTO { get; set; } = new FilterMoviesDTO();
         public AppState AppState = new AppState();
         [BindProperty(SupportsGet = true)]
-        public int GenreId { get; set; }
+        public int CountryId { get; set; }
         [BindProperty(SupportsGet = true)]
-        public string? GenreName { get; set; }
+        public string? CountryName { get; set; }
 
-        public DetailsGenreDTO model;
-        public List<Movie> MoviesOfGenre;
-        public string NameOfGenre;
+        public DetailsCountryDTO model;
+        public List<Movie> MoviesOfCountry;
+        public string NameOfCountry;
 
-        private readonly ILogger<DetailsGenreModel> _logger;
-        private readonly IGenreRepository _genreRepository;
-        public MoviesArea GenreMovies = new MoviesArea();
+        private readonly ILogger<DetailsCountryModel> _logger;
+        private readonly ICountryRepository _countryRepository;
+        public MoviesArea CountryMovies = new MoviesArea();
         public MoviesArea MoviesArea = new MoviesArea();
         public List<Movie> LastAdded { get; set; }
 
@@ -34,10 +34,10 @@ namespace KlioWeb.Pages.Genres
         public int TotalRecords { get; set; }
         public int TotalAmountPages;
 
-        public DetailsGenreModel(ILogger<DetailsGenreModel> logger, IGenreRepository genreRepository)
+        public DetailsCountryModel(ILogger<DetailsCountryModel> logger, ICountryRepository countryRepository)
         {
             _logger = logger;
-            _genreRepository = genreRepository;
+            _countryRepository = countryRepository;
         }
 
         public async Task OnGetAsync()
@@ -52,17 +52,17 @@ namespace KlioWeb.Pages.Genres
         private async Task LoadMovies()
         {
             model = null;
-            FilterMoviesDTO.GenreId = GenreId;
-            model = await _genreRepository.GetDetailsGenreDTO(FilterMoviesDTO);
+            FilterMoviesDTO.CountryId = CountryId;
+            model = await _countryRepository.GetDetailsCountryDTO(FilterMoviesDTO);
 
-            MoviesOfGenre = model.GenreMoviesPage.Response;
-            NameOfGenre = model.Genre.Name;
+            MoviesOfCountry = model.CountryMoviesPage.Response;
+            NameOfCountry = model.Country.Name;
             LastAdded = model.LastAdded;
 
-            TotalAmountPages = model.GenreMoviesPage.TotalAmountPages;
-            TotalRecords = model.GenreMoviesPage.TotalRecords;
+            TotalAmountPages = model.CountryMoviesPage.TotalAmountPages;
+            TotalRecords = model.CountryMoviesPage.TotalRecords;
 
-            GenreMovies = new MoviesArea() { Movies = MoviesOfGenre, Title = NameOfGenre, Subtitle = "Фільми жанру", ShowCategoryName = true, WatchAll = false };
+            CountryMovies = new MoviesArea() { Movies = MoviesOfCountry, Title = NameOfCountry, Subtitle = "Фільми країни", ShowCategoryName = true, WatchAll = false };
             MoviesArea = new MoviesArea() { Movies = LastAdded, Title = "Останні додані", Subtitle = "Не проґавте", CenterHeader = true, CarouselClass = "bottom-carousel" };
         }
     }

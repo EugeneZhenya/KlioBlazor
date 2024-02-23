@@ -11,5 +11,7 @@ namespace KlioBlazor.Shared.DTOs
     {
         public Country Country { get; set; }
         public List<Movie> CountryMovies { get; set; }
+        public PaginatedResponse<List<Movie>> CountryMoviesPage { get; set; }
+        public List<Movie> LastAdded { get; set; }
     }
 }

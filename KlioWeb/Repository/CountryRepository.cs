@@ -7,21 +7,21 @@ using System;
 
 namespace KlioWeb.Repository
 {
-    public class GenreRepository : IGenreRepository
+    public class CountryRepository : ICountryRepository
     {
         private readonly ApplicationDbContext context;
 
-        public GenreRepository(ApplicationDbContext context)
+        public CountryRepository(ApplicationDbContext context)
         {
             this.context = context;
         }
 
-        public async Task<List<Genre>> GetAllGenres()
+        public async Task<List<Country>> GetAllCountries()
         {
-            return await context.Genres.ToListAsync();
+            return await context.Countries.ToListAsync();
         }
 
-        public async Task<IndexGenresDTO> GetIndexGenresDTO()
+        public async Task<IndexCountriesDTO> GetIndexCountriesDTO()
         {
             var limitLasts = 3;
             double maxViews = (double)context.Movies.Max(p => p.ViewCounter);
@@ -37,8 +37,8 @@ namespace KlioWeb.Repository
             movieLast.MoviesCountries = movieLast.MoviesCountries.OrderBy(x => x.Order).ToList();
             var Countries = movieLast.MoviesCountries.Select(x => x.Country).ToList();
 
-            var allGenres = await context.Genres
-                .Include(x => x.MoviesGenres)
+            var allCountries = await context.Countries
+                .Include(x => x.MoviesCountries)
                 .ToListAsync();
 
             var allLastMovies = await context.Movies
@@ -53,42 +53,37 @@ namespace KlioWeb.Repository
                 movie.Rating = Math.Truncate((double)movie.ViewCounter / (double)maxViews * 10000) / 100;
             }
 
-            var response = new IndexGenresDTO();
+            var response = new IndexCountriesDTO();
             response.LastMovie = movieLast;
             response.LastMovieCountries = Countries;
-            response.AllGenres = allGenres;
+            response.AllCountries = allCountries;
             response.LastAdded = moviesLast;
 
             return response;
         }
 
-        public async Task<Genre> GetGenre(int Id)
+        public async Task<Country> GetCountry(int Id)
         {
-            var genre = await context.Genres.FirstOrDefaultAsync(x => x.Id == Id);
-            if (genre == null) { return null; }
-            return genre;
+            var country = await context.Countries.FirstOrDefaultAsync(x => x.Id == Id);
+            if (country == null) { return null; }
+            return country;
         }
 
-        public async Task<DetailsGenreDTO> GetDetailsGenreDTO(FilterMoviesDTO filterMoviesDTO)
+        public async Task<DetailsCountryDTO> GetDetailsCountryDTO(FilterMoviesDTO filterMoviesDTO)
         {
             var limitLasts = 3;
             double maxViews = (double)context.Movies.Max(p => p.ViewCounter);
             var moviesQueryable = context.Movies.AsQueryable();
             moviesQueryable = moviesQueryable.OrderBy(x => x.ReleaseDate);
 
-            var genre = await context.Genres
-                .Include(x => x.MoviesGenres)
-                .FirstOrDefaultAsync(x => x.Id == filterMoviesDTO.GenreId);
+            var country = await context.Countries
+                .Include(x => x.MoviesCountries)
+                .FirstOrDefaultAsync(x => x.Id == filterMoviesDTO.CountryId);
 
-            if (genre == null) { return null; }
+            if (country == null) { return null; }
 
-            var allMovieInGenre = await context.MoviesGenres.OrderByDescending(x => x.MovieId).Where(x => x.GenreId == filterMoviesDTO.GenreId).ToListAsync();
-            var listOfIds = from n in allMovieInGenre where n.GenreId == filterMoviesDTO.GenreId select n.MovieId;
-            int lastMovieId = allMovieInGenre[0].MovieId;
-
-            var lsstMovie = await context.Movies
-                .Where(x => x.Id == lastMovieId)
-                .FirstOrDefaultAsync();
+            var allMovieOfCountry = await context.MoviesCountries.OrderByDescending(x => x.MovieId).Where(x => x.CountryId == filterMoviesDTO.CountryId).ToListAsync();
+            var listOfIds = from n in allMovieOfCountry where n.CountryId == filterMoviesDTO.CountryId select n.MovieId;
 
             double count = await (from m in moviesQueryable where listOfIds.Contains(m.Id) select m).CountAsync();
             var allMovies = await (from m in moviesQueryable where listOfIds.Contains(m.Id) select m)
@@ -110,12 +105,11 @@ namespace KlioWeb.Repository
 
             var moviesLast = allLastMovies.Take(limitLasts).ToList();
 
-            var genreMovies = new PaginatedResponse<List<Movie>>() { Response = allMovies, TotalAmountPages = (int)totalAmountPages, TotalRecords = (int)count };
+            var countryMovies = new PaginatedResponse<List<Movie>>() { Response = allMovies, TotalAmountPages = (int)totalAmountPages, TotalRecords = (int)count };
 
-            var model = new DetailsGenreDTO();
-            model.Genre = genre;
-            model.LastMovie = lsstMovie;
-            model.GenreMoviesPage = genreMovies;
+            var model = new DetailsCountryDTO();
+            model.Country = country;
+            model.CountryMoviesPage = countryMovies;
             model.LastAdded = moviesLast;
 
             return model;

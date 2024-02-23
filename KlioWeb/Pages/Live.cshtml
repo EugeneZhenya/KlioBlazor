@@ -69,6 +69,38 @@
                 <div class="episode-img">
                     <div id="player"></div>
                 </div>
+                <div class="movie-details-prime">
+                    <ul style="min-width: 100%;">
+                        <li class="share"><i class="fa-solid fa-share-nodes"></i><br />Поширити</li>
+                        <li class="streaming" style="text-align: center; margin-right: 25px;">
+                            <div class="fb-share-button" data-href="@($"{Request.Scheme}://{Request.Host}{Request.Path}{Request.QueryString}")" data-layout="" data-size="">
+                                <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=@(Uri.EscapeDataString($"{Request.Scheme}://{Request.Host}{Request.Path}{Request.QueryString}"))&amp;src=sdkpreparse">
+                                    <h6 class="share_link"><i class="fa-brands fa-facebook"></i></h6>
+                                    <span>Facebook</span>
+                                </a>
+                            </div>
+                        </li>
+                        <li class="streaming" style="text-align: center; margin-right: 25px;">
+                            <a target="_blank" href="https://twitter.com/share?url=@(Uri.EscapeDataString($"{Request.Scheme}://{Request.Host}{Request.Path}{Request.QueryString}"))">
+                                <h6 class="share_link"><i class="fa-brands fa-x-twitter"></i></h6>
+                                <span>X-Twitter</span>
+                            </a>
+                        </li>
+                        <li class="streaming" style="text-align: center; margin-right: 25px;">
+                            <a target="_blank" href="https://t.me/share/url?url=@(Uri.EscapeDataString($"{Request.Scheme}://{Request.Host}{Request.Path}{Request.QueryString}&text=KlioTV наживо"))">
+                                <h6 class="share_link"><i class="fa-brands fa-telegram"></i></h6>
+                                <span>Telegram</span>
+                            </a>
+                        </li>
+                        <li class="streaming" style="text-align: center;">
+                            <a target="_blank" href="@Html.Raw($"mailto:?subject=KlioTV наживо&body=Раджу подивитися трансляцію медійного архіву 'KLIO' за цим посиланням: {Request.Scheme}://{Request.Host}{Request.Path}{Request.QueryString}")">
+                                <h6 class="share_link"><i class="fa-brands fa-telegram"></i></h6>
+                                <span>Пошта</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div id="fb-root"></div>
             </div>
         </div>
         <div class="mt-2" style="text-align: center;">
@@ -95,6 +127,7 @@
     <script>
         (adsbygoogle = window.adsbygoogle || []).push({});
     </script>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/uk_UA/sdk.js#xfbml=1&version=v19.0&appId=146729146676782" nonce="34AbfMpj"></script>
     <script>
         var allProgrames = @Html.Raw(Model.jsonString);
         var curTitle = [];
@@ -136,11 +169,11 @@
             var curTitleHTML = "";
             for (var i = 0; i < curTitle.length; i++)
             {
-                if (i % 2 == 0) {
+                if (isEven(i)) {
                     curTitleHTML += curTitle[i];
                 }
                 else {
-                    curTitleHTML += "<span>" + curTitle[i] + "</span>";
+                    curTitleHTML += " <span>" + curTitle[i] + "</span>";
                 }
             }
 
@@ -210,20 +243,14 @@
 
             if (words.length == 1 || words.length == 0)
             {
+                words = [];
+
                 var allWords = inpString.split(" ");
-                var part1 = "";
-                var part2 = "";
-                for (var i = 0; i < (allWords.length / 2); i++)
-                {
-                    part1 += allWords[i] + " ";
-                }
-                for (var i = (allWords.length / 2); i < allWords.length; i++) {
-                    part2 += allWords[i] + " ";
-                }
-                var list = [];
-                list.push(part1);
-                list.push(part2);
-                words = list;
+                var part1 = allWords.slice(0, allWords.length / 2).join(" ");
+                var part2 = allWords.slice(allWords.length / 2, allWords.length).join(" ");
+
+                words.push(part1);
+                words.push(part2);
             }
             return words;
         }
@@ -238,5 +265,14 @@
             strVal += str.substring(0, 1).toUpperCase() + str.substring(1, str.length);
             return strVal;
         }
+
+        function isEven(number) {
+            return number % 2 === 0;
+        }
+
+        function isOdd(number) {
+            return number % 2 !== 0;
+        }
+
     </script>
 }

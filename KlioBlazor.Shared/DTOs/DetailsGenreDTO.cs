@@ -11,7 +11,8 @@ namespace KlioBlazor.Shared.DTOs
     {
         public Genre Genre { get; set; }
         public Movie LastMovie { get; set; }
-        public PaginatedResponse<List<Movie>> GenreMovies { get; set; }
+        public List<Movie> GenreMovies { get; set; }
+        public PaginatedResponse<List<Movie>> GenreMoviesPage { get; set; }
         public List<Movie> LastAdded { get; set; }
     }
 }

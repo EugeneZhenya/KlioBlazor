@@ -18,5 +18,6 @@ namespace KlioBlazor.Shared.DTOs
         public int GenreId { get; set; }
         public int Age { get; set; }
         public int Year { get; set; }
+        public int CountryId { get; set; }
     }
 }
