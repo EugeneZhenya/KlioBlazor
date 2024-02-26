@@ -9,6 +9,7 @@ namespace KlioWeb.Repository
         Task<DetailsYearDTO> GetDetailsYearDTO(FilterMoviesDTO filterMoviesDTO);
         Task<HomePageDTO> GetHomePageDTO();
         Task<IndexYearsDTO> GetIndexYearsDTO();
+        Task<Movie> GetMovieById(int Id);
         Task<PaginatedResponse<List<Movie>>> GetMoviesFiltered(FilterMoviesDTO filterMoviesDTO);
     }
 }

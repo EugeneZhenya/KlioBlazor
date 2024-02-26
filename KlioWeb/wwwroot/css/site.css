@@ -3776,7 +3776,7 @@ input::file-selector-button {
         .actor .techBox img {
             position: absolute;
             bottom: 0;
-            height: 90%;
+            /* height: 90%; */
             transition: height 0.5s;
         }
 
@@ -3968,4 +3968,22 @@ input::file-selector-button {
         1px 22px 10px rgba(16,16,16,0.2),
         1px 25px 35px rgba(16,16,16,0.2),
         1px 30px 60px rgba(16,16,16,0.4);
+}
+
+.griditem {
+    display: flex;
+    float: left;
+    width: 275px;
+}
+
+.griditem--width2 {
+    width: 50%;
+}
+
+.griditem--width3 {
+    width: 100%;
+}
+
+a.nav-link:hover {
+    cursor: pointer;
 }

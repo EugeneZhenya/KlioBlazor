@@ -176,6 +176,23 @@ namespace KlioWeb.Repository
 
                 }).ToList();
 
+            model.Partitions = await context.Partitions
+                .Where(x => x.CategoryId == movie.Partition.CategoryId)
+                .OrderBy(x => x.Name)
+                .Include(x => x.Movies)
+                .ToListAsync();
+
+            var queryPrevNext = (from l in context.Movies where l.PatitionId == movie.PatitionId &&
+             (l.ReleaseDate < movie.ReleaseDate) orderby l.ReleaseDate descending, l.ReleaseDate descending
+             select l).Take(1)
+             .Concat((
+             from l in context.Movies
+             where l.PatitionId == movie.PatitionId &&
+             (l.ReleaseDate > movie.ReleaseDate) orderby l.ReleaseDate, l.ReleaseDate
+             select l).Take(1)).ToList();
+
+            model.OtherMovies = queryPrevNext;
+
             return model;
         }
 
@@ -302,6 +319,11 @@ namespace KlioWeb.Repository
             model.LastAdded = moviesLast;
 
             return model;
+        }
+
+        public async Task<Movie> GetMovieById(int Id)
+        {
+            return await context.Movies.Where(x => x.Id == Id).FirstOrDefaultAsync();
         }
     }
 }

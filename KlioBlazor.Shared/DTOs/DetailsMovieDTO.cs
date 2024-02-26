@@ -19,5 +19,7 @@ namespace KlioBlazor.Shared.DTOs
         public List<Creator> Creators { get; set; }
         public List<Keyword> Keywords { get; set; }
         public List<MovieInfo> MovieInfos { get; set; }
+        public List<Partition> Partitions { get; set; }
+        public List<Movie> OtherMovies { get; set; }
     }
 }

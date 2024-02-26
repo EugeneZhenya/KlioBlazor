@@ -42,8 +42,14 @@
 
     ViewBag.Meta = allMeta;
 
-    string fileUrl = $"{Model.appState.KlioContentUrl}movies/{Model.BannerArea.ShowMovie.Id}/Trailer/index.m3u8";
-    string posterUrl = $"{Model.appState.KlioContentUrl}movies/{Model.BannerArea.ShowMovie.Id}/Trailer/cover.jpg";
+    string fileUrl = "";
+    string posterUrl = "";
+
+    if (Model.BannerArea.ShowMovie != null)
+    {
+        fileUrl = $"{Model.appState.KlioContentUrl}movies/{Model.BannerArea.ShowMovie.Id}/Trailer/index.m3u8";
+        posterUrl = $"{Model.appState.KlioContentUrl}movies/{Model.BannerArea.ShowMovie.Id}/Trailer/cover.jpg";
+    }
 }
 
 @if (Model.LastMovie != null)

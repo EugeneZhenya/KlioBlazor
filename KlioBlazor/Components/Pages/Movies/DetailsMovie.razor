@@ -157,9 +157,12 @@ else
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-8">
-                    <div class="section-title title-style-three text-center mb-70">
-                        <h2 class="title">Над фільмом працювали</h2>
-                    </div>
+                    @if (model.Staff.Count > 0 || model.Actors.Count > 0 || model.TranslateStaff.Count > 0 || model.TranslateActors.Count > 0)
+                    {
+                        <div class="section-title title-style-three text-center mb-70">
+                            <h2 class="title">Над фільмом працювали</h2>
+                        </div>
+                    }
                     @if (model.Staff.Count > 0)
                     {
                         <div class="pricing-box-wrap">
@@ -385,6 +388,9 @@ else
                                                 case "es":
                                                     @infoOrigLangES(inf)
                                                     break;
+                                                case "de":
+                                                    @infoOrigLangDE(inf)
+                                                    break;
                                             }
                                             break;
                                         case "TranslateLanguage":
@@ -404,8 +410,16 @@ else
                                         case "InstagramVideo":
                                             @infoInstagramVideoUrl(inf)
                                             break;
-                                        case "TmdbMovieId":
-                                            @infoTmdbMovie(inf)
+                                        case "TmdbId":
+                                            switch (inf.Text)
+                                            {
+                                                case "movie":
+                                                    @infoTmdbMovie(inf)
+                                                    break;
+                                                case "tv":
+                                                    @infoTmdbTV(inf)
+                                                    break;
+                                            }
                                             break;
                                         case "ImdbId":
                                             @infoImdbMovie(inf)
@@ -452,16 +466,18 @@ else
     private RenderFragment<MovieInfo> infoOrigLangEN = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><img src="inf/Flag_of_the_United_Kingdom.png" class="info-img" alt="Мова оригіналу: @info.Remark" title="Мова оригіналу: @info.Remark" /><div><div class="info-content">Мова оригіналу</div><div class="info-ingredients">@info.Remark</div></div></div>;
     private RenderFragment<MovieInfo> infoOrigLangPL = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><img src="inf/Flag_of_Poland.png" class="info-img" alt="Мова оригіналу: @info.Remark" title="Мова оригіналу: @info.Remark" /><div><div class="info-content">Мова оригіналу</div><div class="info-ingredients">@info.Remark</div></div></div>;
     private RenderFragment<MovieInfo> infoOrigLangES = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><img src="inf/Flag_of_Spain.png" class="info-img" alt="Мова оригіналу: @info.Remark" title="Мова оригіналу: @info.Remark" /><div><div class="info-content">Мова оригіналу</div><div class="info-ingredients">@info.Remark</div></div></div>;
+    private RenderFragment<MovieInfo> infoOrigLangDE = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><img src="inf/Flag_of_Germany.png" class="info-img" alt="Мова оригіналу: @info.Remark" title="Мова оригіналу: @info.Remark" /><div><div class="info-content">Мова оригіналу</div><div class="info-ingredients">@info.Remark</div></div></div>;
     private RenderFragment<MovieInfo> infoYoutubeUrl = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><a href="https://www.youtube.com/watch?v=@info.Text" target="_blank"><img src="inf/YouTube.png" class="info-img" alt="YouTube" title="YouTube" /></a><div><div class="info-content"><a href="https://www.youtube.com/watch?v=@info.Text" target="_blank">Дивитися на YouTube</a></div><div class="info-ingredients">YouTube-канал: @info.Remark</div></div></div>;
     private RenderFragment<MovieInfo> infoKlioYoutube = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><a href="https://www.youtube.com/watch?v=@info.Text" target="_blank"><img src="inf/KlioYouTube.png" class="info-img" alt="YouTube KlioDpUa" title="YouTube KlioDpUa" /></a><div><div class="info-content"><a href="https://www.youtube.com/watch?v=@info.Text" target="_blank">Дивитися на нашому YouTube-каналі</a></div></div></div>;
     private RenderFragment<MovieInfo> infoInstagramVideoUrl = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><a href="https://www.instagram.com/p/@info.Text/" target="_blank"><img src="inf/Instagram-Logo.png" class="info-img" alt="Instagram" title="Instagram" /></a><div><div class="info-content"><a href="https://www.instagram.com/p/@info.Text/" target="_blank">Дивитися на Instagram</a></div><div class="info-ingredients">Користувач: @info.Remark</div></div></div>;
     private RenderFragment<MovieInfo> infoTransLangUA = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><img src="inf/Flag_of_Ukraine.png" class="info-img" alt="Спосіб перекладу: @info.Remark" title="Спосіб перекладу: @info.Remark" /><div><div class="info-content">Спосіб перекладу</div><div class="info-ingredients">@info.Remark</div></div></div>;
-    private RenderFragment<MovieInfo> infoTmdbMovie = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><a href="https://www.themoviedb.org/movie/@info.Text" target="_blank"><img src="inf/TMDB.png" class="info-img" alt="TMDB" title="The Movie Database" /></a><div><div class="info-content"><a href="https://www.themoviedb.org/movie/@info.Text" target="_blank">The Movie Database</a></div></div></div>;
-    private RenderFragment<MovieInfo> infoImdbMovie = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><a href="https://www.imdb.com/title/@info.Text" target="_blank"><img src="inf/IMDB.png" class="info-img" alt="IMDB" title="Internet Movie Database" /></a><div><div class="info-content"><a href="https://www.imdb.com/title/@info.Text" target="_blank">Internet Movie Database</a></div></div></div>;
+    private RenderFragment<MovieInfo> infoTmdbMovie = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><a href="https://www.themoviedb.org/movie/@info.Remark" target="_blank"><img src="inf/TMDB.png" class="info-img" alt="TMDB Movie" title="The Movie Database" /></a><div><div class="info-content"><a href="https://www.themoviedb.org/movie/@info.Remark" target="_blank">Інформація про фільм у The Movie Database</a></div></div></div>;
+    private RenderFragment<MovieInfo> infoTmdbTV = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><a href="https://www.themoviedb.org/tv/@info.Remark" target="_blank"><img src="inf/TMDB.png" class="info-img" alt="TMDB TV" title="The Movie Database" /></a><div><div class="info-content"><a href="https://www.themoviedb.org/tv/@info.Remark" target="_blank">Інформація про серіал у The Movie Database</a></div></div></div>;
+    private RenderFragment<MovieInfo> infoImdbMovie = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><a href="https://www.imdb.com/title/@info.Text" target="_blank"><img src="inf/IMDB.png" class="info-img" alt="IMDB" title="Internet Movie Database" /></a><div><div class="info-content"><a href="https://www.imdb.com/title/@info.Text" target="_blank">Інформація в Internet Movie Database</a></div></div></div>;
     private RenderFragment<MovieInfo> infoWikiMovie = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><a href="@info.Text" target="_blank"><img src="inf/wiki.png" class="info-img" alt="IMDB" title="Wikipedia" /></a><div><div class="info-content"><a href="@info.Text" target="_blank">Стаття у Вікіпедії</a></div></div></div>;
     private RenderFragment<MovieInfo> infoAward = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><img src="inf/award.png" class="info-img" alt="Нагорода" title="Нагорода" /><div><div class="info-content">@info.Text</div><div class="info-ingredients">@_infoMArkup(info.Remark)</div></div></div>;
     private RenderFragment<MovieInfo> infoFullDescr = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><img src="inf/Plot.png" class="info-img" alt="Сюжет" title="Сюжет" /><div><div class="info-content">Сюжет:</div><div class="info-ingredients">@_infoMArkup(info.Text)</div></div></div>;
-    private RenderFragment<MovieInfo> infoTracklist = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><img src="inf/song.png" class="info-img" alt="Сюжет" title="Виконані пісні" /><div><div class="info-content">Виконані пісні:</div><div class="info-ingredients">@_infoMArkup(info.Text)</div></div></div>;
+    private RenderFragment<MovieInfo> infoTracklist = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><img src="inf/song.png" class="info-img" alt="Виконані пісні" title="Виконані пісні" /><div><div class="info-content">Виконані пісні:</div><div class="info-ingredients">@_infoMArkup(info.Text)</div></div></div>;
     private RenderFragment<MovieInfo> infoBudget = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><img src="inf/budget.jfif" class="info-img" alt="Кошторис: @info.Text" title="Кошторис: @info.Text" /><div><div class="info-content">Кошторис: @info.Text</div></div></div>;
     private RenderFragment<MovieInfo> infoProfit = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><img src="inf/profit.jfif" class="info-img" alt="Прибуток: @info.Text" title="Прибуток: @info.Text" /><div><div class="info-content">Прибуток: @info.Text</div></div></div>;
     private RenderFragment<MovieInfo> infoMovieWebSite = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><a href="@info.Text" target="_blank"><img src="inf/website.png" class="info-img" alt="Вебсайт" title="Вебсайт" /></a><div><div class="info-content"><a href="@info.Text" target="_blank">Вебсайт фільму</a></div></div></div>;
