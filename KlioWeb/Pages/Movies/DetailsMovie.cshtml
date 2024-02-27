@@ -135,26 +135,29 @@
                             </ul>
                         </div>
                         @Html.Raw(Model.model.Movie.Summary)
-                        <div class="movie-details-prime">
-                            <ul style="min-width: 100%;">
-                                <li class="streaming">
-                                    @foreach (var creator in Model.model.Creators)
-                                    {
-                                        <a href="creator/@creator.Id/@StringUtilities.Translit(creator.Title)">
-                                            <img src="@($"{Model.AppState.KlioContentUrl}creators/{creator.LogoUrl}")" alt="@Html.Raw(creator.Title)" style="width: 50px;" title="@Html.Raw(creator.Title)" />
-                                        </a>
-                                    }
-                                </li>
-                                @if (Model.model.Movie.HasTrailer)
-                                {
-                                    <li class="watch">
-                                        <a class="btn popup-video" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#trailer_modal">
-                                            <i class="fa-solid fa-play"></i> Вістовик
-                                        </a>
+                        @if (Model.model.Creators.Count > 0 || Model.model.Movie.HasTrailer)
+                        {
+                            <div class="movie-details-prime">
+                                <ul style="min-width: 100%;">
+                                    <li class="streaming">
+                                        @foreach (var creator in Model.model.Creators)
+                                        {
+                                            <a href="creator/@creator.Id/@StringUtilities.Translit(creator.Title)">
+                                                <img src="@($"{Model.AppState.KlioContentUrl}creators/{creator.LogoUrl}")" alt="@Html.Raw(creator.Title)" style="width: 50px;" title="@Html.Raw(creator.Title)" />
+                                            </a>
+                                        }
                                     </li>
-                                }
-                            </ul>
-                        </div>
+                                    @if (Model.model.Movie.HasTrailer)
+                                    {
+                                        <li class="watch">
+                                            <a class="btn popup-video" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#trailer_modal">
+                                                <i class="fa-solid fa-play"></i> Вістовик
+                                            </a>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        }
                     </div>
                 </div>
                 <div class="col-xl-6 col-lg-6" style="align-self: start; margin-top: 10px;">
@@ -425,10 +428,10 @@
                             <div class="ucm-nav-wrap" style="margin: 0;">
                                 <ul class="nav nav-tabs owl-filter-bar">
                                     <li class="nav-item">
-                                        <a class="nav-link active" data-filter="*">Всі</a>
+                                        <a class="nav-link active" data-filter="*">Все</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" data-filter=".filter-basics">Основні</a>
+                                        <a class="nav-link" data-filter=".filter-basics">Основне</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link" data-filter=".filter-links">Посилання</a>
@@ -653,7 +656,6 @@
 }
 
 @section Scripts {
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8113874437122486" crossorigin="anonymous"></script>
     <script>
         (adsbygoogle = window.adsbygoogle || []).push({});
     </script>

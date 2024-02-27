@@ -12,5 +12,7 @@ namespace KlioBlazor.Shared.DTOs
         public Creator Creator { get; set; }
         public Movie LastMovie { get; set; }
         public List<Movie> CreatorMovies { get; set; }
+        public PaginatedResponse<List<Movie>> CreatorMoviesPage { get; set; }
+        public List<Movie> LastAdded { get; set; }
     }
 }

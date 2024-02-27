@@ -325,5 +325,14 @@ namespace KlioWeb.Repository
         {
             return await context.Movies.Where(x => x.Id == Id).FirstOrDefaultAsync();
         }
+
+        public async Task IncrementViewCounter(int Id)
+        {
+            var movie = await context.Movies.Where(x => x.Id == Id).FirstOrDefaultAsync();
+            movie.ViewCounter = movie.ViewCounter + 1;
+
+            context.Attach(movie).State = EntityState.Modified;
+            await context.SaveChangesAsync();
+        }
     }
 }

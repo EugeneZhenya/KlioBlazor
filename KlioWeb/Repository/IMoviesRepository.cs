@@ -11,5 +11,6 @@ namespace KlioWeb.Repository
         Task<IndexYearsDTO> GetIndexYearsDTO();
         Task<Movie> GetMovieById(int Id);
         Task<PaginatedResponse<List<Movie>>> GetMoviesFiltered(FilterMoviesDTO filterMoviesDTO);
+        Task IncrementViewCounter(int Id);
     }
 }

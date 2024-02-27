@@ -32,6 +32,8 @@ namespace KlioWeb.Pages.Movies
             model = await _moviesRepository.GetDetailsMovieDTO(MovieId);
             Partitions = model.Partitions.OrderByDescending(x => x.Movies.Count).ToList();
             OtherMovies = new MoviesArea() { Movies = model.OtherMovies, Title = model.Movie.Partition.Name, Subtitle = "Інші відео розділу", CenterHeader = false, CarouselClass = "another-carousel" };
+
+            await _moviesRepository.IncrementViewCounter(MovieId);
         }
     }
 }
