@@ -71,6 +71,7 @@ namespace KlioWeb.Repository
                     .Include(x => x.Partition).ThenInclude(x => x.Category)
                     .Include(x => x.MoviesGenres).ThenInclude(x => x.Genre)
                     .Include(x => x.MoviesCountries).ThenInclude(x => x.Country)
+                    .Include(x => x.MovieInfos)
                     .FirstOrDefaultAsync();
             }
             else
@@ -80,6 +81,7 @@ namespace KlioWeb.Repository
                     .Include(x => x.Partition).ThenInclude(x => x.Category)
                     .Include(x => x.MoviesGenres).ThenInclude(x => x.Genre)
                     .Include(x => x.MoviesCountries).ThenInclude(x => x.Country)
+                    .Include(x => x.MovieInfos)
                     .Where(x => x.Partition.CategoryId == catId)
                     .FirstOrDefaultAsync();
             }

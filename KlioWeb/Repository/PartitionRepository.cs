@@ -30,6 +30,7 @@ namespace KlioWeb.Repository
                 .Include(x => x.Partition).ThenInclude(x => x.Category)
                 .Include(x => x.MoviesGenres).ThenInclude(x => x.Genre)
                 .Include(x => x.MoviesCountries).ThenInclude(x => x.Country)
+                .Include(x => x.MovieInfos)
                 .FirstOrDefaultAsync();
 
             movieLast.MoviesGenres = movieLast.MoviesGenres.OrderBy(x => x.Order).ToList();

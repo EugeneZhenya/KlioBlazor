@@ -20,5 +20,6 @@ namespace KlioBlazor.Shared.DTOs
         public int Year { get; set; }
         public int CountryId { get; set; }
         public int CreatorId { get; set; }
+        public int KeywordId { get; set; }
     }
 }

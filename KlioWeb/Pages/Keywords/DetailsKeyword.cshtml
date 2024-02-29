@@ -1,0 +1,158 @@
+﻿@page "/keyword/{KeywordId:int}/{KeywordName?}"
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model KlioWeb.Pages.Keywords.DetailsKeywordModel
+@inject CurrentCategory currentCategory
+
+@{
+    OpenGraphModel allMeta = new OpenGraphModel();
+
+    allMeta.Title = Model.model.Keyword.Word;
+    allMeta.Description = Model.model.Keyword.Word + " дивитися он-лайн";
+    allMeta.Robots = "all";
+    allMeta.Author = "Eugene Baklanov";
+    allMeta.Keywords = "Klio, архів, video, відео, історія, література, політика, музика, music, наживо, трансляція, пряма трансляція, дивитися он-лайн, фільм, серіал, сезон, епізод, мультфільм, мультсерал";
+    allMeta.Type = "article";
+    allMeta.Image = ($"{Request.Scheme}://{Request.Host}/img/WatchTVMockup.jpg").Replace("https://", "http://");
+    allMeta.SecureImage = ($"{Request.Scheme}://{Request.Host}/img/WatchTVMockup.jpg").Replace("http://", "https://");
+    allMeta.ImageWidth = 1920;
+    allMeta.ImageHeight = 1080;
+    allMeta.ImageType = "image/jpeg";
+    allMeta.Url = $"{Request.Scheme}://{Request.Host}{Request.Path}{Request.QueryString}";
+    allMeta.SiteName = "Медійний архів 'KLIO'";
+    allMeta.Locale = "uk_UA";
+    allMeta.FBAdmins = "100007730161243,100002204709179";
+    allMeta.FBAppId = "885986785210347";
+    allMeta.Image2 = ($"{Request.Scheme}://{Request.Host}/img/logo_750_transp.png").Replace("https://", "http://");
+    allMeta.SecureImage2 = ($"{Request.Scheme}://{Request.Host}/img/logo_750_transp.png").Replace("http://", "https://");
+    allMeta.ImageWidth2 = 750;
+    allMeta.ImageHeight2 = 750;
+    allMeta.ImageType2 = "image/png";
+
+    currentCategory.SetCurrentCategory(0);
+
+    ViewBag.Meta = allMeta;
+}
+
+<section class="movie-details-area" data-background="@($"{Model.AppState.KlioContentUrl}movies/{Model.model.LastMovie.Id}/background.jpg")">
+        <div class="movie-details-overlay">
+            <div class="container">
+                <div class="row align-items-center position-relative">
+                    <div class="col-xl-6 col-lg-6">
+                        <div class="movie-details-content">
+                            <div class="section-title title-style-two">
+                                <span class="sub-title">Ключове слово</span>
+                            </div>
+                            <h2>
+                                @for (int i = 0; i < SeparateTitle(Model.model.Keyword.Word).Length; i++)
+                                {
+                                    if (i % 2 == 0)
+                                    {
+                                        @SeparateTitle(Model.model.Keyword.Word)[i]
+                                    }
+                                    else
+                                    {
+                                        <span>@SeparateTitle(Model.model.Keyword.Word)[i]</span>
+                                    }
+                                }
+                            </h2>
+                            <div class="banner-meta">
+                                <ul style="justify-content: end;">
+                                    <li class="release-time">
+                                        <span>@Model.TotalRecords фільмів</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            @Html.Raw(Model.model.Keyword.Comment)
+
+                            <div class="movie-details-prime">
+                            <ul style="min-width: 100%;">
+                                <li class="share"><i class="fa-solid fa-share-nodes"></i><br />Поширити</li>
+                                <li class="streaming" style="text-align: center; margin-right: 25px;">
+                                    <div class="fb-share-button" data-href="@($"{Request.Scheme}://{Request.Host}{Request.Path}{Request.QueryString}")" data-layout="" data-size="">
+                                        <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=@(Uri.EscapeDataString($"{Request.Scheme}://{Request.Host}{Request.Path}{Request.QueryString}"))&amp;src=sdkpreparse">
+                                            <h6 class="share_link"><i class="fa-brands fa-facebook"></i></h6>
+                                            <span>Facebook</span>
+                                        </a>
+                                    </div>
+                                </li>
+                                <li class="streaming" style="text-align: center; margin-right: 25px;">
+                                    <a target="_blank" href="https://twitter.com/share?url=@(Uri.EscapeDataString($"{Request.Scheme}://{Request.Host}{Request.Path}{Request.QueryString}"))">
+                                        <h6 class="share_link"><i class="fa-brands fa-x-twitter"></i></h6>
+                                        <span>X-Twitter</span>
+                                    </a>
+                                </li>
+                                <li class="streaming" style="text-align: center; margin-right: 25px;">
+                                    <a target="_blank" href="https://t.me/share/url?url=@(Uri.EscapeDataString($"{Request.Scheme}://{Request.Host}{Request.Path}{Request.QueryString}&text={Model.model.Keyword.Word}"))">
+                                        <h6 class="share_link"><i class="fa-brands fa-telegram"></i></h6>
+                                        <span>Telegram</span>
+                                    </a>
+                                </li>
+                                <li class="streaming" style="text-align: center;">
+                                    <a target="_blank" href="@(Html.Raw($"mailto:?subject={Model.model.Keyword.Word}&body=Раджу подивитися цікаві відео за цим посиланням: {Request.Scheme}://{Request.Host}{Request.Path}{Request.QueryString}"))">
+                                        <h6 class="share_link"><i class="fa-brands fa-telegram"></i></h6>
+                                        <span>Пошта</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div id="fb-root"></div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-6 col-lg-6" style="align-self: start; margin-top: 10px;">
+                        <div class="movie-details-img" style="text-align: center;">
+                            @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                            {
+                                <img src="@Model.ImageUrl" alt="@Html.Raw(Model.model.Keyword.Word)" style="max-width: 100%;">
+                            }
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+
+<partial name="MoviesArea" model="Model.KeywordMovies" />
+
+<paging page-no="Model.FilterMoviesDTO.Page"
+        page-size="Model.PageSize"
+        total-records="Model.TotalRecords"
+        max-displayed-pages="5"
+        query-string-key-page-no="page"
+        show-page-size-nav="false"
+        show-total-pages="false"
+        show-total-records="false"
+        class="mb-5 mt-5"
+        class-paging-control="pagination justify-content-center">
+</paging>
+
+<div style="text-align: center;">
+    <!-- LiveKlioAds -->
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-8113874437122486"
+         data-ad-slot="7371334300"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+</div>
+
+@if (Model.MoviesArea != null)
+{
+    <partial name="MoviesArea" model="Model.MoviesArea" />
+}
+
+@functions {
+    private string[] SeparateTitle(string title)
+    {
+        return StringUtilities.SeparateString(title);
+    }
+}
+
+@section Scripts {
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/uk_UA/sdk.js#xfbml=1&version=v19.0&appId=146729146676782" nonce="34AbfMpj"></script>
+}
