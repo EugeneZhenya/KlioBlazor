@@ -1,0 +1,107 @@
+﻿@page "/people"
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model KlioWeb.Pages.People.IndexPeopleModel
+@inject CurrentCategory currentCategory
+
+@{
+    OpenGraphModel allMeta = new OpenGraphModel();
+    currentCategory.SetCurrentCategory(0);
+
+    allMeta.Title = "Особи";
+    allMeta.Description = "Медійний архів 'KLIO': Музика, література, історія, фільми, мультфільми, серіали, мультсеріали, наживо, пряма трансляція, дивитися он-лайн";
+    allMeta.Robots = "all";
+    allMeta.Author = "Eugene Baklanov";
+    allMeta.Keywords = "Klio, архів, video, відео, історія, література, політика, музика, music, наживо, трансляція, пряма трансляція, дивитися он-лайн, фільм, серіал, сезон, епізод, мультфільм, мультсерал";
+    allMeta.Type = "article";
+    allMeta.Image = ($"{Request.Scheme}://{Request.Host}/img/WatchTVMockup.jpg").Replace("https://", "http://");
+    allMeta.SecureImage = ($"{Request.Scheme}://{Request.Host}/img/WatchTVMockup.jpg").Replace("http://", "https://");
+    allMeta.ImageWidth = 1920;
+    allMeta.ImageHeight = 1080;
+    allMeta.ImageType = "image/jpeg";
+    allMeta.Url = $"{Request.Scheme}://{Request.Host}{Request.Path}{Request.QueryString}";
+    allMeta.SiteName = "Медійний архів 'KLIO'";
+    allMeta.Locale = "uk_UA";
+    allMeta.FBAdmins = "100007730161243,100002204709179";
+    allMeta.FBAppId = "885986785210347";
+    allMeta.Image2 = ($"{Request.Scheme}://{Request.Host}/img/logo_750_transp.png").Replace("https://", "http://");
+    allMeta.SecureImage2 = ($"{Request.Scheme}://{Request.Host}/img/logo_750_transp.png").Replace("http://", "https://");
+    allMeta.ImageWidth2 = 750;
+    allMeta.ImageHeight2 = 750;
+    allMeta.ImageType2 = "image/png";
+
+    ViewBag.Meta = allMeta;
+}
+
+<partial name="BreadcrumbArea" model="Model.BreadcrumbArea" />
+
+<section class="ucm-area ucm-bg" data-background="img/ucm_bg_shape.png">
+    <div class="layer">
+        <div class="container">
+            <div class="row align-items-start mb-55">
+                <div class="section-title text-center text-lg-start title-style-two">
+                    <span class="sub-title">Люди</span>
+                    <h2 class="title">Список персоналій</h2>
+                </div>
+                <div class="row">
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active">
+                            <div class="ucm-active" style="display: -webkit-flex; -webkit-flex-direction: column; -webkit-flex-wrap: wrap; -webkit-flex-direction: row;">
+                                <div class="rc-post" style="width: 100%;">
+
+                                    <paging page-no="Model.PaginationDTO.Page"
+                                            page-size="Model.PageSize"
+                                            total-records="Model.TotalRecords"
+                                            max-displayed-pages="5"
+                                            query-string-key-page-no="page"
+                                            show-page-size-nav="false"
+                                            show-total-pages="false"
+                                            show-total-records="false"
+                                            class="mb-5 mt-5"
+                                            class-paging-control="pagination justify-content-center">
+                                    </paging>
+
+                                    <ul style="display: flex; align-items: flex-start; flex-direction: row; flex-wrap: wrap; justify-content: center;">
+                                        @foreach (var item in Model.People)
+                                        {
+                                            <li class="rc-post-item" style="min-width: 320px; margin-right: 1rem; @(item.IsFemale ? "border: 1px solid #FFCCFF;" : "border: 1px solid #ccc;")">
+                                                <div class="thumb">
+                                                    <a href="person/@item.Id/@StringUtilities.Translit(item.Name)">
+                                                        <img src="@(Model.AppState.KlioContentUrl + "people/" + item.PictureUrl)" alt="@item.Name" style="max-width: 100px; margin-left: .5rem; margin-right: .5rem;" />
+                                                    </a>
+                                                </div>
+                                                <div class="content" style="height: 125px; position: relative;">
+                                                    <h5 class="title"><a href="person/@item.Id/@StringUtilities.Translit(item.Name)">@item.NameBrief</a></h5>
+                                                    @if (item.DateOfBirth != null)
+                                                    {
+                                                        <span class="date"><i class="fa-solid fa-cake-candles"></i> @StringUtilities.DateToString(item.DateOfBirth, "dd MMMM yyyy")</span>
+                                                    }
+                                                    @if (item.DateOfDeath != null)
+                                                    {
+                                                        <span class="date"><i class="fa-solid fa-cross"></i> @StringUtilities.DateToString(item.DateOfDeath, "dd MMMM yyyy")</span>
+                                                    }
+                                                </div>
+                                            </li>
+                                        }
+                                    </ul>
+
+                                    <paging page-no="Model.PaginationDTO.Page"
+                                            page-size="Model.PageSize"
+                                            total-records="Model.TotalRecords"
+                                            max-displayed-pages="5"
+                                            query-string-key-page-no="page"
+                                            show-page-size-nav="false"
+                                            show-total-pages="false"
+                                            show-total-records="false"
+                                            class="mb-5 mt-5"
+                                            class-paging-control="pagination justify-content-center">
+                                    </paging>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
