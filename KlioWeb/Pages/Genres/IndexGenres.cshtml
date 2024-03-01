@@ -60,7 +60,7 @@
                                                 <div style="align-self: center;">
                                                     <img src="@(Model.AppState.KlioContentUrl + "genres/" + item.IconUrl)" alt="@Html.Raw(item.Name)" style="width: 50px;" />
                                                     <a href="genre/@item.Id/@StringUtilities.Translit(item.Name)">@Html.Raw(item.Name)</a>
-                                                    <span style="line-height: 50px;">@item.MoviesGenres.Count() фільмів</span>
+                                                    <span style="line-height: 50px;">@item.MoviesGenres.Count() @Html.Raw(StringUtilities.NumDeclension(item.MoviesGenres.Count(), "фільм", "фільми", "фільмів"))</span>
                                                 </div>
                                             </div>
                                         </li>

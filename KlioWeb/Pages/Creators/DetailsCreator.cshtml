@@ -73,7 +73,7 @@
                                         </li>
                                     }
                                     <li class="release-time">
-                                        <span>@Model.model.CreatorMoviesPage.TotalRecords фільмів</span>
+                                    <span>@Model.model.CreatorMoviesPage.TotalRecords @Html.Raw(StringUtilities.NumDeclension(Model.model.CreatorMoviesPage.TotalRecords, "фільм", "фільми", "фільмів"))</span>
                                     </li>
                                 </ul>
                             </div>

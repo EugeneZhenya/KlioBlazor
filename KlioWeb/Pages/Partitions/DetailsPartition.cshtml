@@ -65,7 +65,7 @@
                             <div class="banner-meta">
                                 <ul style="justify-content: end;">
                                     <li class="release-time">
-                                        <span>@Model.model.PartitionMovies.Count фільмів</span>
+                                    <span>@Model.model.PartitionMovies.Count @Html.Raw(StringUtilities.NumDeclension(Model.model.PartitionMovies.Count, "фільм", "фільми", "фільмів"))</span>
                                     </li>
                                 </ul>
                             </div>

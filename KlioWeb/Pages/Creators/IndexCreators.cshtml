@@ -60,7 +60,7 @@
                                                 <div style="align-self: center;">
                                                     <img src="@(Model.AppState.KlioContentUrl + "creators/" + item.LogoUrl)" alt="@Html.Raw(item.Title)" style="width: 50px;" />
                                                     <a href="creator/@item.Id/@StringUtilities.Translit(item.Title)">@Html.Raw(item.Title)</a>
-                                                    <span style="line-height: 50px;">@item.MoviesCreators.Count() фільмів</span>
+                                                    <span style="line-height: 50px;">@item.MoviesCreators.Count() @Html.Raw(StringUtilities.NumDeclension(item.MoviesCreators.Count(), "фільм", "фільми", "фільмів"))</span>
                                                 </div>
                                             </div>
                                         </li>

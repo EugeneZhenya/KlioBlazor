@@ -70,5 +70,26 @@ namespace KlioBlazor.Shared.Helpers
         public static String ToHex(System.Drawing.Color c) => $"#{c.R:X2}{c.G:X2}{c.B:X2}";
 
         public static String ToRGB(System.Drawing.Color c) => $"RGB({c.R},{c.G},{c.B})";
+
+        /// <summary>
+        /// Повертає слова у відмінку, залежному від вхідного числа
+        /// </summary>
+        /// <param name="number">Число від якого залежить слово</param>
+        /// <param name="nominativ">Називний відмінок слова. Наприклад, "день"</param>
+        /// <param name="genetiv">Родовий відмінок слова. Наприклад, "дня"</param>
+        /// <param name="plural">Множина слова. Наприклад, "днів"</param>
+        /// <returns></returns>
+        public static string NumDeclension(int number, string nominative, string plural, string genitive = null)
+        {
+            if (string.IsNullOrEmpty(genitive))
+            {
+                return number == 1 ? nominative : plural;
+            }
+
+            var titles = new[] { nominative, plural, genitive };
+            var cases = new[] { 2, 0, 1, 1, 1, 2 };
+
+            return titles[number % 100 > 4 && number % 100 < 20 ? 2 : cases[(number % 10 < 5) ? number % 10 : 5]];
+        }
     }
 }

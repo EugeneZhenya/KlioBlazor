@@ -60,7 +60,7 @@
                                                 <div style="align-self: center;">
                                                     <img src="@($"{Model.AppState.KlioContentUrl}partitions/{item.PictureUrl}")" alt="@Html.Raw(item.Name)" style="height: 50px;">
                                                     <a href="partition/@item.Id/@StringUtilities.Translit(item.Name)">@Html.Raw(item.Name)</a>
-                                                    <span style="line-height: 50px;">@item.Movies.Count() фільмів</span>
+                                                    <span style="line-height: 50px;">@item.Movies.Count() @Html.Raw(StringUtilities.NumDeclension(item.Movies.Count(), "фільм", "фільми", "фільмів"))</span>
                                                 </div>
                                             </div>
                                         </li>

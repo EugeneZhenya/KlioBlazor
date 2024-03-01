@@ -54,7 +54,7 @@
                                                 <p style="margin-top: 15px;"><span><a href="category/all">Категорії</a> :</span> Основні категорії відеовмісту</p>
                                             </div>
                                             <div class="col-6 d-flex align-items-center justify-content-end">
-                                                @Model.DashboardInfo.CategoriesCount категорій
+                                                @Model.DashboardInfo.CategoriesCount @Html.Raw(StringUtilities.NumDeclension(Model.DashboardInfo.CategoriesCount, "категорія", "категорії", "категорій"))
                                             </div>
                                         </div>
                                     </li>
@@ -65,7 +65,7 @@
                                                 <p style="margin-top: 15px;"><span><a href="Partitions">Розділи</a> :</span> Розділи, що входять до категорії</p>
                                             </div>
                                             <div class="col-6 d-flex align-items-center justify-content-end">
-                                                @Model.DashboardInfo.PartitionsCount розділів
+                                                @Model.DashboardInfo.PartitionsCount @Html.Raw(StringUtilities.NumDeclension(Model.DashboardInfo.CategoriesCount, "розділ", "розділи", "розділів"))
                                             </div>
                                         </div>
                                     </li>
@@ -76,7 +76,7 @@
                                                 <p style="margin-top: 15px;"><span><a href="Keywords">Ключові слова</a> :</span> Ключові слова, що описують відеовміст</p>
                                             </div>
                                             <div class="col-6 d-flex align-items-center justify-content-end">
-                                                @Model.DashboardInfo.KeywordsCount слів
+                                                @Model.DashboardInfo.KeywordsCount @Html.Raw(StringUtilities.NumDeclension(Model.DashboardInfo.CategoriesCount, "слово", "слова", "слів"))
                                             </div>
                                         </div>
                                     </li>
@@ -87,7 +87,7 @@
                                                 <p style="margin-top: 15px;"><span><a href="Genres">Жанри</a> :</span> Жанри, до яких належить відеовміст</p>
                                             </div>
                                             <div class="col-6 d-flex align-items-center justify-content-end">
-                                                @Model.DashboardInfo.GenresCount жанрів
+                                                @Model.DashboardInfo.GenresCount @Html.Raw(StringUtilities.NumDeclension(Model.DashboardInfo.CategoriesCount, "жанр", "жанри", "жанрів"))
                                             </div>
                                         </div>
                                     </li>
@@ -98,7 +98,7 @@
                                                 <p style="margin-top: 15px;"><span><a href="Countries">Країни</a> :</span> Країни, виробники яких створили відеовміст</p>
                                             </div>
                                             <div class="col-6 d-flex align-items-center justify-content-end">
-                                                @Model.DashboardInfo.CountriesCount країн
+                                                @Model.DashboardInfo.CountriesCount @Html.Raw(StringUtilities.NumDeclension(Model.DashboardInfo.CategoriesCount, "країна", "країни", "країн"))
                                             </div>
                                         </div>
                                     </li>
@@ -109,7 +109,7 @@
                                                 <p style="margin-top: 15px;"><span><a href="Creators">Виробники</a> :</span> Виробники, що створили відеовміст</p>
                                             </div>
                                             <div class="col-6 d-flex align-items-center justify-content-end">
-                                                @Model.DashboardInfo.CreatorsCount виробників
+                                                @Model.DashboardInfo.CreatorsCount @Html.Raw(StringUtilities.NumDeclension(Model.DashboardInfo.CategoriesCount, "виробник", "виробники", "виробників"))
                                             </div>
                                         </div>
                                     </li>
@@ -120,7 +120,7 @@
                                                 <p style="margin-top: 15px;"><span><a href="people">Люди</a> :</span> Актори та інші особи, що створили відеовміст</p>
                                             </div>
                                             <div class="col-6 d-flex align-items-center justify-content-end">
-                                                @Model.DashboardInfo.PeopleCount осіб
+                                                @Model.DashboardInfo.PeopleCount @Html.Raw(StringUtilities.NumDeclension(Model.DashboardInfo.CategoriesCount, "особа", "особи", "осіб"))
                                             </div>
                                         </div>
                                     </li>
@@ -131,7 +131,7 @@
                                                 <p style="margin-top: 15px;"><span><a href="movies/all">Відео</a> :</span> Безпосередньо відеовміст</p>
                                             </div>
                                             <div class="col-6 d-flex align-items-center justify-content-end">
-                                                @Model.DashboardInfo.MoviesCount фільмів
+                                                @Model.DashboardInfo.MoviesCount @Html.Raw(StringUtilities.NumDeclension(Model.DashboardInfo.CategoriesCount, "фільм", "фільми", "фільмів"))
                                             </div>
                                         </div>
                                     </li>

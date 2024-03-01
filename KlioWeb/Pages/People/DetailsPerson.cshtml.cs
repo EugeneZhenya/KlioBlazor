@@ -41,7 +41,7 @@ namespace KlioWeb.Pages.People
             nameOfPerson = model.Person.Name;
             LastAdded = model.LastAdded;
 
-            PersonMovies = new MoviesArea() { Movies = moviesByPerson, Title = nameOfPerson, Subtitle = "Фільми за участю", ShowCategoryName = true, WatchAll = false };
+            PersonMovies = new MoviesArea() { Movies = moviesByPerson, Title = nameOfPerson, Subtitle = "Фільми за участю", ShowCategoryName = true, WatchAll = false, ShowCharacter = true };
             MoviesArea = new MoviesArea() { Movies = LastAdded, Title = "Останні додані", Subtitle = "Не проґавте", CenterHeader = true, CarouselClass = "bottom-carousel" };
         }
     }

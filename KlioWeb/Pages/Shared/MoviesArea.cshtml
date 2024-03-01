@@ -114,9 +114,18 @@
                                         </div>
                                         <div class="bottom">
                                             <ul>
-                                                <li>
-                                                    <span class="quality" style="@AgeLimitColor(element.AgeLimit)">@element.AgeLimit+</span>
-                                                </li>
+                                                @if (Model.ShowCharacter)
+                                                {
+                                                    <li>
+                                                        <span class="duration">@Html.Raw(element.MoviesActors[0].Character)</span>
+                                                    </li>
+                                                }
+                                                else
+                                                {
+                                                    <li>
+                                                        <span class="quality" style="@AgeLimitColor(element.AgeLimit)">@element.AgeLimit+</span>
+                                                    </li>
+                                                }
                                                 <li>
                                                     <span class="duration">
                                                         <i class="fa-solid fa-clock"></i> @Html.Raw(StringUtilities.SecondsToMinutes(element.Duration))

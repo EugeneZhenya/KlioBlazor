@@ -81,7 +81,7 @@
                                             <li style="min-height: 25px;">
                                                 <div class="row" style="align-items: stretch; width: 100%; float: left;">
                                                     <div style="align-self: center;">
-                                                        <a href="@GetCatUrl(item)">@item.Name</a> <span>@item.Partitions.Count() розд.</span>
+                                                        <a href="@GetCatUrl(item)">@item.Name</a> <span>@item.Partitions.Count() @Html.Raw(StringUtilities.NumDeclension(item.Partitions.Count(), "розділ", "розділи", "розділів"))</span>
                                                     </div>
                                                 </div>
                                             </li>

@@ -73,7 +73,7 @@
                                         {
                                             @if (Model.model.Person.DateOfBirthExact)
                                             {
-                                                <span class="date"><i class="fa-solid fa-cake-candles"></i> @StringUtilities.DateToString(Model.model.Person.DateOfBirth, "dd MMMM yyyy")</span>
+                                                <span class="date"><i class="fa-solid fa-cake-candles"></i> @Html.Raw(StringUtilities.DateToString(Model.model.Person.DateOfBirth, "dd MMMM yyyy"))</span>
                                             }
                                             else
                                             {
@@ -84,7 +84,7 @@
                                         {
                                             @if (Model.model.Person.DateOfDeathExact)
                                             {
-                                                <span class="date" style="padding-left: 15px;"><i class="fa-solid fa-cross"></i> @StringUtilities.DateToString(Model.model.Person.DateOfDeath, "dd MMMM yyyy")</span>
+                                                <span class="date" style="padding-left: 15px;"><i class="fa-solid fa-cross"></i> @Html.Raw(StringUtilities.DateToString(Model.model.Person.DateOfDeath, "dd MMMM yyyy"))</span>
                                             }
                                             else
                                             {
@@ -92,8 +92,25 @@
                                             }
                                         }
                                     </li>
+
+                                @if (Model.model.Person.DateOfBirth != null && Model.model.Person.DateOfBirthExact)
+                                {
+                                    @if (Model.model.Person.DateOfDeath != null && Model.model.Person.DateOfDeathExact)
+                                    {
+                                        <li class="category">
+                                            (@Html.Raw(CalcAge((DateTime)Model.model.Person.DateOfBirth, (DateTime)Model.model.Person.DateOfDeath)))
+                                        </li>
+                                    }
+                                    @if (Model.model.Person.DateOfDeath == null)
+                                    {
+                                        <li class="category">
+                                            (@Html.Raw(CalcAge((DateTime)Model.model.Person.DateOfBirth, DateTime.Today)))
+                                        </li>
+                                    }
+                                }
+
                                     <li class="release-time">
-                                        <span>@Model.model.PersonMovies.Count фільмів</span>
+                                    <span>@Model.model.PersonMovies.Count @Html.Raw(StringUtilities.NumDeclension(Model.model.PersonMovies.Count, "фільм", "фільми", "фільмів"))</span>
                                     </li>
                                 </ul>
                             </div>
@@ -173,6 +190,15 @@
         {
             return "darkblue";
         }
+    }
+
+    string CalcAge(DateTime birth, DateTime death)
+    {
+        DateTime zeroTime = new DateTime(1, 1, 1);
+        TimeSpan span = death - birth;
+        int years = (zeroTime + span).Year - 1;
+
+        return years.ToString() + " " + StringUtilities.NumDeclension(years, "рік", "роки", "років");
     }
 }
 

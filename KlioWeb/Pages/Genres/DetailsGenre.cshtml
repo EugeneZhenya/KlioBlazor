@@ -53,7 +53,7 @@
                             <div class="banner-meta">
                                 <ul style="justify-content: end;">
                                     <li class="release-time">
-                                        <span>@Model.TotalRecords фільмів</span>
+                                    <span>@Model.TotalRecords @Html.Raw(StringUtilities.NumDeclension(Model.TotalRecords, "фільм", "фільми", "фільмів"))</span>
                                     </li>
                                 </ul>
                             </div>
