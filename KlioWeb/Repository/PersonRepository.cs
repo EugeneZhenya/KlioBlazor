@@ -26,6 +26,41 @@ namespace KlioWeb.Repository
             return new PaginatedResponse<List<Person>>() { Response = allPeople, TotalAmountPages = (int)totalAmountPages, TotalRecords = (int)count };
         }
 
+        public async Task<IndexPersonDTO> GetIndexPeople(IndexPersonDTO indexPersonDTO)
+        {
+            var DayofToday = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day);
+            // var DayofToday = new DateTime(DateTime.Today.Year, 2, 28);
+
+            var queryable = context.People.OrderBy(q => q.Name).AsQueryable();
+            double count = await queryable.CountAsync();
+            double totalAmountPages = Math.Ceiling(count / indexPersonDTO.RecordsPerPage);
+
+            var allPeople = await queryable.Paginate(indexPersonDTO.Pagination).ToListAsync();
+
+            var Jubilyars = await context.People
+                .Where(x => x.DateOfBirthExact == true)
+                .OrderBy(x => x.DateOfBirth)
+                .Where(x => x.DateOfBirth.HasValue)
+                .Where(x => x.DateOfBirth.Value.Day == DayofToday.Day && x.DateOfBirth.Value.Month == DayofToday.Month)
+                .ToListAsync();
+
+            var Memories = await context.People
+                .Where(x => x.DateOfDeathExact == true)
+                .OrderBy(x => x.DateOfDeath)
+                .Where(x => x.DateOfDeath.HasValue)
+                .Where(x => x.DateOfDeath.Value.Day == DayofToday.Day && x.DateOfDeath.Value.Month == DayofToday.Month)
+                .ToListAsync();
+
+            return new IndexPersonDTO()
+            {
+                PeopleList = allPeople,
+                TotalAmountPages = (int)totalAmountPages,
+                TotalRecords = (int)count,
+                Jubilees = Jubilyars,
+                Memorials = Memories
+            };
+        }
+
         public async Task<List<Person>> GetPeopleByName(string name)
         {
             if (string.IsNullOrWhiteSpace(name)) { return new List<Person>(); }

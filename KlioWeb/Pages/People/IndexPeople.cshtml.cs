@@ -16,13 +16,16 @@ namespace KlioWeb.Pages.People
         public PaginationDTO PaginationDTO { get; set; } = new PaginationDTO() { RecordsPerPage = 14 };
         public int TotalAmountPages;
 
+        public List<Person> Jubilees;
+        public List<Person> Memorials;
+
         private readonly ILogger<IndexPeopleModel> _logger;
         private readonly IPersonRepository _personRepository;
 
         [BindProperty(SupportsGet = true)]
         public int PageNumber { get; set; } = 1;
         [BindProperty(SupportsGet = true)]
-        public int PageSize { get; set; } = 15;
+        public int PageSize { get; set; } = 14;
         [BindProperty(SupportsGet = true)]
         public int TotalRecords { get; set; }
 
@@ -47,10 +50,18 @@ namespace KlioWeb.Pages.People
                 PaginationDTO.Page = int.Parse(Request.Query["page"]);
             }
 
-            var paginatedResponse = await _personRepository.GetPeople(PaginationDTO);
-            People = paginatedResponse.Response;
-            TotalAmountPages = paginatedResponse.TotalAmountPages;
-            TotalRecords = paginatedResponse.TotalRecords;
+            IndexPersonDTO personDTO = new IndexPersonDTO()
+            {
+                Page = PaginationDTO.Page,
+                RecordsPerPage = PageSize
+            };
+
+            var paginatedResponse = await _personRepository.GetIndexPeople(personDTO);
+            People = paginatedResponse.PeopleList;
+            Jubilees = paginatedResponse.Jubilees;
+            Memorials = paginatedResponse.Memorials;
+            TotalAmountPages = (int)paginatedResponse.TotalAmountPages;
+            TotalRecords = (int)paginatedResponse.TotalRecords;
         }
     }
 }

@@ -97,7 +97,7 @@
                                     <div class="movie-content">
                                         <div class="top">
                                             <h5 class="title ellipse"><a href="@partitionUrl(element)">@Html.Raw(element.Name)</a></h5>
-                                            <span class="date" style="white-space: nowrap;">@element.Movies.Count фільмів</span>
+                                            <span class="date" style="white-space: nowrap;">@element.Movies.Count @Html.Raw(StringUtilities.NumDeclension(element.Movies.Count, "фільм", "фільми", "фільмів"))</span>
                                         </div>
                                     </div>
                                 </div>
