@@ -99,6 +99,8 @@ namespace KlioWeb.Repository
 
         public async Task<DetailsMovieDTO> GetDetailsMovieDTO(int id)
         {
+            double maxViews = (double)context.Movies.Max(p => p.ViewCounter);
+
             var movie = await context.Movies.Where(x => x.Id == id)
                 .Include(x => x.Partition).ThenInclude(x => x.Category)
                 .Include(x => x.MoviesGenres).ThenInclude(x => x.Genre)
@@ -190,6 +192,11 @@ namespace KlioWeb.Repository
              where l.PatitionId == movie.PatitionId &&
              (l.ReleaseDate > movie.ReleaseDate) orderby l.ReleaseDate, l.ReleaseDate
              select l).Take(1)).ToList();
+
+            foreach (var film in queryPrevNext)
+            {
+                film.Rating = Math.Truncate((double)film.ViewCounter / (double)maxViews * 10000) / 100;
+            }
 
             model.OtherMovies = queryPrevNext;
 

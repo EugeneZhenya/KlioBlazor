@@ -12,5 +12,6 @@ namespace KlioBlazor.Shared.DTOs
         public Person Person { get; set; }
         public Movie LastMovie { get; set; }
         public List<Movie> PersonMovies { get; set; }
+        public List<Movie> LastAdded { get; set; }
     }
 }

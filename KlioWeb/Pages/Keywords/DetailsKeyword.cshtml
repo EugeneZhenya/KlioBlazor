@@ -47,11 +47,11 @@
                                 {
                                     if (i % 2 == 0)
                                     {
-                                        @SeparateTitle(Model.model.Keyword.Word)[i]
+                                        @Html.Raw(SeparateTitle(Model.model.Keyword.Word)[i])
                                     }
                                     else
                                     {
-                                        <span>@SeparateTitle(Model.model.Keyword.Word)[i]</span>
+                                        <span>@Html.Raw(SeparateTitle(Model.model.Keyword.Word)[i])</span>
                                     }
                                 }
                             </h2>

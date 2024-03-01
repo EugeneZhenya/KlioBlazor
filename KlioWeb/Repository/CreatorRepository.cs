@@ -118,6 +118,11 @@ namespace KlioWeb.Repository
 
             var moviesLast = allLastMovies.Take(limitLasts).ToList();
 
+            foreach (var movie in moviesLast)
+            {
+                movie.Rating = Math.Truncate((double)movie.ViewCounter / (double)maxViews * 10000) / 100;
+            }
+
             var creatorMovies = new PaginatedResponse<List<Movie>>() { Response = allMovies, TotalAmountPages = (int)totalAmountPages, TotalRecords = (int)count };
 
             var model = new DetailsCreatorDTO();
