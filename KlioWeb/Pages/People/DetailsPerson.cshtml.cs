@@ -37,6 +37,11 @@ namespace KlioWeb.Pages.People
         {
             model = await _personRepository.GetDetailsPersonDTO(PersonId);
 
+            if (model.LastMovie == null)
+            {
+                model.LastMovie = new Movie();
+            }
+
             moviesByPerson = model.PersonMovies;
             nameOfPerson = model.Person.Name;
             LastAdded = model.LastAdded;

@@ -76,6 +76,7 @@ namespace KlioWeb.Repository
 
         public async Task<DetailsPersonDTO> GetDetailsPersonDTO(int Id)
         {
+            int lastMovieId = 0;
             var limitLasts = 3;
             double maxViews = (double)context.Movies.Max(p => p.ViewCounter);
 
@@ -87,7 +88,10 @@ namespace KlioWeb.Repository
 
             var allMovieByPerson = await context.MoviesActors.OrderByDescending(x => x.MovieId).Where(x => x.PersonId == Id).ToListAsync();
             var listOfIds = from n in allMovieByPerson where n.PersonId == Id select n.MovieId;
-            int lastMovieId = allMovieByPerson[0].MovieId;
+            if (allMovieByPerson.Count > 0)
+            {
+                lastMovieId = allMovieByPerson[0].MovieId;
+            }
 
             var lsstMovie = await context.Movies
                 .Where(x => x.Id == lastMovieId)
@@ -97,7 +101,6 @@ namespace KlioWeb.Repository
                 .Include(x => x.Partition)
                 .OrderBy(x => x.ReleaseDate)
                 .ToListAsync();
-
 
             foreach (var film in allMovies)
             {
