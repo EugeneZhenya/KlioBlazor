@@ -92,15 +92,11 @@
     </div>
 </section>
 
-<div style="text-align: center;">
-    <!-- LiveKlioAds -->
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-8113874437122486"
-         data-ad-slot="7371334300"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
-</div>
+
+@if (Model.todayMovies.Count > 0)
+{
+    <partial name="MoviesArea" model="Model.TodayMovies" />
+}
 
 <partial name="MoviesArea" model="Model.PopularMovies" />
 
@@ -177,9 +173,6 @@
 }
 
 @section Scripts {
-    <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
     <script>
         var fileUrl = "@fileUrl";
         var posterUrl = "@posterUrl";

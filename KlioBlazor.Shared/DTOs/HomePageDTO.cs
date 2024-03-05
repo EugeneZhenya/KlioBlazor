@@ -16,5 +16,6 @@ namespace KlioBlazor.Shared.DTOs
         public Movie RecomendMovie { get; set; }
         public List<Country> RecomendMovieCountries { get; set; }
         public List<Movie> LastAdded { get; set; }
+        public List<Movie> TodaysFilms { get; set; }
     }
 }

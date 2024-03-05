@@ -13,6 +13,7 @@ namespace KlioWeb.Pages
         private List<Partition> partitionsPopular;
         private List<Movie> moviesPopular;
         private List<Movie> lastAdded;
+        public List<Movie> todayMovies;
         public Movie RecommendMovie;
         public List<Country> RecommendMovieCountries;
 
@@ -20,6 +21,7 @@ namespace KlioWeb.Pages
         public PartitionsArea PartitionsArea = new PartitionsArea();
         public MoviesArea PopularMovies = new MoviesArea();
         public MoviesArea LastAdded = new MoviesArea();
+        public MoviesArea TodayMovies = new MoviesArea();
 
         private readonly ILogger<IndexModel> _logger;
         private readonly IMoviesRepository _moviesRepository;
@@ -40,11 +42,13 @@ namespace KlioWeb.Pages
             RecommendMovie = response.RecomendMovie;
             RecommendMovieCountries = response.RecomendMovieCountries;
             lastAdded = response.LastAdded;
+            todayMovies = response.TodaysFilms;
 
             BannerArea = new BannerArea() { ShowMovie = lastMovie, ShowMovieCountries = lastMovieCountries };
             PartitionsArea = new PartitionsArea() { Partitions = partitionsPopular, Title = "Найпопулярніші розділи", Subtitle = "Дивіться зараз" };
             PopularMovies = new MoviesArea() { Movies = moviesPopular, Title = "Найпопулярніші фільми", Subtitle = "Дивіться зараз", CenterHeader = true, UseFilter = true };
             LastAdded = new MoviesArea() { Movies = lastAdded, Title = "Останні додані", Subtitle = "Не проґавте", CenterHeader = true, CarouselClass= "bottom-carousel" };
+            TodayMovies = new MoviesArea() { Movies = todayMovies, Title = "Фільми цього дня", Subtitle = "Фільми, що вийшли у цей день", ShowCategoryName = true, WatchAll = false, CarouselClass = "bottom-carousel" };
         }
     }
 }

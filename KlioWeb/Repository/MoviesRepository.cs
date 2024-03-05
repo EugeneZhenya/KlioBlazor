@@ -25,6 +25,8 @@ namespace KlioWeb.Repository
             double maxViews = (double)context.Movies.Max(p => p.ViewCounter);
             Random rnd = new Random();
             int randomID = rnd.Next(1, context.Movies.Count());
+            var DayofToday = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day);
+            // var DayofToday = new DateTime(DateTime.Today.Year, 3, 8);
 
             var movieLast = await context.Movies
                 .OrderByDescending(x => x.PublicDate)
@@ -85,6 +87,18 @@ namespace KlioWeb.Repository
                 movie.Rating = Math.Truncate((double)movie.ViewCounter / (double)maxViews * 10000) / 100;
             }
 
+            var Jubilyars = await context.Movies
+                .Where(x => x.ReleaseDateExact == true)
+                .OrderBy(x => x.ReleaseDate)
+                .Where(x => x.ReleaseDate.HasValue)
+                .Where(x => x.ReleaseDate.Value.Day == DayofToday.Day && x.ReleaseDate.Value.Month == DayofToday.Month)
+                .ToListAsync();
+
+            foreach (var movie in Jubilyars)
+            {
+                movie.Rating = Math.Truncate((double)movie.ViewCounter / (double)maxViews * 10000) / 100;
+            }
+
             var response = new HomePageDTO();
             response.LastMovie = movieLast;
             response.MoviesPopular = moviesPopular;
@@ -93,6 +107,7 @@ namespace KlioWeb.Repository
             response.RecomendMovie = movieRecomend;
             response.RecomendMovieCountries = recCountries;
             response.LastAdded = moviesLast;
+            response.TodaysFilms = Jubilyars;
 
             return response;
         }
