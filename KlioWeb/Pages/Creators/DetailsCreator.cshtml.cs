@@ -55,6 +55,11 @@ namespace KlioWeb.Pages.Creators
             FilterMoviesDTO.CreatorId = CreatorId;
             model = await _creatorRepository.GetDetailsCreatorDTO(FilterMoviesDTO);
 
+            if (model.LastMovie == null)
+            {
+                model.LastMovie = new Movie();
+            }
+
             MoviesOfCreator = model.CreatorMoviesPage.Response;
             NameOfCreator = model.Creator.Title;
             LastAdded = model.LastAdded;

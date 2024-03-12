@@ -91,7 +91,12 @@ namespace KlioWeb.Repository
 
             var allMovieOfCreator = await context.MoviesCreators.OrderByDescending(x => x.MovieId).Where(x => x.CreatorID == filterMoviesDTO.CreatorId).ToListAsync();
             var listOfIds = from n in allMovieOfCreator where n.CreatorID == filterMoviesDTO.CreatorId select n.MovieId;
-            int lastMovieId = allMovieOfCreator[0].MovieId;
+            int lastMovieId = 0;
+
+            if (allMovieOfCreator.Count > 0)
+            {
+                lastMovieId = allMovieOfCreator[0].MovieId;
+            }
 
             var lsstMovie = await context.Movies
                .Where(x => x.Id == lastMovieId)
