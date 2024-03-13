@@ -98,13 +98,13 @@
                                     @if (Model.model.Person.DateOfDeath != null && Model.model.Person.DateOfDeathExact)
                                     {
                                         <li class="category">
-                                            (@Html.Raw(CalcAge((DateTime)Model.model.Person.DateOfBirth, (DateTime)Model.model.Person.DateOfDeath)))
+                                            @Html.Raw(CalcAge((DateTime)Model.model.Person.DateOfBirth, (DateTime)Model.model.Person.DateOfDeath))
                                         </li>
                                     }
                                     @if (Model.model.Person.DateOfDeath == null)
                                     {
                                         <li class="category">
-                                            (@Html.Raw(CalcAge((DateTime)Model.model.Person.DateOfBirth, DateTime.Today)))
+                                            @Html.Raw(CalcAge((DateTime)Model.model.Person.DateOfBirth, DateTime.Today))
                                         </li>
                                     }
                                 }
@@ -187,6 +187,8 @@
         DateTime zeroTime = new DateTime(1, 1, 1);
         TimeSpan span = death - birth;
         int years = (zeroTime + span).Year - 1;
+
+        if (death == DateTime.Today && years > 100) return string.Empty;
 
         return years.ToString() + " " + StringUtilities.NumDeclension(years, "рік", "роки", "років");
     }
