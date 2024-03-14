@@ -99,6 +99,20 @@ namespace KlioWeb.Repository
                 movie.Rating = Math.Truncate((double)movie.ViewCounter / (double)maxViews * 10000) / 100;
             }
 
+            var JubilyarsPeople = await context.People
+                .Where(x => x.DateOfBirthExact == true)
+                .OrderBy(x => x.DateOfBirth)
+                .Where(x => x.DateOfBirth.HasValue)
+                .Where(x => x.DateOfBirth.Value.Day == DayofToday.Day && x.DateOfBirth.Value.Month == DayofToday.Month)
+                .ToListAsync();
+
+            var MemoriesPeople = await context.People
+                .Where(x => x.DateOfDeathExact == true)
+                .OrderBy(x => x.DateOfDeath)
+                .Where(x => x.DateOfDeath.HasValue)
+                .Where(x => x.DateOfDeath.Value.Day == DayofToday.Day && x.DateOfDeath.Value.Month == DayofToday.Month)
+                .ToListAsync();
+
             var response = new HomePageDTO();
             response.LastMovie = movieLast;
             response.MoviesPopular = moviesPopular;
@@ -108,6 +122,8 @@ namespace KlioWeb.Repository
             response.RecomendMovieCountries = recCountries;
             response.LastAdded = moviesLast;
             response.TodaysFilms = Jubilyars;
+            response.Jubilees = JubilyarsPeople;
+            response.Memorials = MemoriesPeople;
 
             return response;
         }

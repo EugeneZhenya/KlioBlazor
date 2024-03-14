@@ -142,6 +142,72 @@
     </section>
 }
 
+@if (Model.Jubilees.Count > 0 || Model.Memorials.Count > 0)
+{
+    <section class="blog-area blog-bg" data-background="img/blog_bg.jpg">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    @if (Model.Jubilees.Count > 0)
+                    {
+                        <aside class="blog-sidebar">
+                            <div class="widget blog-widget">
+                                <div class="widget-title mb-30">
+                                    <h5 class="title">Народилися у цей день</h5>
+                                </div>
+                                <div class="rc-post">
+                                    <ul>
+                                        @foreach (var man in Model.Jubilees)
+                                        {
+                                            <li class="rc-post-item">
+                                                <div class="thumb">
+                                                    <a href="person/@man.Id/@StringUtilities.Translit(man.Name)"><img src="@(Model.appState.KlioContentUrl + "people/" + man.PictureUrl)" alt="@Html.Raw(man.Name)" style="width: 100px;"></a>
+                                                </div>
+                                                <div class="content">
+                                                    <h5 class="title"><a href="person/@man.Id/@StringUtilities.Translit(man.Name)">@Html.Raw(man.Name)</a></h5>
+                                                    <span class="date"><i class="fa-solid fa-cake-candles"></i> @Html.Raw(StringUtilities.DateToString(man.DateOfBirth, "dd MMMM yyyy"))</span>
+                                                </div>
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                        </aside>
+                    }
+                </div>
+                <div class="col-lg-6">
+                    @if (Model.Memorials.Count > 0)
+                    {
+                        <aside class="blog-sidebar">
+                            <div class="widget blog-widget">
+                                <div class="widget-title mb-30">
+                                    <h5 class="title">Померли у цей день</h5>
+                                </div>
+                                <div class="rc-post">
+                                    <ul>
+                                        @foreach (var man in Model.Memorials)
+                                        {
+                                            <li class="rc-post-item">
+                                                <div class="thumb">
+                                                    <a href="person/@man.Id/@StringUtilities.Translit(man.Name)"><img src="@(Model.appState.KlioContentUrl + "people/" + man.PictureUrl)" alt="@Html.Raw(man.Name)" style="width: 100px;"></a>
+                                                </div>
+                                                <div class="content">
+                                                    <h5 class="title"><a href="person/@man.Id/@StringUtilities.Translit(man.Name)">@Html.Raw(man.Name)</a></h5>
+                                                    <span class="date"><i class="fa-solid fa-cross"></i> @Html.Raw(StringUtilities.DateToString(man.DateOfDeath, "dd MMMM yyyy"))</span>
+                                                </div>
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                        </aside>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
 <partial name="MoviesArea" model="Model.LastAdded" />
 
 @functions {

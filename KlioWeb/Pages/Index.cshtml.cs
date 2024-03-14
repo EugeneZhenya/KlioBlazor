@@ -17,6 +17,9 @@ namespace KlioWeb.Pages
         public Movie RecommendMovie;
         public List<Country> RecommendMovieCountries;
 
+        public List<Person> Jubilees = new List<Person>();
+        public List<Person> Memorials = new List<Person>();
+
         public BannerArea BannerArea;
         public PartitionsArea PartitionsArea = new PartitionsArea();
         public MoviesArea PopularMovies = new MoviesArea();
@@ -43,6 +46,8 @@ namespace KlioWeb.Pages
             RecommendMovieCountries = response.RecomendMovieCountries;
             lastAdded = response.LastAdded;
             todayMovies = response.TodaysFilms;
+            Jubilees = response.Jubilees;
+            Memorials = response.Memorials;
 
             BannerArea = new BannerArea() { ShowMovie = lastMovie, ShowMovieCountries = lastMovieCountries };
             PartitionsArea = new PartitionsArea() { Partitions = partitionsPopular, Title = "Найпопулярніші розділи", Subtitle = "Дивіться зараз" };
