@@ -567,7 +567,7 @@
                             <ul>
                                 @foreach (var partition in Model.Partitions)
                                 {
-                                    <li><a href="#">@Html.Raw(partition.Name)</a> <span>@partition.Movies.Count()</span></li>
+                                    <li><a href="partition/@partition.Id/@StringUtilities.Translit(partition.Name)">@Html.Raw(partition.Name)</a> <span>@partition.Movies.Count()</span></li>
                                 }
                             </ul>
                         </div>
