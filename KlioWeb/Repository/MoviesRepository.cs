@@ -42,11 +42,11 @@ namespace KlioWeb.Repository
 
 
             var movieRecomend = await context.Movies
-               .Include(x => x.Partition).ThenInclude(x => x.Category)
-               .Include(x => x.MoviesGenres).ThenInclude(x => x.Genre)
-               .Include(x => x.MoviesCountries).ThenInclude(x => x.Country)
-               .Include(x => x.MovieInfos)
-               .FirstOrDefaultAsync(x => x.Id == randomID);
+                .Include(x => x.Partition).ThenInclude(x => x.Category)
+                .Include(x => x.MoviesGenres).ThenInclude(x => x.Genre)
+                .Include(x => x.MoviesCountries).ThenInclude(x => x.Country)
+                .Include(x => x.MovieInfos)
+                .FirstOrDefaultAsync(x => x.Id == randomID);
             movieRecomend.MoviesGenres = movieRecomend.MoviesGenres.OrderBy(x => x.Order).ToList();
             movieRecomend.MoviesCountries = movieRecomend.MoviesCountries.OrderBy(x => x.Order).ToList();
             var recCountries = movieRecomend.MoviesCountries.Select(x => x.Country).ToList();
@@ -216,13 +216,13 @@ namespace KlioWeb.Repository
                 .ToListAsync();
 
             var queryPrevNext = (from l in context.Movies where l.PatitionId == movie.PatitionId &&
-             (l.ReleaseDate < movie.ReleaseDate) orderby l.ReleaseDate descending, l.ReleaseDate descending
-             select l).Take(1)
-             .Concat((
-             from l in context.Movies
-             where l.PatitionId == movie.PatitionId &&
-             (l.ReleaseDate > movie.ReleaseDate) orderby l.ReleaseDate, l.ReleaseDate
-             select l).Take(1)).ToList();
+                (l.ReleaseDate < movie.ReleaseDate) orderby l.ReleaseDate descending, l.ReleaseDate descending
+                select l).Take(1)
+                .Concat((
+                from l in context.Movies
+                where l.PatitionId == movie.PatitionId &&
+                (l.ReleaseDate > movie.ReleaseDate) orderby l.ReleaseDate, l.ReleaseDate
+                select l).Take(1)).ToList();
 
             foreach (var film in queryPrevNext)
             {
@@ -292,9 +292,9 @@ namespace KlioWeb.Repository
                 .ToList();
 
             var allLastMovies = await context.Movies
-                    .OrderByDescending(x => x.PublicDate)
-                    .Include(x => x.Partition).ThenInclude(x => x.Category)
-                    .ToListAsync();
+                .OrderByDescending(x => x.PublicDate)
+                .Include(x => x.Partition).ThenInclude(x => x.Category)
+                .ToListAsync();
 
             var moviesLast = allLastMovies.Take(limitLasts).ToList();
 
@@ -338,9 +338,9 @@ namespace KlioWeb.Repository
             }
 
             var allLastMovies = await context.Movies
-                    .OrderByDescending(x => x.PublicDate)
-                    .Include(x => x.Partition).ThenInclude(x => x.Category)
-                    .ToListAsync();
+                .OrderByDescending(x => x.PublicDate)
+                .Include(x => x.Partition).ThenInclude(x => x.Category)
+                .ToListAsync();
 
             var moviesLast = allLastMovies.Take(limitLasts).ToList();
 

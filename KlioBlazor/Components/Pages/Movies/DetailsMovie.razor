@@ -394,6 +394,9 @@ else
                                                 case "hi":
                                                     @infoOrigLangHI(inf)
                                                     break;
+                                                case "jp":
+                                                    @infoOrigLangJP(inf)
+                                                    break;
                                             }
                                             break;
                                         case "TranslateLanguage":
@@ -474,6 +477,7 @@ else
     private RenderFragment<MovieInfo> infoOrigLangES = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><img src="inf/Flag_of_Spain.png" class="info-img" alt="Мова оригіналу: @info.Remark" title="Мова оригіналу: @info.Remark" /><div><div class="info-content">Мова оригіналу</div><div class="info-ingredients">@info.Remark</div></div></div>;
     private RenderFragment<MovieInfo> infoOrigLangDE = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><img src="inf/Flag_of_Germany.png" class="info-img" alt="Мова оригіналу: @info.Remark" title="Мова оригіналу: @info.Remark" /><div><div class="info-content">Мова оригіналу</div><div class="info-ingredients">@info.Remark</div></div></div>;
     private RenderFragment<MovieInfo> infoOrigLangHI = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><img src="inf/Flag_of_India.png" class="info-img" alt="Мова оригіналу: @info.Remark" title="Мова оригіналу: @info.Remark" /><div><div class="info-content">Мова оригіналу</div><div class="info-ingredients">@info.Remark</div></div></div>;
+    private RenderFragment<MovieInfo> infoOrigLangJP = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><img src="inf/Flag_of_Japan.png" class="info-img" alt="Мова оригіналу: @info.Remark" title="Мова оригіналу: @info.Remark" /><div><div class="info-content">Мова оригіналу</div><div class="info-ingredients">@info.Remark</div></div></div>;
     private RenderFragment<MovieInfo> infoYoutubeUrl = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><a href="https://www.youtube.com/watch?v=@info.Text" target="_blank"><img src="inf/YouTube.png" class="info-img" alt="YouTube" title="YouTube" /></a><div><div class="info-content"><a href="https://www.youtube.com/watch?v=@info.Text" target="_blank">Дивитися на YouTube</a></div><div class="info-ingredients">YouTube-канал: @info.Remark</div></div></div>;
     private RenderFragment<MovieInfo> infoKlioYoutube = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><a href="https://www.youtube.com/watch?v=@info.Text" target="_blank"><img src="inf/KlioYouTube.png" class="info-img" alt="YouTube KlioDpUa" title="YouTube KlioDpUa" /></a><div><div class="info-content"><a href="https://www.youtube.com/watch?v=@info.Text" target="_blank">Дивитися на нашому YouTube-каналі</a></div></div></div>;
     private RenderFragment<MovieInfo> infoKlioTelegram = (info) => @<div class="col-lg-4 col-md-4 mb-3" style="display: flex;"><a href="https://t.me/klio_dp_ua/@info.Text" target="_blank"><img src="inf/KlioTelegram.jpg" class="info-img" alt="Telegram klio.dp.ua" title="Telegram klio.dp.ua" /></a><div><div class="info-content"><a href="https://t.me/klio_dp_ua/@info.Text" target="_blank">Дивитися на нашому Telegram-каналі</a></div><div class="info-ingredients">@info.Remark</div></div></div>;

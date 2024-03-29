@@ -477,6 +477,9 @@
                                             case "hi":
                                                 @Html.Raw(infoOrigLangHI(inf))
                                                 break;
+                                            case "jp":
+                                                @Html.Raw(infoOrigLangJP(inf))
+                                                break;
                                         }
                                         break;
                                     case "TranslateLanguage":
@@ -631,6 +634,7 @@
     private string infoOrigLangES(MovieInfo info) => $"<div class=\"griditem filter-basics mb-3\"><img src=\"inf/Flag_of_Spain.png\" class=\"info-img\" alt=\"Мова оригіналу: {info.Remark}\" title=\"Мова оригіналу: {info.Remark}\" /><div><div class=\"info-content\">Мова оригіналу</div><div class=\"info-ingredients\">{info.Remark}</div></div></div>";
     private string infoOrigLangDE(MovieInfo info) => $"<div class=\"griditem filter-basics mb-3\"><img src=\"inf/Flag_of_Germany.png\" class=\"info-img\" alt=\"Мова оригіналу: {info.Remark}\" title=\"Мова оригіналу: {info.Remark}\" /><div><div class=\"info-content\">Мова оригіналу</div><div class=\"info-ingredients\">{info.Remark}</div></div></div>";
     private string infoOrigLangHI(MovieInfo info) => $"<div class=\"griditem filter-basics mb-3\"><img src=\"inf/Flag_of_India.png\" class=\"info-img\" alt=\"Мова оригіналу: {info.Remark}\" title=\"Мова оригіналу: {info.Remark}\" /><div><div class=\"info-content\">Мова оригіналу</div><div class=\"info-ingredients\">{info.Remark}</div></div></div>";
+    private string infoOrigLangJP(MovieInfo info) => $"<div class=\"griditem filter-basics mb-3\"><img src=\"inf/Flag_of_Japan.png\" class=\"info-img\" alt=\"Мова оригіналу: {info.Remark}\" title=\"Мова оригіналу: {info.Remark}\" /><div><div class=\"info-content\">Мова оригіналу</div><div class=\"info-ingredients\">{info.Remark}</div></div></div>";
     private string infoYoutubeUrl(MovieInfo info) => $"<div class=\"griditem filter-links mb-3\"><a href=\"https://www.youtube.com/watch?v={info.Text}\" target=\"_blank\"><img src=\"inf/YouTube.png\" class=\"info-img\" alt=\"YouTube\" title=\"YouTube\" /></a><div><div class=\"info-content\"><a href=\"https://www.youtube.com/watch?v={info.Text}\" target=\"_blank\">Дивитися на YouTube</a></div><div class=\"info-ingredients\">YouTube-канал: {info.Remark}</div></div></div>";
     private string infoKlioYoutube(MovieInfo info) => $"<div class=\"griditem filter-links mb-3\"><a href=\"https://www.youtube.com/watch?v={info.Text}\" target=\"_blank\"><img src=\"inf/KlioYouTube.png\" class=\"info-img\" alt=\"YouTube KlioDpUa\" title=\"YouTube KlioDpUa\" /></a><div><div class=\"info-content\"><a href=\"https://www.youtube.com/watch?v={info.Text}\" target=\"_blank\">Дивитися на нашому YouTube-каналі</a></div></div></div>";
     private string infoKlioTelegram(MovieInfo info) => $"<div class=\"griditem filter-links mb-3\"><a href=\"https://t.me/klio_dp_ua/{info.Text}\" target=\"_blank\"><img src=\"inf/KlioTelegram.jpg\" class=\"info-img\" alt=\"Telegram klio.dp.ua\" title=\"Telegram klio.dp.ua\" /></a><div><div class=\"info-content\"><a href=\"https://t.me/klio_dp_ua/{info.Text}\" target=\"_blank\">Дивитися на нашому Telegram-каналі</a></div><div class=\"info-ingredients\">{info.Remark}</div></div></div>";
