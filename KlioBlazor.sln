@@ -9,6 +9,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KlioBlazor.Shared", "KlioBl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KlioWeb", "KlioWeb\KlioWeb.csproj", "{859706EE-E72F-4899-B83D-A93F55397A34}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KlioMobile", "KlioMobile\KlioMobile.csproj", "{3D48071A-2C5A-40B7-A970-C0D63714D027}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KlioMobile.Framework", "KlioMobile.Framework\KlioMobile.Framework.csproj", "{9A4EE74C-B010-4A19-A3DB-DAB1E565A449}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,16 @@ Global
 		{859706EE-E72F-4899-B83D-A93F55397A34}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{859706EE-E72F-4899-B83D-A93F55397A34}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{859706EE-E72F-4899-B83D-A93F55397A34}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D48071A-2C5A-40B7-A970-C0D63714D027}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D48071A-2C5A-40B7-A970-C0D63714D027}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D48071A-2C5A-40B7-A970-C0D63714D027}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{3D48071A-2C5A-40B7-A970-C0D63714D027}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D48071A-2C5A-40B7-A970-C0D63714D027}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D48071A-2C5A-40B7-A970-C0D63714D027}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{9A4EE74C-B010-4A19-A3DB-DAB1E565A449}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A4EE74C-B010-4A19-A3DB-DAB1E565A449}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A4EE74C-B010-4A19-A3DB-DAB1E565A449}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A4EE74C-B010-4A19-A3DB-DAB1E565A449}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

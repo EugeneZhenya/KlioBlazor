@@ -138,7 +138,7 @@
             player = new Playerjs({ id: "player", file: "@Model.AppState.KlioStreamUrl", poster: "@Model.AppState.KlioStreamPoster", title: "", autoplay: 0 });
 
             UpdateCurState();
-            setInterval(function () { 
+            setInterval(function () {
                 UpdateCurState();
             }, 1000);
         })
@@ -239,7 +239,7 @@
 
         function SeparateString(inpString)
         {
-            var words = inpString.split(/(?<=[.:…])/);
+            var words = inpString.split(/(?<=[.\-/,:…])/);
 
             if (words.length == 1 || words.length == 0)
             {

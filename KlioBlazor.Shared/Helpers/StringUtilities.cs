@@ -20,7 +20,7 @@ namespace KlioBlazor.Shared.Helpers
 
         public static string[] SeparateString(string input)
         {
-            string[] words = Regex.Split(input, @"(?<=[.:…])");
+            string[] words = Regex.Split(input, @"(?<=[.\-/,:…])");
             if (words.Length == 1 || words.Length == 0)
             {
                 string[] allWords = input.Split(' ');
