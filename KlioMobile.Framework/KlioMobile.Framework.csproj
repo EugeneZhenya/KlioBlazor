@@ -19,16 +19,14 @@
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
+		<PackageReference Include="MonkeyCache.FileStore" Version="2.1.1" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <Folder Include="Converters\" />
-	  <Folder Include="Exceptions\" />
-	  <Folder Include="Extensions\" />
 	  <Folder Include="Helpers\" />
 	  <Folder Include="MVVM\" />
 	  <Folder Include="UI\" />
-	  <Folder Include="Services\" />
 	</ItemGroup>
 
 </Project>

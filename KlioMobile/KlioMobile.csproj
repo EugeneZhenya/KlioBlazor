@@ -60,6 +60,7 @@
 	  <Folder Include="IServices\" />
 	  <Folder Include="Models\" />
 	  <Folder Include="IViews\" />
+	  <Folder Include="Resources\Styles\" />
 	  <Folder Include="ViewControls\" />
 	  <Folder Include="ViewModels\Base\" />
 	  <Folder Include="Services\" />
