@@ -8,7 +8,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-builder.Services.AddControllers();
 
 builder.Services.AddScoped<CurrentCategory>();
 builder.Services.AddScoped<IMoviesRepository, MoviesRepository>();
@@ -45,7 +44,6 @@ app.UseStatusCodePagesWithRedirects("/StatusCode/{0}");
 app.UseAuthorization();
 
 app.MapRazorPages();
-app.MapControllers();
 
 var cultureInfo = new CultureInfo("uk-UA");
 CultureInfo.DefaultThreadCurrentCulture = cultureInfo;

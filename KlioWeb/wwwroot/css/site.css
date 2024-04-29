@@ -2200,6 +2200,19 @@ label {
         margin-bottom: 0;
     }
 
+    .movie-details-content ol {
+        list-style: none;
+        counter-reset: my-awesome-counter;
+    }
+
+        .movie-details-content ol li {
+            counter-increment: my-awesome-counter;
+        }
+
+            .movie-details-content ol li::before {
+                content: counter(my-awesome-counter) ". ";
+            }
+
 .movie-details-prime ul {
     display: flex;
     align-items: center;
