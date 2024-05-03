@@ -1,5 +1,10 @@
-﻿global using System;
-global using System.Collections.Generic;
-global using System.Linq;
-global using System.Text;
-global using System.Threading.Tasks;
+﻿global using KlioMobile.Views;
+global using KlioMobile.IServices;
+global using KlioMobile.Framework.Services;
+global using MonkeyCache;
+global using KlioBlazor.Shared.API;
+global using KlioMobile.Models;
+global using System.Net;
+global using KlioMobile.Framework.MVVM;
+global using CommunityToolkit.Mvvm.Input;
+global using KlioMobile.Framework.UI;

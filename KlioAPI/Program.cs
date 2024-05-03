@@ -1,6 +1,7 @@
 using KlioAPI.Data;
 using KlioBlazor.Shared.DTOs;
 using KlioBlazor.Shared.Entities;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,24 +14,29 @@ var app = builder.Build();
 
 app.MapGet("/", () => "Цей прикладний програмний інтерфейс надає доступ лише додаткам, розробленим для медійного архіву KLIO");
 
-app.MapGet("/movies", async (ApplicationDbContext db) =>
-    await db.Movies.ToListAsync());
-
-app.MapGet("/movie/{id}", async (int id, ApplicationDbContext db) =>
+app.MapGet("/search", async (
+    ApplicationDbContext db,
+    [FromQuery(Name = "maxResults")] int MaxResults = 15,
+    [FromQuery(Name = "q")] string QueryString = "",
+    [FromQuery(Name = "pageNumber")] int PageNumber = 1,
+    [FromQuery(Name = "type")] string SearchType = "video") =>
 {
-    //await db.Movies.FindAsync(id)
-    //is Movie movie
-    //    ? Results.Ok(movie)
-    //    : Results.NotFound()
+    double maxViews = (double)db.Movies.Max(p => p.ViewCounter);
 
-    var movie = await db.Movies.Where(x => x.Id == id).FirstOrDefaultAsync();
+    var moviesQueryable = db.Movies.AsQueryable();
 
-    if (movie == null) { return Results.NotFound(); }
+    switch (SearchType)
+    {
+        case "video":
+            moviesQueryable = moviesQueryable.Where(x => x.Title.Contains(QueryString));
+            break;
+        default:
+            break;
+    }
 
-    var model = new DetailsMovieDTO();
-    model.Movie = movie;
+    // if (moviesQueryable.Count() == 0) { return Results.NotFound(); }
 
-    return Results.Ok(movie);
+    return Results.Ok(moviesQueryable);
 });
 
 app.Run();
