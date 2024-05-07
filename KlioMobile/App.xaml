@@ -158,5 +158,10 @@
             TargetType="Label">
             <Setter Property="FontSize" Value="10" />
         </Style>
+
+        <!-- Page Header Style -->
+        <Style TargetType="Label" x:Key="PageHeaderTextStyle" BasedOn="{StaticResource BaseMediumLightLabelTextStyle}">
+            <Setter Property="FontSize" Value="22" />
+        </Style>
     </Application.Resources>
 </Application>

@@ -3,7 +3,7 @@ namespace KlioMobile.Services;
 
 public class KlioService : RestServiceBase, IApiService
 {
-    protected KlioService(IConnectivity connectivity, IBarrel cacheBarrel) : base(connectivity, cacheBarrel)
+    public KlioService(IConnectivity connectivity, IBarrel cacheBarrel) : base(connectivity, cacheBarrel)
     {
         SetBaseURL(Constants.ApiServiceURL);
     }

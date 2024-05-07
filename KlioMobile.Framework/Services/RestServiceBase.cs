@@ -32,7 +32,10 @@ public class RestServiceBase
         var json = await GetJsonAsync(resource, cacheDuration);
 
         //Return the result
-        return JsonSerializer.Deserialize<T>(json);
+        return JsonSerializer.Deserialize<T>(json, new JsonSerializerOptions
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+        });
     }
 
     private async Task<string> GetJsonAsync(string resource, int cacheDuration = 24)

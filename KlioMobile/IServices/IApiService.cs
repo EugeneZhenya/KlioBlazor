@@ -1,4 +1,5 @@
-﻿namespace KlioMobile.IServices;
+﻿
+namespace KlioMobile.IServices;
 
 public interface IApiService
 {

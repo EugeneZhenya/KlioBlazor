@@ -6,6 +6,7 @@ public static class Constants
     public static string EmailAddress = @"webmaster@klio.dp.ua";
     public static string ApplicationId = "KlioMobile.App";
     public static string ApiServiceURL = @"https://api.klio.dp.ua/";
+    // public static string ApiServiceURL = @"https://localhost:7034/";
     public static string ApiKey = @"";
 
     public static uint MicroDuration { get; set; } = 100;

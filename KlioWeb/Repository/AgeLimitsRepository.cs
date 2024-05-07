@@ -75,7 +75,7 @@ namespace KlioWeb.Repository
             var limitLasts = 3;
             double maxViews = (double)context.Movies.Max(p => p.ViewCounter);
             var moviesQueryable = context.Movies.AsQueryable();
-            moviesQueryable = moviesQueryable.Where(x => x.AgeLimit == filterMoviesDTO.Age).OrderBy(x => x.ReleaseDate);
+            moviesQueryable = moviesQueryable.Where(x => x.AgeLimit == filterMoviesDTO.Age).OrderByDescending(x => x.PublicDate);
 
             double count = await moviesQueryable.CountAsync();
             double totalAmountPages = Math.Ceiling(count / filterMoviesDTO.RecordsPerPage);
